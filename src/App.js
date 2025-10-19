@@ -15,6 +15,7 @@ import Footer from "./components/Footer";
 import Calculator from "./components/calculator/Calculator";
 import "./App.css";
 import TodoList from "./components/todoList/TodoList";
+import Weather3DApp from "./components/weather/Weather";
 
 function AppContent() {
   const [loading, setLoading] = useState(true);
@@ -112,6 +113,7 @@ function AppContent() {
           {/* Calculator Page */}
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/todolist" element={<TodoList />} />
+          <Route path="/weather" element={<Weather3DApp />} />
         </Routes>
       )}
     </div>

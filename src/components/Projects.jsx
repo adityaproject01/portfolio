@@ -23,7 +23,7 @@ const projects = [
     link: "/todolist",
   },
   {
-    title: "Music Streaming App",
+    title: "Weather App",
     description:
       "Spotify-inspired music player with playlist management and social features.",
     tech: ["React", "Redux", "Firebase"],
@@ -32,7 +32,7 @@ const projects = [
     iconPath:
       "M17,12C17,14.42 16.28,16.65 14.38,18.1L15.79,19.5C18.46,17.33 19.5,14.88 19.5,12C19.5,9.12 18.46,6.67 15.79,4.5L14.38,5.9C16.28,7.35 17,9.58 17,12M1,9V15H4L9,20V4L4,9H1Z",
     border: "border-purple-400",
-    link: "#",
+    link: "/weather",
   },
   {
     title: "DevOps Dashboard",
