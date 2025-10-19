@@ -1,5 +1,5 @@
 import React from "react";
-import item3 from "../components/img/devops2.png";
+import item3 from "../components/img/icon/devops2.png";
 import item1 from "../components/img/frontend2.png";
 import item2 from "../components/img/backend.png";
 import react from "../components/img/icon/react.png";
@@ -9,7 +9,7 @@ import cssimg from "../components/img/icon/css.png";
 import dockerimg from "../components/img/icon/docker.png";
 import awsimg from "../components/img/icon/hero.png";
 import k8img from "../components/img/icon/k8.png";
-import cicdImg from "../components/img/icon/cicd.png";
+import cicdImg from "../components/img/icon/cicd5.png";
 import nodeimp from "../components/img/icon/nodejs.png";
 import exprimg from "../components/img/icon/express2.png";
 import monimg from "../components/img/icon/mongodb.png";
