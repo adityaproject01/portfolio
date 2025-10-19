@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Projects from "./components/Projects";
@@ -8,6 +8,26 @@ import Footer from "./components/Footer";
 import "./App.css";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+
+  // 3-second progress loader
+  useEffect(() => {
+    const duration = 3000;
+    const interval = 50;
+    let time = 0;
+
+    const timer = setInterval(() => {
+      time += interval;
+      setProgress(Math.min((time / duration) * 100, 100));
+      if (time >= duration) {
+        clearInterval(timer);
+        setTimeout(() => setLoading(false), 300);
+      }
+    }, interval);
+  }, []);
+
+  // Sparkles generator
   const colors = ["#FFD700", "#FF4500", "#FFFFFF", "#1E90FF"];
 
   const generateSparkles = (count) => {
@@ -28,15 +48,16 @@ function App() {
           style={{
             width: size + "px",
             height: size + "px",
-            top: top,
-            left: left,
+            top,
+            left,
             backgroundColor: color,
             animationDelay: delay,
             animationDuration: duration,
             position: "absolute",
             borderRadius: "50%",
             transform: `translateX(${radius}px)`,
-          }}></div>
+          }}
+        />
       );
     }
     return sparkles;
@@ -44,18 +65,31 @@ function App() {
 
   return (
     <div className="relative min-h-full bg-gray-900 text-white overflow-hidden">
-      {/* Sparkles background */}
+      {/* Sparkles always active */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {generateSparkles(100)}
       </div>
 
-      {/* Main content */}
-      <Navbar />
-      <Hero />
-      <Projects />
-      <Skills />
-      <Contact />
-      <Footer />
+      {loading ? (
+        <div className="loading-screen">
+          <div className="loading-box">
+            <h2 className="loading-text">Loading Portfolio...</h2>
+            <div className="progress-bar">
+              <div className="progress" style={{ width: `${progress}%` }}></div>
+            </div>
+            <p className="loading-percent">{Math.floor(progress)}%</p>
+          </div>
+        </div>
+      ) : (
+        <>
+          <Navbar />
+          <Hero />
+          <Projects />
+          <Skills />
+          <Contact />
+          <Footer />
+        </>
+      )}
     </div>
   );
 }

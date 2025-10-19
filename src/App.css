@@ -348,3 +348,66 @@ body {
  filter: drop-shadow(0 0px 0px white)  /* dark orange */
 
 }
+
+
+/* Loading screen */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #000000 40%, #111111 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.loading-box {
+  text-align: center;
+}
+
+.loading-text {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: #00ffff;
+  animation: flicker 1.5s infinite;
+}
+
+.progress-bar {
+  width: 250px;
+  height: 10px;
+  border-radius: 10px;
+  border: 1px solid #00ffff;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, hotpink, #ff00ff, red);
+  animation: glow 1s infinite alternate;
+}
+
+/* cool flicker + glow */
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes glow {
+  from {
+    filter: brightness(0.8);
+    
+  }
+  to {
+    filter: brightness(1.4);
+  }
+}
