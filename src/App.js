@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import Calculator from "./components/calculator/Calculator";
 import "./App.css";
+import TodoList from "./components/todoList/TodoList";
 
-function App() {
+function AppContent() {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+  const location = useLocation();
 
-  // 3-second progress loader
+  // Progress loader
   useEffect(() => {
     const duration = 3000;
     const interval = 50;
@@ -25,11 +35,12 @@ function App() {
         setTimeout(() => setLoading(false), 300);
       }
     }, interval);
+
+    return () => clearInterval(timer);
   }, []);
 
   // Sparkles generator
   const colors = ["#FFD700", "#FF4500", "#FFFFFF", "#1E90FF"];
-
   const generateSparkles = (count) => {
     const sparkles = [];
     for (let i = 0; i < count; i++) {
@@ -65,10 +76,12 @@ function App() {
 
   return (
     <div className="relative min-h-full bg-gray-900 text-white overflow-hidden">
-      {/* Sparkles always active */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {generateSparkles(100)}
-      </div>
+      {/* Render sparkles ONLY on home page */}
+      {!loading && location.pathname === "/" && (
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          {generateSparkles(100)}
+        </div>
+      )}
 
       {loading ? (
         <div className="loading-screen">
@@ -81,16 +94,35 @@ function App() {
           </div>
         </div>
       ) : (
-        <>
-          <Navbar />
-          <Hero />
-          <Projects />
-          <Skills />
-          <Contact />
-          <Footer />
-        </>
+        <Routes>
+          {/* Home Page */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Navbar />
+                <Hero />
+                <Projects />
+                <Skills />
+                <Contact />
+                <Footer />
+              </>
+            }
+          />
+          {/* Calculator Page */}
+          <Route path="/calculator" element={<Calculator />} />
+          <Route path="/todolist" element={<TodoList />} />
+        </Routes>
       )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
 

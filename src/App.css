@@ -470,3 +470,8 @@ body {
 }
 
 
+.projectImg{
+  width: auto;
+  height:100%;
+  border-radius: 10px;
+}
