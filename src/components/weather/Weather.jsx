@@ -8,6 +8,7 @@ import cloudy from "../../assets/lottie/cloudy.json";
 import rainy from "../../assets/lottie/rainy.json";
 import snowy from "../../assets/lottie/snowy.json";
 import storm from "../../assets/lottie/storm.json";
+import BackButton from "../BackButton";
 
 const API_KEY = "9d81b01f5cf402f40b5e8ffd43a48762";
 
@@ -52,6 +53,8 @@ export default function Weather3DApp() {
   };
 
   return (
+    <>
+      <BackButton/>
     <div className={`weather-container ${theme}`}>
       <div className="weather-card">
         <h1 className="weather-title">WeatherSphere</h1>
@@ -101,5 +104,6 @@ export default function Weather3DApp() {
       </div>
       <div className="weather-glow"></div>
     </div>
+    </>
   );
 }
