@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Calculator.css";
 import * as math from "mathjs";
-import Navbar from "../Navbar";
 import BackButton from "../BackButton";
 
 const Calculator = () => {
