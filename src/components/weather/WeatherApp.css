@@ -16,20 +16,25 @@
 /* Gradients for weather types */
 .sunny {
   background: linear-gradient(135deg, #f6d365, #fda085);
+  color: #333; /* dark text for bright background */
 }
 .cloudy {
   background: linear-gradient(135deg, #89f7fe, #66a6ff);
+  color:  brown !important; /* white text for medium background */
 }
 .rainy {
   background: linear-gradient(135deg, #314755, #26a0da);
+  color: #fff; /* white text for dark blue */
 }
 .snowy {
   background: linear-gradient(135deg, #e0eafc, #cfdef3);
-  color: #333;
+  color: #333; /* dark text for light blue */
 }
 .storm {
   background: linear-gradient(135deg, #232526, #414345);
+  color: #fff; /* white text for dark background */
 }
+
 
 /* Floating blurred glow */
 .weather-glow {

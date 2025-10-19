@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import "./WeatherApp.css";
 
-// ✅ Import local JSON animations
 import sunny from "../../assets/lottie/sunny.json";
 import cloudy from "../../assets/lottie/cloudy.json";
 import rainy from "../../assets/lottie/rainy.json";
@@ -55,7 +54,11 @@ export default function Weather3DApp() {
   return (
     <>
       <BackButton/>
-    <div className={`weather-container ${theme}`}>
+    <div
+  className={`weather-container ${theme}`}
+  style={{ color: theme === "snowy" || theme === "sunny" ? "#333" : "#fff" }}
+>
+
       <div className="weather-card">
         <h1 className="weather-title">WeatherSphere</h1>
 

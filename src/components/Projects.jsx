@@ -2,11 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import calimg from "./img/images/calculator.png";
 import todoimg from "./img/images/todo1.png";
+import weatherImg from "./img/images/weather.jpg";
 const projects = [
   {
     title: "Responsive Calculator",
     description:
-      "A sleek, responsive calculator built with React and CSS Grid.",
+      "A sleek, responsive calculator built with React and CSS. Performs basic arithmetic operations efficiently. and user-friendly interface",
+      
     tech: ["React", "CSS3", "JavaScript"],
     iconPath: calimg,
     border: "border-yellow-400",
@@ -15,7 +17,7 @@ const projects = [
   {
     title: "Todo List",
     description:
-      "Modern React-based shopping platform with real-time inventory management.",
+      "A user-friendly To-Do List app built with React, allowing adding, editing, and deleting tasks with local storage persistence.",
     tech: ["React", "Node.js", "MongoDB"],
     
     iconPath:todoimg,
@@ -25,13 +27,12 @@ const projects = [
   {
     title: "Weather App",
     description:
-      "Spotify-inspired music player with playlist management and social features.",
+      "A dynamic weather app built with React and Lottie animations. Displays real-time weather, temperature, and wind info for any city.",
     tech: ["React", "Redux", "Firebase"],
-    colorFrom: "from-purple-500",
-    colorTo: "to-pink-600",
-    iconPath:
-      "M17,12C17,14.42 16.28,16.65 14.38,18.1L15.79,19.5C18.46,17.33 19.5,14.88 19.5,12C19.5,9.12 18.46,6.67 15.79,4.5L14.38,5.9C16.28,7.35 17,9.58 17,12M1,9V15H4L9,20V4L4,9H1Z",
-    border: "border-purple-400",
+
+    iconPath:weatherImg,
+      
+      border: "border-purple-400",
     link: "/weather",
   },
   {
@@ -97,3 +98,5 @@ const Projects = () => {
 };
 
 export default Projects;
+
+
