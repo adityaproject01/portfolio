@@ -18,7 +18,8 @@ const projects = [
     title: "Todo List",
     description:
       "A user-friendly To-Do List app built with React, allowing adding, editing, and deleting tasks with local storage persistence.",
-    tech: ["React", "Node.js", "MongoDB"],
+    // tech: ["React", "Node.js", "MongoDB"],
+    tech: ["React", "CSS3", "JavaScript"],
     
     iconPath:todoimg,
     border: "border-blue-400",
@@ -28,7 +29,8 @@ const projects = [
     title: "Weather App",
     description:
       "A dynamic weather app built with React and Lottie animations. Displays real-time weather, temperature, and wind info for any city.",
-    tech: ["React", "Redux", "Firebase"],
+    // tech: ["React", "Redux", "Firebase"],
+    tech: ["React", "CSS3", "JavaScript"],
 
     iconPath:weatherImg,
       
