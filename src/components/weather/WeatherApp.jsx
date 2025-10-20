@@ -17,13 +17,13 @@ export default function WeatherApp() {
   const [city, setCity] = useState("Bengaluru");
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState("");
-  const [theme, setTheme] = useScityNametate("sunny");
+  const [theme, setTheme] = useState("sunny");
 
   // Fetch weather data
   const fetchWeather = async () => {
     try {
       const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
       );
       if (!res.ok) throw new Error("City not found");
       const data = await res.json();
