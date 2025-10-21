@@ -246,7 +246,7 @@ function AppContent() {
 
           {/* E-commerce wrapper (non-routing) */}
           <Route
-            path="/ecommerce/*"
+            path="/ecommerce"
             element={
               <Ecom
                 ViewMoreDetails={ViewMoreDetails}
