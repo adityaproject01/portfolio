@@ -112,12 +112,7 @@ const AdminProduct = () => {
       .catch((err) => console.log("DeleteError", err));
   };
 
-  const handleAddProduct = async (e) => {
-    e.preventDefault();
-    if (!productSubSubSubCategory) {
-      alert("Please select a SubSubSubCategory.");
-      return;
-    }
+
 
     const formData = new FormData();
     formData.append("name", productName);
