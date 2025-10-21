@@ -26,8 +26,7 @@ const AdminProduct = () => {
   const [getCategoryDetails, setGetCategoryDetails] = useState([]);
   const [getSubCategoryDetails, setGetSubCategoryDetails] = useState([]);
   const [getSubSubCategoryDetails, setGetSubSubCategoryDetails] = useState([]);
-  const [getSubSubSubCategoryDetails, setGetSubSubSubCategoryDetails] =
-    useState([]);
+  const [getSubSubSubCategoryDetails, setGetSubSubSubCategoryDetails] = useState([]);
 
   useEffect(() => {
     fetchProducts();
@@ -56,12 +55,9 @@ const AdminProduct = () => {
 
   const fetchProducts = () => {
     axios
-      .get(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/products/allProducts",
-        {
-          headers: { Authorization: token },
-        }
-      )
+      .get("http://ecommercebackend-1-fwcd.onrender.com/api/products/allProducts", {
+        headers: { Authorization: token },
+      })
       .then((res) => setProductDetails(res.data.products))
       .catch((err) => console.log("Fetch my-products error", err));
   };
@@ -75,9 +71,7 @@ const AdminProduct = () => {
 
   const fetchSubCategories = (categoryId) => {
     axios
-      .get(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${categoryId}`
-      )
+      .get(`http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${categoryId}`)
       .then((res) => setGetSubCategoryDetails(res.data))
       .catch((err) => {
         console.error("Failed to fetch subcategories", err);
@@ -111,12 +105,9 @@ const AdminProduct = () => {
 
   const productDelete = (productId) => {
     axios
-      .delete(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`,
-        {
-          headers: { Authorization: token },
-        }
-      )
+      .delete(`http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`, {
+        headers: { Authorization: token },
+      })
       .then(() => fetchProducts())
       .catch((err) => console.log("DeleteError", err));
   };
@@ -224,7 +215,8 @@ const AdminProduct = () => {
               <form
                 onSubmit={(e) => {
                   handleEditProduct(e, currentEditId);
-                }}>
+                }}
+              >
                 <div className={prodCss.productField}>
                   <label>Name</label>
                   <input
@@ -252,7 +244,8 @@ const AdminProduct = () => {
                   <label>Category</label>
                   <select
                     value={productCategory}
-                    onChange={(e) => setProductCategory(e.target.value)}>
+                    onChange={(e) => setProductCategory(e.target.value)}
+                  >
                     <option value="">Select Category</option>
                     {getCategoryDetails.map((cat) => (
                       <option key={cat.id} value={cat.id}>
@@ -265,13 +258,15 @@ const AdminProduct = () => {
                   <label>SubCategory</label>
                   <select
                     value={productSubCategory}
-                    onChange={(e) => setProductSubCategory(e.target.value)}>
+                    onChange={(e) => setProductSubCategory(e.target.value)}
+                  >
                     <option value="">Select SubCategory</option>
                     {getSubCategoryDetails.map((sub) => (
                       <option
                         className={prodCss.option}
                         key={sub.subcategory_id}
-                        value={sub.subcategory_id}>
+                        value={sub.subcategory_id}
+                      >
                         {sub.subcategory_name}
                       </option>
                     ))}
@@ -281,7 +276,8 @@ const AdminProduct = () => {
                   <label>SubSubCategory</label>
                   <select
                     value={productSubSubCategory}
-                    onChange={(e) => setProductSubSubCategory(e.target.value)}>
+                    onChange={(e) => setProductSubSubCategory(e.target.value)}
+                  >
                     <option value="">Select SubSubCategory</option>
                     {getSubSubCategoryDetails.map((sub) => (
                       <option key={sub.subsub_id} value={sub.subsub_id}>
@@ -294,9 +290,8 @@ const AdminProduct = () => {
                   <label>SubSubSubCategory</label>
                   <select
                     value={productSubSubSubCategory}
-                    onChange={(e) =>
-                      setProductSubSubSubCategory(e.target.value)
-                    }>
+                    onChange={(e) => setProductSubSubSubCategory(e.target.value)}
+                  >
                     <option value="">Select SubSubSubCategory</option>
                     {getSubSubSubCategoryDetails.map((sub) => (
                       <option key={sub.id} value={sub.id}>
@@ -323,10 +318,7 @@ const AdminProduct = () => {
                   <button className={prodCss.btn} type="submit">
                     Update
                   </button>
-                  <button
-                    className={prodCss.btn}
-                    type="button"
-                    onClick={closeModal}>
+                  <button className={prodCss.btn} type="button" onClick={closeModal}>
                     Close
                   </button>
                 </div>
@@ -377,12 +369,14 @@ const AdminProduct = () => {
                     setProductSubSubSubCategory(product.subsubsub_id || "");
                     setProductDescription(product.description);
                     setProductImage(null); // Reset image input for editing
-                  }}>
+                  }}
+                >
                   <img src={editImg} alt="edit" />
                 </button>
                 <button
                   className={prodCss.actionButton}
-                  onClick={() => productDelete(product.id)}>
+                  onClick={() => productDelete(product.id)}
+                >
                   <img src={deleteImg} alt="delete" />
                 </button>
               </p>
