@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import adminCatCss from "./adminCategory.module.css";
 import axios from "axios";
 
@@ -16,7 +16,7 @@ const AdminCategory = () => {
   const [catId, setCatId] = useState();
   const token = localStorage.getItem("token");
 
-  // Fetch categories on mount
+useEffect(() => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get("http://ecommercebackend-1-fwcd.onrender.com/api/category", {
@@ -27,9 +27,10 @@ const AdminCategory = () => {
       console.log("error", error);
     }
   };
-  useEffect(() => {
-    fetchCategories();
-  }, [token]);
+
+  fetchCategories();
+}, [token]);
+
 
   // Add new category
   const handleAdminCategory = async (e) => {

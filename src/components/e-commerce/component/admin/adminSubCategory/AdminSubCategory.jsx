@@ -17,27 +17,24 @@ const AdminSubCategory = () => {
   const [subCatEditImg, setSubCatEditImg] = useState();
   const [catGetName, setCatGetName] = useState();
   const [editCategoryId, setEditCategoryId] = useState("");
-  const fetchSubCategories = async () => {
-    try {
-      const response = await axios.get(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/subcategories"
-      );
-      const responseCat = await axios.get(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/category",
-        {
-          headers: { Authorization: token },
-        }
-      );
-      setGetCategoryDetails(responseCat.data);
+  const fetchSubCategories = useCallback(async () => {
+  try {
+    const response = await axios.get(
+      "http://ecommercebackend-1-fwcd.onrender.com/api/subcategories"
+    );
+    const responseCat = await axios.get(
+      "http://ecommercebackend-1-fwcd.onrender.com/api/category",
+      {
+        headers: { Authorization: token },
+      }
+    );
+    setGetCategoryDetails(responseCat.data);
+    setSubGetCategoryDetails(response.data);
+  } catch (error) {
+    console.log("Fetch category error", error);
+  }
+}, [token]); // Include dependencies here
 
-      setSubGetCategoryDetails(response.data);
-    } catch (error) {
-      console.log("Fetch category error", error);
-    }
-  };
-  useEffect(() => {
-    fetchSubCategories();
-  }, [token]);
   //add subcat
   const handleSubCatDetails = async (e) => {
     e.preventDefault();

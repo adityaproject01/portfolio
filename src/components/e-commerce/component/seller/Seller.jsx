@@ -1,24 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
-import sellerCss from "./seller.module.css"; // import CSS module
-
+import sellerCss from "./seller.module.css"; // CSS module
 import axios from "axios";
 import editImg from "../../images/banner/edit-button_7124470.png";
 import deleteImg from "../../images/banner/delete1.png";
 
-const Seller = ( ) => {
+const Seller = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [productDetails, setProductDetails] = useState([]);
   const [getCategoryDetails, setGetCategoryDetails] = useState([]);
   const [getSubCategoryDetails, setGetSubCategoryDetails] = useState([]);
   const [getSubSubCategoryDetails, setGetSubSubCategoryDetails] = useState([]);
-  const [getSubSubSubCategoryDetails, setGetSubSubSubCategoryDetails] =
-    useState([]);
-  const totalOrders = productDetails.length;
-  const totalQuantity = productDetails.reduce(
-    (sum, item) => sum + Number(item.quantity),
-    0
-  );
+  const [getSubSubSubCategoryDetails, setGetSubSubSubCategoryDetails] = useState([]);
 
   const [isEditing, setIsEditing] = useState(false);
   const [currentEditId, setCurrentEditId] = useState(null);
@@ -37,39 +30,18 @@ const Seller = ( ) => {
   const token = localStorage.getItem("token");
   const UN = localStorage.getItem("user");
 
-  useEffect(() => {
-    fetchProducts();
-    fetchCategories();
-  }, []);
+  const totalOrders = productDetails.length;
+  const totalQuantity = productDetails.reduce((sum, item) => sum + Number(item.quantity), 0);
 
-  useEffect(() => {
-    if (productCategory) fetchSubCategories(productCategory);
-    else setGetSubCategoryDetails([]);
-  }, [productCategory]);
-
-  useEffect(() => {
-    if (productSubCategory) fetchSubSubCategories(productSubCategory);
-    else setGetSubSubCategoryDetails([]);
-  }, [productSubCategory]);
-
-  useEffect(() => {
-    if (productSubSubCategory) fetchSubSubSubCategories(productSubSubCategory);
-    else setGetSubSubSubCategoryDetails([]);
-  }, [productSubSubCategory]);
-
-  const logoutButton = () => {
-    localStorage.removeItem("token");
-    navigate("/ecommerce/home");
-  };
-
-  const fetchProducts = () => {
+  // ✅ useCallback to avoid React warning
+  const fetchProducts = useCallback(() => {
     axios
       .get("http://ecommercebackend-1-fwcd.onrender.com/api/products/my-products", {
         headers: { Authorization: token },
       })
       .then((res) => setProductDetails(res.data.products))
       .catch((err) => console.log("Fetch my-products error", err));
-  };
+  }, [token]);
 
   const fetchCategories = () => {
     axios
@@ -90,9 +62,7 @@ const Seller = ( ) => {
 
   const fetchSubSubCategories = (subcategoryId) => {
     axios
-      .get(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/subsubcategory/subcategory/${subcategoryId}`
-      )
+      .get(`http://ecommercebackend-1-fwcd.onrender.com/api/subsubcategory/subcategory/${subcategoryId}`)
       .then((res) => setGetSubSubCategoryDetails(res.data))
       .catch((err) => {
         console.error("Failed to fetch sub-subcategories", err);
@@ -102,9 +72,7 @@ const Seller = ( ) => {
 
   const fetchSubSubSubCategories = (subSubcategoryId) => {
     axios
-      .get(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/subsubsubcategory/subsubcategory/${subSubcategoryId}`
-      )
+      .get(`http://ecommercebackend-1-fwcd.onrender.com/api/subsubsubcategory/subsubcategory/${subSubcategoryId}`)
       .then((res) => setGetSubSubSubCategoryDetails(res.data))
       .catch((err) => {
         console.error("Failed to fetch sub-sub-subcategories", err);
@@ -166,16 +134,12 @@ const Seller = ( ) => {
     if (productImage) formData.append("image", productImage);
 
     try {
-      await axios.put(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: token,
-          },
-        }
-      );
+      await axios.put(`http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: token,
+        },
+      });
       fetchProducts();
       closeModal();
     } catch (error) {
@@ -198,6 +162,32 @@ const Seller = ( ) => {
     setProductDescription("");
   };
 
+  const logoutButton = () => {
+    localStorage.removeItem("token");
+    navigate("/ecommerce/home");
+  };
+
+  // ✅ Corrected useEffect with fetchProducts as dependency
+  useEffect(() => {
+    fetchProducts();
+    fetchCategories();
+  }, [fetchProducts]);
+
+  useEffect(() => {
+    if (productCategory) fetchSubCategories(productCategory);
+    else setGetSubCategoryDetails([]);
+  }, [productCategory]);
+
+  useEffect(() => {
+    if (productSubCategory) fetchSubSubCategories(productSubCategory);
+    else setGetSubSubCategoryDetails([]);
+  }, [productSubCategory]);
+
+  useEffect(() => {
+    if (productSubSubCategory) fetchSubSubSubCategories(productSubSubCategory);
+    else setGetSubSubSubCategoryDetails([]);
+  }, [productSubSubCategory]);
+
   return (
     <div className={sellerCss.seller}>
       <div className={sellerCss.sellerNav}>
@@ -218,42 +208,22 @@ const Seller = ( ) => {
                   <button onClick={closeModal}>Close</button>
                 </div>
                 <div className={sellerCss.productForm}>
-                  <form
-                    onSubmit={(e) =>
-                      isEditing
-                        ? handlEditProduct(e, currentEditId)
-                        : handleAddProduct(e)
-                    }
-                  >
+                  <form onSubmit={(e) => (isEditing ? handlEditProduct(e, currentEditId) : handleAddProduct(e))}>
                     <div className={sellerCss.productField}>
                       <label>Name</label>
-                      <input
-                        value={productName}
-                        onChange={(e) => setProductName(e.target.value)}
-                      />
+                      <input value={productName} onChange={(e) => setProductName(e.target.value)} />
                     </div>
                     <div className={sellerCss.productField}>
                       <label>Price</label>
-                      <input
-                        type="number"
-                        value={productPrice}
-                        onChange={(e) => setProductPrice(e.target.value)}
-                      />
+                      <input type="number" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} />
                     </div>
                     <div className={sellerCss.productField}>
                       <label>Quantity</label>
-                      <input
-                        type="number"
-                        value={productQuantity}
-                        onChange={(e) => setProductQuantity(e.target.value)}
-                      />
+                      <input type="number" value={productQuantity} onChange={(e) => setProductQuantity(e.target.value)} />
                     </div>
                     <div className={sellerCss.productField}>
                       <label>Category</label>
-                      <select
-                        value={productCategory}
-                        onChange={(e) => setProductCategory(e.target.value)}
-                      >
+                      <select value={productCategory} onChange={(e) => setProductCategory(e.target.value)}>
                         <option value="">Select Category</option>
                         {getCategoryDetails.map((cat) => (
                           <option key={cat.id} value={cat.id}>
@@ -264,16 +234,10 @@ const Seller = ( ) => {
                     </div>
                     <div className={sellerCss.productField}>
                       <label>SubCategory</label>
-                      <select
-                        value={productSubCategory}
-                        onChange={(e) => setProductSubCategory(e.target.value)}
-                      >
+                      <select value={productSubCategory} onChange={(e) => setProductSubCategory(e.target.value)}>
                         <option value="">Select SubCategory</option>
                         {getSubCategoryDetails.map((sub) => (
-                          <option
-                            key={sub.subcategory_id}
-                            value={sub.subcategory_id}
-                          >
+                          <option key={sub.subcategory_id} value={sub.subcategory_id}>
                             {sub.subcategory_name}
                           </option>
                         ))}
@@ -281,12 +245,7 @@ const Seller = ( ) => {
                     </div>
                     <div className={sellerCss.productField}>
                       <label>SubSubCategory</label>
-                      <select
-                        value={productSubSubCategory}
-                        onChange={(e) =>
-                          setProductSubSubCategory(e.target.value)
-                        }
-                      >
+                      <select value={productSubSubCategory} onChange={(e) => setProductSubSubCategory(e.target.value)}>
                         <option value="">Select SubSubCategory</option>
                         {getSubSubCategoryDetails.map((sub) => (
                           <option key={sub.subsub_id} value={sub.subsub_id}>
@@ -297,12 +256,7 @@ const Seller = ( ) => {
                     </div>
                     <div className={sellerCss.productField}>
                       <label>SubSubSubCategory</label>
-                      <select
-                        value={productSubSubSubCategory}
-                        onChange={(e) =>
-                          setProductSubSubSubCategory(e.target.value)
-                        }
-                      >
+                      <select value={productSubSubSubCategory} onChange={(e) => setProductSubSubSubCategory(e.target.value)}>
                         <option value="">Select SubSubSubCategory</option>
                         {getSubSubSubCategoryDetails.map((sub) => (
                           <option key={sub.id} value={sub.id}>
@@ -313,28 +267,21 @@ const Seller = ( ) => {
                     </div>
                     <div className={sellerCss.productField}>
                       <label>Image</label>
-                      <input
-                        type="file"
-                        onChange={(e) => setProductImage(e.target.files[0])}
-                      />
+                      <input type="file" onChange={(e) => setProductImage(e.target.files[0])} />
                     </div>
                     <div className={sellerCss.productField}>
                       <label>Description</label>
-                      <input
-                        value={productDescription}
-                        onChange={(e) => setProductDescription(e.target.value)}
-                      />
+                      <input value={productDescription} onChange={(e) => setProductDescription(e.target.value)} />
                     </div>
                     <div className={sellerCss.productField}>
-                      <button type="submit">
-                        {isEditing ? "Update" : "Submit"}
-                      </button>
+                      <button type="submit">{isEditing ? "Update" : "Submit"}</button>
                     </div>
                   </form>
                 </div>
               </div>
             </div>
           )}
+
           <div className={sellerCss.glassCardSummary}>
             <h2>Dashboard Summary</h2>
             <div className={sellerCss.statsGrid}>
@@ -374,9 +321,7 @@ const Seller = ( ) => {
                   <p className={sellerCss.productDetails}>
                     <img src={product.image_url} alt="product" height="50" />
                   </p>
-                  <p className={sellerCss.productDetailsDescription}>
-                    {product.description}
-                  </p>
+                  <p className={sellerCss.productDetailsDescription}>{product.description}</p>
                   <p className={sellerCss.productDetails}>
                     <button
                       className={sellerCss.actionButton}
@@ -388,10 +333,7 @@ const Seller = ( ) => {
                     >
                       <img src={editImg} alt="edit" />
                     </button>
-                    <button
-                      className={sellerCss.actionButton}
-                      onClick={() => productDelete(product.id)}
-                    >
+                    <button className={sellerCss.actionButton} onClick={() => productDelete(product.id)}>
                       <img src={deleteImg} alt="delete" />
                     </button>
                   </p>

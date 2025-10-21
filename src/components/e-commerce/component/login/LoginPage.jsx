@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import "./login.css";
 import { useNavigate } from "react-router-dom";
-import eccomerce from "../../images/9579712.jpg";
 import { FaUser, FaLock } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import axios from "axios";
-import { Mail, Lock, ArrowRight, Sparkles, Eye, EyeOff } from 'lucide-react';
+import {  Eye, EyeOff } from 'lucide-react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -93,7 +92,7 @@ const LoginPage = () => {
             <div className="form-group">
               <div className="form-label-row">
                 <label className="form-label">Password</label>
-                <a href="#" className="forgot-link">
+                <a href="/" className="forgot-link">
                   Forgot Password?
                 </a>
               </div>

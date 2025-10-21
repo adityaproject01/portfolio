@@ -19,11 +19,11 @@ export default function WeatherApp() {
   const [error, setError] = useState("");
   const [theme, setTheme] = useState("sunny");
 
-  // Fetch weather data
-  const fetchWeather = async () => {
+  // Function to fetch weather based on any city (used on search)
+  const fetchWeather = async (cityParam) => {
     try {
       const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityParam}&units=metric&appid=${API_KEY}`
       );
       if (!res.ok) throw new Error("City not found");
       const data = await res.json();
@@ -42,8 +42,31 @@ export default function WeatherApp() {
     }
   };
 
+  // Initial fetch on component mount
   useEffect(() => {
-    fetchWeather("Bengaluru");
+    const fetchInitialWeather = async () => {
+      try {
+        const res = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=Bengaluru&units=metric&appid=${API_KEY}`
+        );
+        if (!res.ok) throw new Error("City not found");
+        const data = await res.json();
+        setWeather(data);
+        setError("");
+
+        const main = data.weather[0].main.toLowerCase();
+        if (main.includes("rain")) setTheme("rainy");
+        else if (main.includes("cloud")) setTheme("cloudy");
+        else if (main.includes("snow")) setTheme("snowy");
+        else if (main.includes("thunder")) setTheme("storm");
+        else setTheme("sunny");
+      } catch (err) {
+        setError(err.message);
+        setWeather(null);
+      }
+    };
+
+    fetchInitialWeather();
   }, []);
 
   const handleSubmit = (e) => {
@@ -53,60 +76,62 @@ export default function WeatherApp() {
 
   return (
     <>
-      <BackButton/>
-    <div
-  className={`weather-container ${theme}`}
-  style={{ color: theme === "snowy" || theme === "sunny" ? "#333" : "#fff" }}
->
+      <BackButton />
+      <div
+        className={`weather-container ${theme}`}
+        style={{
+          color: theme === "snowy" || theme === "sunny" ? "#333" : "#fff",
+        }}>
+        <div className="weather-card">
+          <h1 className="weather-title">WeatherSphere</h1>
 
-      <div className="weather-card">
-        <h1 className="weather-title">WeatherSphere</h1>
-
-        <form onSubmit={handleSubmit} className="weather-search">
-          <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder="Search city..."
-            className="weather-input"
-          />
-          <button className="weather-btn">Search</button>
-        </form>
-
-        {error && <p className="weather-error">{error}</p>}
-
-        {weather && (
-          <div className="weather-info">
-            <Lottie
-              animationData={animations[theme] || animations["sunny"]}
-              className="weather-lottie"
-              loop
+          <form onSubmit={handleSubmit} className="weather-search">
+            <input
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="Search city..."
+              className="weather-input"
             />
-            <h2 className="weather-location">
-              {weather.name}, {weather.sys.country}
-            </h2>
-            <h1 className="weather-temp">{Math.round(weather.main.temp)}°C</h1>
-            <p className="weather-desc">{weather.weather[0].description}</p>
+            <button className="weather-btn">Search</button>
+          </form>
 
-            <div className="weather-stats">
-              <div>
-                <i className="bx bx-wind"></i>
-                <span>{weather.wind.speed} m/s</span>
-              </div>
-              <div>
-                <i className="bx bx-droplet"></i>
-                <span>{weather.main.humidity}%</span>
-              </div>
-              <div>
-                <i className="bx bx-thermometer"></i>
-                <span>Feels {Math.round(weather.main.feels_like)}°C</span>
+          {error && <p className="weather-error">{error}</p>}
+
+          {weather && (
+            <div className="weather-info">
+              <Lottie
+                animationData={animations[theme] || animations["sunny"]}
+                className="weather-lottie"
+                loop
+              />
+              <h2 className="weather-location">
+                {weather.name}, {weather.sys.country}
+              </h2>
+              <h1 className="weather-temp">
+                {Math.round(weather.main.temp)}°C
+              </h1>
+              <p className="weather-desc">{weather.weather[0].description}</p>
+
+              <div className="weather-stats">
+                <div>
+                  <i className="bx bx-wind"></i>
+                  <span>{weather.wind.speed} m/s</span>
+                </div>
+                <div>
+                  <i className="bx bx-droplet"></i>
+                  <span>{weather.main.humidity}%</span>
+                </div>
+                <div>
+                  <i className="bx bx-thermometer"></i>
+                  <span>Feels {Math.round(weather.main.feels_like)}°C</span>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
+        <div className="weather-glow"></div>
       </div>
-      <div className="weather-glow"></div>
-    </div>
     </>
   );
 }

@@ -8,7 +8,7 @@ const PlaceOrder = () => {
   const cartItems = state?.cartItems || [];
   const [addresses, setAddresses] = useState([]);
   const [newAddresses, setNewAddresses] = useState([]);
-  const [clearedCart, setClearedCart] = useState();
+ 
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");

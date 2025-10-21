@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import cartStyles from "./cart.module.css";
 
@@ -8,26 +8,29 @@ const Cart = () => {
   const [cartDetails, setCartDetails] = useState([]);
   const navigate = useNavigate();
 
-  const fetchCart = async () => {
+  const fetchCart = useCallback(async () => {
     try {
-      const response = await axios.get("http://ecommercebackend-1-fwcd.onrender.com/api/cart", {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await axios.get(
+        "http://ecommercebackend-1-fwcd.onrender.com/api/cart",
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       setCartDetails(response.data);
     } catch (error) {
       console.error("Error fetching cart data:", error);
     }
-  };
+  }, [token]); // token is dependency
 
   useEffect(() => {
     fetchCart();
-  }, [token,fetchCart]);
+  }, [fetchCart]); 
 
   useEffect(() => {
     if (cartDetails.length) {
-      console.log("object", cartDetails.length);
+      console.log("Cart items count:", cartDetails.length);
     }
   }, [cartDetails]);
 
@@ -54,11 +57,14 @@ const Cart = () => {
 
   const handleRemove = async (productId) => {
     try {
-      await axios.delete(`http://ecommercebackend-1-fwcd.onrender.com/api/cart/remove/${productId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      await axios.delete(
+        `http://ecommercebackend-1-fwcd.onrender.com/api/cart/remove/${productId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       fetchCart();
     } catch (error) {
       console.error("Failed to remove item:", error);
@@ -79,96 +85,90 @@ const Cart = () => {
 
         {cartDetails.length === 0 ? (
           <div className={cartStyles.emptyMessage}>
-            
-            
-           <p>
-            Your cart is empty
-            </p> 
-            <button className={cartStyles.cnt} onClick={()=>{navigate("/ecommerce/home")}}>Continue Shopping</button>
-            </div>
+            <p>Your cart is empty</p>
+            <button
+              className={cartStyles.cnt}
+              onClick={() => navigate("/ecommerce/home")}
+            >
+              Continue Shopping
+            </button>
+          </div>
         ) : (
-          <>
-            <div className={cartStyles.main}>
-              <div className={cartStyles.cartContainer}>
-                <div className={cartStyles.cartItems}>
-                  {cartDetails.map((item, index) => (
-                    <div key={index} className={cartStyles.cartItem}>
-                      <img
-                        src={item.image_url}
-                        alt={item.name}
-                        className={cartStyles.productImage}
-                      />
-                      <div className={cartStyles.itemDetails}>
-                        <h4>{item.name}</h4>
-                        <p>Price: ₹{item.price}</p>
-                        <div className={cartStyles.quantity}>
-                          <label>Qty: </label>
-                          <select
-                            value={item.quantity}
-                            onChange={(e) =>
-                              handleQuantityChange(
-                                item.id,
-                                parseInt(e.target.value)
-                              )
-                            }
-                          >
-                            {[...Array(10)].map((_, i) => (
-                              <option key={i + 1} value={i + 1}>
-                                {i + 1}
-                              </option>
-                            ))}
-                          </select>
-                          <button
-                            className={cartStyles.remove}
-                            onClick={() => handleRemove(item.id)}
-                          >
-                            Remove
-                          </button>
-                        </div>
+          <div className={cartStyles.main}>
+            <div className={cartStyles.cartContainer}>
+              <div className={cartStyles.cartItems}>
+                {cartDetails.map((item, index) => (
+                  <div key={index} className={cartStyles.cartItem}>
+                    <img
+                      src={item.image_url}
+                      alt={item.name}
+                      className={cartStyles.productImage}
+                    />
+                    <div className={cartStyles.itemDetails}>
+                      <h4>{item.name}</h4>
+                      <p>Price: ₹{item.price}</p>
+                      <div className={cartStyles.quantity}>
+                        <label>Qty: </label>
+                        <select
+                          value={item.quantity}
+                          onChange={(e) =>
+                            handleQuantityChange(
+                              item.id,
+                              parseInt(e.target.value)
+                            )
+                          }
+                        >
+                          {[...Array(10)].map((_, i) => (
+                            <option key={i + 1} value={i + 1}>
+                              {i + 1}
+                            </option>
+                          ))}
+                        </select>
+                        <button
+                          className={cartStyles.remove}
+                          onClick={() => handleRemove(item.id)}
+                        >
+                          Remove
+                        </button>
                       </div>
                     </div>
-                  ))}
+                  </div>
+                ))}
+              </div>
+
+              <div className={cartStyles.cartSummary}>
+                <div className={cartStyles.summaryItem}>
+                  <p>Shipping Estimate</p>
+                  <p>4 Days</p>
+                </div>
+                <div className={cartStyles.summaryItem}>
+                  <p>Tax</p>
+                  <p>₹100</p>
+                </div>
+                <div
+                  className={`${cartStyles.summaryItem} ${cartStyles.discount}`}
+                >
+                  <p>Discount</p>
+                  <p>-₹100</p>
+                </div>
+                <div className={cartStyles.grandTotal}>
+                  <p>Total: ₹{totalPrice.toFixed(2)}</p>
                 </div>
 
-                <div className={cartStyles.cartSummary}>
-                  <div className={cartStyles.summaryItem}>
-                    <p>Shipping Estimate</p>
-                    <p>4Days</p>
-                  </div>
-                  <div className={cartStyles.summaryItem}>
-                    <p>Tax</p>
-                    <p>{100}</p>
-                  </div>
-                  <div
-                    className={`${cartStyles.summaryItem} ${cartStyles.discount}`}
+                <div className={cartStyles.cartButtons}>
+                  <button
+                    onClick={() => navigate("/ecommerce/home")}
+                    className={cartStyles.continueShopping}
                   >
-                    <p>Discount</p>
-                    <p>-100</p>
-                  </div>
-                  <div className={cartStyles.grandTotal}>
-                    <p>Total: ₹{totalPrice.toFixed(2)}</p>
-                  </div>
-
-                  <div className={cartStyles.cartButtons}>
-                    <button
-                      onClick={() => {
-                        navigate("/ecommerce/home");
-                      }}
-                      className={cartStyles.continueShopping}
-                    >
-                      Continue Shopping
-                    </button>
-                    <button
-                      onClick={handleBuyNow}
-                      className={cartStyles.checkout}
-                    >
-                      Checkout
-                    </button>
-                  </div>
+                    Continue Shopping
+                  </button>
+                  <button onClick={handleBuyNow} className={cartStyles.checkout}>
+                    Checkout
+                  </button>
                 </div>
               </div>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

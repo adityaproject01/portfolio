@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import adminSubSubCatCss from "./adminSubSubCategory.module.css";
 import axios from "axios";
@@ -25,7 +25,7 @@ const AdminSubSubCategory = () => {
   const [subCatEditImg, setSubCatEditImg] = useState(null);
   const [editSubCatId, setEditSubCatId] = useState("");
 
-  const fetchSubCategories = async () => {
+  const fetchSubCategories = useCallback(async () => {
     try {
       const [subSubRes, subCatRes, catRes] = await Promise.all([
         axios.get("http://ecommercebackend-1-fwcd.onrender.com/api/subsubcategory"),
@@ -40,17 +40,9 @@ const AdminSubSubCategory = () => {
     } catch (error) {
       console.log("Fetch category error", error);
     }
-  };
-
-  useEffect(() => {
-    fetchSubCategories();
   }, [token]);
 
-  useEffect(() => {
-    if (categoryMain) handleSeletedSub(categoryMain);
-  }, [categoryMain]);
-
-  const handleSeletedSub = async (categoryId) => {
+  const handleSeletedSub = useCallback(async (categoryId) => {
     try {
       const id = parseInt(categoryId);
       const res = await axios.get(
@@ -63,7 +55,15 @@ const AdminSubSubCategory = () => {
     } catch (error) {
       console.log("Subcategory fetch error", error);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchSubCategories();
+  }, [fetchSubCategories]);
+
+  useEffect(() => {
+    if (categoryMain) handleSeletedSub(categoryMain);
+  }, [categoryMain, handleSeletedSub]);
 
   const handleSubSubCatDetails = async (e) => {
     e.preventDefault();

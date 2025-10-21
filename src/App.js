@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 
 import Home from "./components/e-commerce/component/home/Home";
-import LoginPage from "./components/e-commerce/component/login/LoginPage";
 import Seller from "./components/e-commerce/component/seller/Seller";
 import ProtectedRoute from "./components/e-commerce/ProtectedRoute";
 import Product from "./components/e-commerce/component/seller/SellerProduct";
