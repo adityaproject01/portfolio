@@ -29,7 +29,17 @@ const AdminProduct = () => {
   const [getSubSubSubCategoryDetails, setGetSubSubSubCategoryDetails] = useState([]);
 
   useEffect(() => {
-    fetchProducts();
+    // ✅ Fetch products inline to avoid eslint warning
+    axios
+      .get(
+        "http://ecommercebackend-1-fwcd.onrender.com/api/products/allProducts",
+        {
+          headers: { Authorization: token },
+        }
+      )
+      .then((res) => setProductDetails(res.data.products))
+      .catch((err) => console.log("Fetch my-products error", err));
+
     fetchCategories();
   }, []);
 
@@ -53,15 +63,6 @@ const AdminProduct = () => {
     navigate("/ecommerce/home");
   };
 
-  const fetchProducts = () => {
-    axios
-      .get("http://ecommercebackend-1-fwcd.onrender.com/api/products/allProducts", {
-        headers: { Authorization: token },
-      })
-      .then((res) => setProductDetails(res.data.products))
-      .catch((err) => console.log("Fetch my-products error", err));
-  };
-
   const fetchCategories = () => {
     axios
       .get("http://ecommercebackend-1-fwcd.onrender.com/api/category")
@@ -71,7 +72,9 @@ const AdminProduct = () => {
 
   const fetchSubCategories = (categoryId) => {
     axios
-      .get(`http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${categoryId}`)
+      .get(
+        `http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${categoryId}`
+      )
       .then((res) => setGetSubCategoryDetails(res.data))
       .catch((err) => {
         console.error("Failed to fetch subcategories", err);
@@ -105,10 +108,13 @@ const AdminProduct = () => {
 
   const productDelete = (productId) => {
     axios
-      .delete(`http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`, {
-        headers: { Authorization: token },
-      })
-      .then(() => fetchProducts())
+      .delete(
+        `http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`,
+        {
+          headers: { Authorization: token },
+        }
+      )
+      .then(() => window.location.reload())
       .catch((err) => console.log("DeleteError", err));
   };
 
@@ -138,8 +144,7 @@ const AdminProduct = () => {
           },
         }
       );
-      fetchProducts();
-      closeModal();
+      window.location.reload();
     } catch (error) {
       console.error("Error adding product:", error);
     }
@@ -171,11 +176,29 @@ const AdminProduct = () => {
           },
         }
       );
-      fetchProducts();
-      closeModal();
+      window.location.reload();
     } catch (error) {
       console.log("errorEdit", error);
     }
+  };
+
+  const openAddModal = () => {
+    closeModal(); // Clear previous state
+    setIsEditing(true);
+  };
+
+  const openEditModal = (product) => {
+    setIsEditing(true);
+    setCurrentEditId(product.id);
+    setProductName(product.name);
+    setProductPrice(product.price);
+    setProductQuantity(product.quantity);
+    setProductCategory(product.category_id || "");
+    setProductSubCategory(product.subcategory_id || "");
+    setProductSubSubCategory(product.subsub_id || "");
+    setProductSubSubSubCategory(product.subsubsub_id || "");
+    setProductDescription(product.description);
+    setProductImage(null);
   };
 
   const closeModal = () => {
@@ -205,23 +228,29 @@ const AdminProduct = () => {
         </button>
       </nav>
 
+      <button className={prodCss.navBtn} onClick={openAddModal}>
+        + Add Product
+      </button>
+
       {isEditing && (
         <div className={prodCss.modalBackdrop}>
           <div className={`${prodCss.modalContainer} ${prodCss.glassCard}`}>
             <div className={prodCss.adminCatModalBody}>
-              <h2>Edit Product</h2>
+              <h2>{currentEditId ? "Edit Product" : "Add Product"}</h2>
             </div>
             <div className={prodCss.productForm}>
               <form
                 onSubmit={(e) => {
-                  handleEditProduct(e, currentEditId);
-                }}
-              >
+                  currentEditId
+                    ? handleEditProduct(e, currentEditId)
+                    : handleAddProduct(e);
+                }}>
                 <div className={prodCss.productField}>
                   <label>Name</label>
                   <input
                     value={productName}
                     onChange={(e) => setProductName(e.target.value)}
+                    required
                   />
                 </div>
                 <div className={prodCss.productField}>
@@ -230,6 +259,7 @@ const AdminProduct = () => {
                     type="number"
                     value={productPrice}
                     onChange={(e) => setProductPrice(e.target.value)}
+                    required
                   />
                 </div>
                 <div className={prodCss.productField}>
@@ -238,6 +268,7 @@ const AdminProduct = () => {
                     type="number"
                     value={productQuantity}
                     onChange={(e) => setProductQuantity(e.target.value)}
+                    required
                   />
                 </div>
                 <div className={prodCss.productField}>
@@ -245,7 +276,7 @@ const AdminProduct = () => {
                   <select
                     value={productCategory}
                     onChange={(e) => setProductCategory(e.target.value)}
-                  >
+                    required>
                     <option value="">Select Category</option>
                     {getCategoryDetails.map((cat) => (
                       <option key={cat.id} value={cat.id}>
@@ -259,14 +290,12 @@ const AdminProduct = () => {
                   <select
                     value={productSubCategory}
                     onChange={(e) => setProductSubCategory(e.target.value)}
-                  >
+                    required>
                     <option value="">Select SubCategory</option>
                     {getSubCategoryDetails.map((sub) => (
                       <option
-                        className={prodCss.option}
                         key={sub.subcategory_id}
-                        value={sub.subcategory_id}
-                      >
+                        value={sub.subcategory_id}>
                         {sub.subcategory_name}
                       </option>
                     ))}
@@ -277,7 +306,7 @@ const AdminProduct = () => {
                   <select
                     value={productSubSubCategory}
                     onChange={(e) => setProductSubSubCategory(e.target.value)}
-                  >
+                    required>
                     <option value="">Select SubSubCategory</option>
                     {getSubSubCategoryDetails.map((sub) => (
                       <option key={sub.subsub_id} value={sub.subsub_id}>
@@ -290,8 +319,10 @@ const AdminProduct = () => {
                   <label>SubSubSubCategory</label>
                   <select
                     value={productSubSubSubCategory}
-                    onChange={(e) => setProductSubSubSubCategory(e.target.value)}
-                  >
+                    onChange={(e) =>
+                      setProductSubSubSubCategory(e.target.value)
+                    }
+                    required>
                     <option value="">Select SubSubSubCategory</option>
                     {getSubSubSubCategoryDetails.map((sub) => (
                       <option key={sub.id} value={sub.id}>
@@ -305,6 +336,8 @@ const AdminProduct = () => {
                   <input
                     type="file"
                     onChange={(e) => setProductImage(e.target.files[0])}
+                    accept="image/*"
+                    required={!currentEditId}
                   />
                 </div>
                 <div className={prodCss.productField}>
@@ -312,14 +345,18 @@ const AdminProduct = () => {
                   <input
                     value={productDescription}
                     onChange={(e) => setProductDescription(e.target.value)}
+                    required
                   />
                 </div>
                 <div className={prodCss.productField}>
                   <button className={prodCss.btn} type="submit">
-                    Update
+                    {currentEditId ? "Update" : "Add"}
                   </button>
-                  <button className={prodCss.btn} type="button" onClick={closeModal}>
-                    Close
+                  <button
+                    className={prodCss.btn}
+                    onClick={closeModal}
+                    type="button">
+                    Cancel
                   </button>
                 </div>
               </form>
@@ -355,28 +392,12 @@ const AdminProduct = () => {
               <p className={prodCss.productDetails}>
                 <button
                   className={prodCss.actionButton}
-                  onClick={() => {
-                    setIsEditing(true);
-                    setCurrentEditId(product.id);
-
-                    // Fill the form with selected product's data for editing
-                    setProductName(product.name);
-                    setProductPrice(product.price);
-                    setProductQuantity(product.quantity);
-                    setProductCategory(product.category_id || ""); // Adjust according to data
-                    setProductSubCategory(product.subcategory_id || "");
-                    setProductSubSubCategory(product.subsub_id || "");
-                    setProductSubSubSubCategory(product.subsubsub_id || "");
-                    setProductDescription(product.description);
-                    setProductImage(null); // Reset image input for editing
-                  }}
-                >
+                  onClick={() => openEditModal(product)}>
                   <img src={editImg} alt="edit" />
                 </button>
                 <button
                   className={prodCss.actionButton}
-                  onClick={() => productDelete(product.id)}
-                >
+                  onClick={() => productDelete(product.id)}>
                   <img src={deleteImg} alt="delete" />
                 </button>
               </p>
