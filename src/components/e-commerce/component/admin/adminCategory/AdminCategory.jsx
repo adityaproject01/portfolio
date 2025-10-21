@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import adminCatCss from "./adminCategory.module.css";
 import axios from "axios";
@@ -16,8 +16,8 @@ const AdminCategory = () => {
   const [catId, setCatId] = useState();
   const token = localStorage.getItem("token");
 
-  // ✅ Define fetchCategories outside useEffect
-  const fetchCategories = async () => {
+  // Wrap fetchCategories in useCallback to avoid useEffect warning
+  const fetchCategories = useCallback(async () => {
     try {
       const response = await axios.get(
         "http://ecommercebackend-1-fwcd.onrender.com/api/category",
@@ -29,12 +29,11 @@ const AdminCategory = () => {
     } catch (error) {
       console.log("error", error);
     }
-  };
+  }, [token]);
 
-  // Run on component mount
   useEffect(() => {
     fetchCategories();
-  }, [token]);
+  }, [fetchCategories]);
 
   // Add new category
   const handleAdminCategory = async (e) => {
@@ -55,7 +54,7 @@ const AdminCategory = () => {
       );
       alert("Category is added");
       closeModal();
-      await fetchCategories(); // ✅ Refetch after add
+      await fetchCategories(); // Refetch after add
     } catch (error) {
       console.log(error, "error");
     }
@@ -79,7 +78,7 @@ const AdminCategory = () => {
         }
       );
       setIsCatEditOpen(false);
-      await fetchCategories(); // ✅ Refetch after edit
+      await fetchCategories(); // Refetch after edit
     } catch (error) {
       console.log("catEditError", error);
     }
@@ -97,7 +96,7 @@ const AdminCategory = () => {
           },
         }
       );
-      await fetchCategories(); // ✅ Refetch after delete
+      await fetchCategories(); // Refetch after delete
     } catch (error) {
       console.log("error delete category", error);
     }
@@ -166,12 +165,14 @@ const AdminCategory = () => {
                 <input
                   type="text"
                   onChange={(e) => setAdminCatName(e.target.value)}
+                  required
                 />
 
                 <label>Image</label>
                 <input
                   type="file"
                   onChange={(e) => setAdminCatImg(e.target.files[0])}
+                  required
                 />
 
                 <button type="submit" className={adminCatCss.saveBtn}>
@@ -242,6 +243,7 @@ const AdminCategory = () => {
                 type="text"
                 value={catEditName}
                 onChange={(e) => setCatEditName(e.target.value)}
+                required
               />
               <label>New Image (optional):</label>
               <input
