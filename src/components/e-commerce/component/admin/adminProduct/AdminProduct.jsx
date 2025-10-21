@@ -27,12 +27,21 @@ const AdminProduct = () => {
   const [getSubSubCategoryDetails, setGetSubSubCategoryDetails] = useState([]);
   const [getSubSubSubCategoryDetails, setGetSubSubSubCategoryDetails] =
     useState([]);
-  const UN = localStorage.getItem("user");
 
-  useEffect(() => {
-    fetchProducts();
-    fetchCategories();
-  }, []);
+const fetchProducts = useCallback(() => {
+  axios
+    .get("http://localhost:5000/api/products/allProducts", {
+      headers: { Authorization: token },
+    })
+    .then((res) => setProductDetails(res.data.products))
+    .catch((err) => console.log("Fetch my-products error", err));
+}, [token]);
+
+useEffect(() => {
+  fetchProducts();
+  fetchCategories();
+}, [fetchProducts]);
+
 
   useEffect(() => {
     if (productCategory) fetchSubCategories(productCategory);
@@ -54,14 +63,7 @@ const AdminProduct = () => {
     navigate("/home");
   };
 
-  const fetchProducts = () => {
-    axios
-      .get("http://localhost:5000/api/products/allProducts", {
-        headers: { Authorization: token },
-      })
-      .then((res) => setProductDetails(res.data.products))
-      .catch((err) => console.log("Fetch my-products error", err));
-  };
+  
 
   const fetchCategories = () => {
     axios
