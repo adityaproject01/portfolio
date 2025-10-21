@@ -1,18 +1,17 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import prodCss from "./adminProd.module.css";
 import deleteImg from "../../../images/banner/delete1.png";
 import editImg from "../../../images/banner/edit-button_7124470.png";
-import axios from "axios";
 
+import axios from "axios";
 const AdminProduct = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-
   const [productDetails, setProductDetails] = useState([]);
   const [currentEditId, setCurrentEditId] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
 
+  const [isEditing, setIsEditing] = useState(false);
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productQuantity, setProductQuantity] = useState("");
@@ -29,34 +28,11 @@ const AdminProduct = () => {
   const [getSubSubSubCategoryDetails, setGetSubSubSubCategoryDetails] =
     useState([]);
 
-  const logoutButton = () => {
-    localStorage.removeItem("token");
-    navigate("/ecommerce/home");
-  };
-
-  const fetchProducts = useCallback(() => {
-    axios
-      .get(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/products/allProducts",
-        {
-          headers: { Authorization: token },
-        }
-      )
-      .then((res) => setProductDetails(res.data.products))
-      .catch((err) => console.log("Fetch my-products error", err));
-  }, [token]);
-
-  const fetchCategories = useCallback(() => {
-    axios
-      .get("http://ecommercebackend-1-fwcd.onrender.com/api/category")
-      .then((res) => setGetCategoryDetails(res.data))
-      .catch((err) => console.log("Fetch category error", err));
-  }, []);
 
   useEffect(() => {
     fetchProducts();
     fetchCategories();
-  }, [fetchProducts, fetchCategories]);
+  }, []);
 
   useEffect(() => {
     if (productCategory) fetchSubCategories(productCategory);
@@ -73,13 +49,35 @@ const AdminProduct = () => {
     else setGetSubSubSubCategoryDetails([]);
   }, [productSubSubCategory]);
 
+  const logoutButton = () => {
+    localStorage.removeItem("token");
+    navigate("/ecommerce/home");
+  };
+
+  const fetchProducts = () => {
+    axios
+      .get("http://ecommercebackend-1-fwcd.onrender.com/api/products/allProducts", {
+        headers: { Authorization: token },
+      })
+      .then((res) => setProductDetails(res.data.products))
+      .catch((err) => console.log("Fetch my-products error", err));
+  };
+
+  const fetchCategories = () => {
+    axios
+      .get("http://ecommercebackend-1-fwcd.onrender.com/api/category")
+      .then((res) => setGetCategoryDetails(res.data))
+      .catch((err) => console.log("Fetch category error", err));
+  };
+
   const fetchSubCategories = (categoryId) => {
     axios
-      .get(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${categoryId}`
-      )
+      .get(`http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${categoryId}`)
       .then((res) => setGetSubCategoryDetails(res.data))
-      .catch((err) => setGetSubCategoryDetails([]));
+      .catch((err) => {
+        console.error("Failed to fetch subcategories", err);
+        setGetSubCategoryDetails([]);
+      });
   };
 
   const fetchSubSubCategories = (subcategoryId) => {
@@ -88,7 +86,10 @@ const AdminProduct = () => {
         `http://ecommercebackend-1-fwcd.onrender.com/api/subsubcategory/subcategory/${subcategoryId}`
       )
       .then((res) => setGetSubSubCategoryDetails(res.data))
-      .catch((err) => setGetSubSubCategoryDetails([]));
+      .catch((err) => {
+        console.error("Failed to fetch sub-subcategories", err);
+        setGetSubSubCategoryDetails([]);
+      });
   };
 
   const fetchSubSubSubCategories = (subSubcategoryId) => {
@@ -97,19 +98,42 @@ const AdminProduct = () => {
         `http://ecommercebackend-1-fwcd.onrender.com/api/subsubsubcategory/subsubcategory/${subSubcategoryId}`
       )
       .then((res) => setGetSubSubSubCategoryDetails(res.data))
-      .catch((err) => setGetSubSubSubCategoryDetails([]));
+      .catch((err) => {
+        console.error("Failed to fetch sub-sub-subcategories", err);
+        setGetSubSubSubCategoryDetails([]);
+      });
   };
 
   const productDelete = (productId) => {
     axios
-      .delete(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`,
-        {
-          headers: { Authorization: token },
-        }
-      )
+      .delete(`http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`, {
+        headers: { Authorization: token },
+      })
       .then(() => fetchProducts())
       .catch((err) => console.log("DeleteError", err));
+  };
+
+
+    const formData = new FormData();
+    formData.append("name", productName);
+    formData.append("price", productPrice);
+    formData.append("quantity", productQuantity);
+    formData.append("sub_sub_subcategory_id", productSubSubSubCategory);
+    formData.append("description", productDescription);
+    formData.append("image", productImage);
+
+    try {
+      await axios.post("http://ecommercebackend-1-fwcd.onrender.com/api/products/add", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: token,
+        },
+      });
+      fetchProducts();
+      closeModal();
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
   };
 
   const handlEditProduct = async (e, productId) => {
@@ -146,6 +170,7 @@ const AdminProduct = () => {
   };
 
   const closeModal = () => {
+
     setIsEditing(false);
     setCurrentEditId(null);
     setProductName("");
@@ -161,34 +186,142 @@ const AdminProduct = () => {
 
   return (
     <div className={prodCss.adminContainer}>
+      <Outlet />
       <nav className={prodCss.glassNavbar}>
         <button className={prodCss.navBtn} onClick={() => navigate("/admin")}>
           Home
         </button>
         <div className={prodCss.navTitle}>Welcome, Admin</div>
+
         <button className={prodCss.navBtn} onClick={logoutButton}>
           Logout
         </button>
       </nav>
 
-      {/* Edit Modal */}
       {isEditing && (
         <div className={prodCss.modalBackdrop}>
           <div className={`${prodCss.modalContainer} ${prodCss.glassCard}`}>
-            <h2>Edit Product</h2>
-            <form onSubmit={(e) => handlEditProduct(e, currentEditId)}>
-              {/* Form fields (same as before) */}
-              {/* ... (input fields remain unchanged) */}
-              <button type="submit">Update</button>
-              <button type="button" onClick={closeModal}>
-                Cancel
-              </button>
-            </form>
+            <div className={prodCss.adminCatModalBody}>
+              <h2>Edit Product</h2>
+            </div>
+            <div className={prodCss.productForm}>
+              <form
+                onSubmit={(e) => {
+                  handlEditProduct(e, currentEditId);
+                }}
+              >
+                <div className={prodCss.productField}>
+                  <label>Name</label>
+                  <input
+                    value={productName}
+                    onChange={(e) => setProductName(e.target.value)}
+                  />
+                </div>
+                <div className={prodCss.productField}>
+                  <label>Price</label>
+                  <input
+                    type="number"
+                    value={productPrice}
+                    onChange={(e) => setProductPrice(e.target.value)}
+                  />
+                </div>
+                <div className={prodCss.productField}>
+                  <label>Quantity</label>
+                  <input
+                    type="number"
+                    value={productQuantity}
+                    onChange={(e) => setProductQuantity(e.target.value)}
+                  />
+                </div>
+                <div className={prodCss.productField}>
+                  <label>Category</label>
+                  <select
+                    value={productCategory}
+                    onChange={(e) => setProductCategory(e.target.value)}
+                  >
+                    <option value="">Select Category</option>
+                    {getCategoryDetails.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className={prodCss.productField}>
+                  <label>SubCategory</label>
+                  <select
+                    value={productSubCategory}
+                    onChange={(e) => setProductSubCategory(e.target.value)}
+                  >
+                    <option value="">Select SubCategory</option>
+                    {getSubCategoryDetails.map((sub) => (
+                      <option
+                        className={prodCss.option}
+                        key={sub.subcategory_id}
+                        value={sub.subcategory_id}
+                      >
+                        {sub.subcategory_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className={prodCss.productField}>
+                  <label>SubSubCategory</label>
+                  <select
+                    value={productSubSubCategory}
+                    onChange={(e) => setProductSubSubCategory(e.target.value)}
+                  >
+                    <option value="">Select SubSubCategory</option>
+                    {getSubSubCategoryDetails.map((sub) => (
+                      <option key={sub.subsub_id} value={sub.subsub_id}>
+                        {sub.subsub_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className={prodCss.productField}>
+                  <label>SubSubSubCategory</label>
+                  <select
+                    value={productSubSubSubCategory}
+                    onChange={(e) =>
+                      setProductSubSubSubCategory(e.target.value)
+                    }
+                  >
+                    <option value="">Select SubSubSubCategory</option>
+                    {getSubSubSubCategoryDetails.map((sub) => (
+                      <option key={sub.id} value={sub.id}>
+                        {sub.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className={prodCss.productField}>
+                  <label>Image</label>
+                  <input
+                    type="file"
+                    onChange={(e) => setProductImage(e.target.files[0])}
+                  />
+                </div>
+                <div className={prodCss.productField}>
+                  <label>Description</label>
+                  <input
+                    value={productDescription}
+                    onChange={(e) => setProductDescription(e.target.value)}
+                  />
+                </div>
+                <div className={prodCss.productField}>
+                  <button className={prodCss.btn} type="submit">
+                    {isEditing ? "Update" : "Submit"}
+                  </button>
+                  <button className={prodCss.btn} onClick={closeModal}>
+                    Close
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       )}
-
-      {/* Product Table */}
       <div className={prodCss.sellerGlassCard}>
         <div className={prodCss.scrollWrapper}>
           <div className={prodCss.product}>
@@ -215,13 +348,18 @@ const AdminProduct = () => {
               </p>
               <p className={prodCss.productDetails}>
                 <button
+                  className={prodCss.actionButton}
                   onClick={() => {
                     setIsEditing(true);
                     setCurrentEditId(product.id);
-                  }}>
+                  }}
+                >
                   <img src={editImg} alt="edit" />
                 </button>
-                <button onClick={() => productDelete(product.id)}>
+                <button
+                  className={prodCss.actionButton}
+                  onClick={() => productDelete(product.id)}
+                >
                   <img src={deleteImg} alt="delete" />
                 </button>
               </p>
