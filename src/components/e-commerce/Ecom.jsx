@@ -32,7 +32,7 @@ function Ecom() {
         localStorage.removeItem("token");
         localStorage.removeItem("role");
         alert("Session expired. Please log in again.");
-        navigate("/");
+        navigate("/ecommerce");
       }
     }, 3600000);
 

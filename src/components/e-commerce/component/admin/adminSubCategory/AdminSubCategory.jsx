@@ -142,7 +142,7 @@ const AdminSubCategory = () => {
       <div className={adminSubCatCss.glassNavbar}>
         <button
           className={adminSubCatCss.navBtn}
-          onClick={() => navigate("/admin")}
+          onClick={() => navigate("/ecommerce/admin")}
         >
           Home{" "}
         </button>

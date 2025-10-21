@@ -34,7 +34,7 @@ const Register = () => {
     // console.log(registerName,registerEmail,registerPassword,registerRole)
     try {
       const response = await axios.post(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/auth/signup",
+        "https://ecommercebackend-1-fwcd.onrender.com/api/auth/signup",
         registerDetails
       );
       console.log("dff")
@@ -43,7 +43,7 @@ const Register = () => {
       setTimeout(() => {
         alert("Successfully Registered");
       }, 2000);
-      navigate("/");
+      navigate("/ecommerce");
       console.log("d")
     } catch (error) {
       console.log("object")
@@ -56,7 +56,7 @@ const Register = () => {
       <div className="register">
         <div className="reHedder">
         <p>Register</p>
-        <button onClick={()=>{navigate("/ecommerce/home")}} className="homeBtn">Home</button>
+        <button onClick={()=>{navigate("/ecommerce")}} className="homeBtn">Home</button>
         </div>
         <form onSubmit={handleRegister}>
           <label>Name</label>

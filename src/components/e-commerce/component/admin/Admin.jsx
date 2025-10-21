@@ -28,25 +28,25 @@ const Admin = () => {
           <div className={adminCss.cardContainer}>
             <div
               className={adminCss.glassCard}
-              onClick={() => navigate("/admin/admincategory")}
+              onClick={() => navigate("/ecommerce/admin/admincategory")}
             >
               Categories
             </div>
             <div
               className={adminCss.glassCard}
-              onClick={() => navigate("/admin/adminsubcategory")}
+              onClick={() => navigate("/ecommerce/admin/adminsubcategory")}
             >
               Subcategories
             </div>
             <div
               className={adminCss.glassCard}
-              onClick={() => navigate("/admin/adminproduct")}
+              onClick={() => navigate("/ecommerce/admin/adminproduct")}
             >
               Products
             </div>
             <div
               className={adminCss.glassCard}
-              onClick={() => navigate("/admin/adminusers")}
+              onClick={() => navigate("/ecommerce/admin/adminusers")}
             >
               Users
             </div>

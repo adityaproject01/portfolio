@@ -256,7 +256,7 @@ function AppContent() {
           />
 
           {/* Register */}
-          <Route path="/register" element={<Register />} />
+          <Route path="/ecommerce/register" element={<Register />} />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" />} />

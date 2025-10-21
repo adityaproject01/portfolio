@@ -164,7 +164,7 @@ const AdminSubSubCategory = () => {
       <div className={adminSubSubCatCss.glassNavbar}>
         <button
           className={adminSubSubCatCss.navBtn}
-          onClick={() => navigate("/admin")}
+          onClick={() => navigate("/ecommerce/admin")}
         >
           Home
         </button>

@@ -16,7 +16,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/auth/login",
+        "https://ecommercebackend-1-fwcd.onrender.com/api/auth/login",
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -92,7 +92,7 @@ const LoginPage = () => {
             <div className="form-group">
               <div className="form-label-row">
                 <label className="form-label">Password</label>
-                <a href="/" className="forgot-link">
+                <a href="/ecommerce" className="forgot-link">
                   Forgot Password?
                 </a>
               </div>
@@ -128,7 +128,7 @@ const LoginPage = () => {
               <button
                 type="button"
                 className="signup-link"
-                onClick={() => navigate("/register")}
+                onClick={() => navigate("/ecommerce/register")}
               >
                 Sign Up
               </button>

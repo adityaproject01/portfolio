@@ -59,7 +59,7 @@ const AdminProduct = () => {
 
   const logoutButton = () => {
     localStorage.removeItem("token");
-    navigate("/home");
+    navigate("/ecommerce/home");
   };
 
   const fetchCategories = () => {
@@ -110,30 +110,6 @@ const AdminProduct = () => {
       })
       .then(() => fetchProducts())
       .catch((err) => console.log("DeleteError", err));
-  };
-
-
-
-    const formData = new FormData();
-    formData.append("name", productName);
-    formData.append("price", productPrice);
-    formData.append("quantity", productQuantity);
-    formData.append("sub_sub_subcategory_id", productSubSubSubCategory);
-    formData.append("description", productDescription);
-    formData.append("image", productImage);
-
-    try {
-      await axios.post("http://localhost:5000/api/products/add", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: token,
-        },
-      });
-      fetchProducts();
-      closeModal();
-    } catch (error) {
-      console.error("Error adding product:", error);
-    }
   };
 
   const handlEditProduct = async (e, productId) => {
@@ -187,7 +163,9 @@ const AdminProduct = () => {
     <div className={prodCss.adminContainer}>
       <Outlet />
       <nav className={prodCss.glassNavbar}>
-        <button className={prodCss.navBtn} onClick={() => navigate("/admin")}>
+        <button
+          className={prodCss.navBtn}
+          onClick={() => navigate("/ecommerce/admin")}>
           Home
         </button>
         <div className={prodCss.navTitle}>Welcome, Admin</div>

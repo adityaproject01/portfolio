@@ -9,7 +9,7 @@ const ViewMore = ({ ViewMoreDetails }) => {
 
   const logoutButton = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("/ecommerce");
   };
 
   async function handleAddCart(product) {

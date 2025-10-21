@@ -132,7 +132,7 @@ const AdminCategory = () => {
   return (
     <div className={adminCatCss.adminContainer}>
       <nav className={adminCatCss.glassNavbar}>
-        <button className={adminCatCss.navBtn} onClick={() => navigate("/admin")}>
+        <button className={adminCatCss.navBtn} onClick={() => navigate("/ecommerce/admin")}>
           Home
         </button>
         <div className={adminCatCss.navTitle}>Welcome, Admin</div>
