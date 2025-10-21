@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import adminCatCss from "./adminCategory.module.css";
 import axios from "axios";
 
@@ -16,21 +16,25 @@ const AdminCategory = () => {
   const [catId, setCatId] = useState();
   const token = localStorage.getItem("token");
 
-useEffect(() => {
+  // ✅ Define fetchCategories outside useEffect
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://ecommercebackend-1-fwcd.onrender.com/api/category", {
-        headers: { Authorization: token },
-      });
+      const response = await axios.get(
+        "http://ecommercebackend-1-fwcd.onrender.com/api/category",
+        {
+          headers: { Authorization: token },
+        }
+      );
       setCategoryDetails(response.data);
     } catch (error) {
       console.log("error", error);
     }
   };
 
-  fetchCategories();
-}, [token]);
-
+  // Run on component mount
+  useEffect(() => {
+    fetchCategories();
+  }, [token]);
 
   // Add new category
   const handleAdminCategory = async (e) => {
@@ -39,19 +43,19 @@ useEffect(() => {
     formData.append("name", adminCatName);
     formData.append("image", adminCatImg);
     try {
-      await axios.post("http://ecommercebackend-1-fwcd.onrender.com/api/category/add", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: token,
-        },
-      });
+      await axios.post(
+        "http://ecommercebackend-1-fwcd.onrender.com/api/category/add",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token,
+          },
+        }
+      );
       alert("Category is added");
       closeModal();
-      // Refetch categories
-      const res = await axios.get("http://ecommercebackend-1-fwcd.onrender.com/api/category", {
-        headers: { Authorization: token },
-      });
-      setCategoryDetails(res.data);
+      await fetchCategories(); // ✅ Refetch after add
     } catch (error) {
       console.log(error, "error");
     }
@@ -75,7 +79,7 @@ useEffect(() => {
         }
       );
       setIsCatEditOpen(false);
-      fetchCategories();
+      await fetchCategories(); // ✅ Refetch after edit
     } catch (error) {
       console.log("catEditError", error);
     }
@@ -85,12 +89,15 @@ useEffect(() => {
   const handleDeleteCat = async (catDelId) => {
     const catDelIdNum = parseInt(catDelId);
     try {
-      await axios.delete(`http://ecommercebackend-1-fwcd.onrender.com/api/category/${catDelIdNum}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-      fetchCategories();
+      await axios.delete(
+        `http://ecommercebackend-1-fwcd.onrender.com/api/category/${catDelIdNum}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      await fetchCategories(); // ✅ Refetch after delete
     } catch (error) {
       console.log("error delete category", error);
     }
@@ -126,10 +133,7 @@ useEffect(() => {
   return (
     <div className={adminCatCss.adminContainer}>
       <nav className={adminCatCss.glassNavbar}>
-        <button
-          className={adminCatCss.navBtn}
-          onClick={() => navigate("/admin")}
-        >
+        <button className={adminCatCss.navBtn} onClick={() => navigate("/admin")}>
           Home
         </button>
         <div className={adminCatCss.navTitle}>Welcome, Admin</div>
@@ -151,61 +155,13 @@ useEffect(() => {
 
       <h2 className={adminCatCss.glassHeader}>Manage Categories</h2>
 
-      {/* <Outlet />
-    
-        
-            
-
-            <form onSubmit={handleSubCatDetails}>
-              <label>Name</label>
-              <input
-                type="text"
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
-
-              <label>Category</label>
-              <select onChange={(e) => setCategoryMain(e.target.value)}>
-                <option selected disabled>
-                  Select Category
-                </option>
-                {getCategoryDetails.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-
-              <label></label>
-              <input
-                onChange={(e) => {
-                  setImages(e.target.files[0]);
-                }}
-                type="file"
-              />
-
-              
-              <button
-              type="button"
-                className={adminSubCatCss.cancelBtn}
-                onClick={() => {
-                  setIsSetOpen(false);
-                }}
-              >
-                Close
-              </button>
-            </form> */}
-
       {/* Add Category Modal */}
       {isModalOpen && (
         <div className={adminCatCss.modalBackdrop}>
-          <div
-            className={`${adminCatCss.modalContainer} ${adminCatCss.glassCard}`}
-          >
+          <div className={`${adminCatCss.modalContainer} ${adminCatCss.glassCard}`}>
             <div className="adminCatModalBody">
               <form onSubmit={handleAdminCategory}>
-                <h3>Edit Sub Category</h3>
+                <h3>Add Category</h3>
                 <label>Name</label>
                 <input
                   type="text"
@@ -219,11 +175,12 @@ useEffect(() => {
                 />
 
                 <button type="submit" className={adminCatCss.saveBtn}>
-                  submit
+                  Submit
                 </button>
                 <button
+                  type="button"
                   className={adminCatCss.cancelBtn}
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={closeModal}
                 >
                   Close
                 </button>
@@ -248,7 +205,7 @@ useEffect(() => {
           <div>
             <img
               src={item.image_url}
-              alt="loading"
+              alt="Category"
               className={adminCatCss.rowImage}
             />
           </div>
@@ -272,14 +229,12 @@ useEffect(() => {
       {/* Edit Modal */}
       {isCatEditOpen && (
         <div className={adminCatCss.modalBackdrop}>
-          <div
-            className={`${adminCatCss.modalContainer} ${adminCatCss.glassCard}`}
-          >
+          <div className={`${adminCatCss.modalContainer} ${adminCatCss.glassCard}`}>
             <h3>Edit Category</h3>
             <form
               onSubmit={(e) => {
-                handleEditCat();
                 e.preventDefault();
+                handleEditCat();
               }}
             >
               <label>Category Name:</label>
