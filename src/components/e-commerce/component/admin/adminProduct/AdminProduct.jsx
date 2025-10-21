@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import prodCss from "./adminProd.module.css";
 import deleteImg from "../../../images/banner/delete1.png";
