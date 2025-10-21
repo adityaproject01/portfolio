@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import adminCatCss from "./adminCategory.module.css";
 import axios from "axios";
 
@@ -16,24 +16,21 @@ const AdminCategory = () => {
   const [catId, setCatId] = useState();
   const token = localStorage.getItem("token");
 
-  // ✅ Move fetchCategories outside of useEffect
+useEffect(() => {
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/category",
-        {
-          headers: { Authorization: token },
-        }
-      );
+      const response = await axios.get("http://ecommercebackend-1-fwcd.onrender.com/api/category", {
+        headers: { Authorization: token },
+      });
       setCategoryDetails(response.data);
     } catch (error) {
       console.log("error", error);
     }
   };
 
-  useEffect(() => {
-    fetchCategories();
-  }, [token]);
+  fetchCategories();
+}, [token]);
+
 
   // Add new category
   const handleAdminCategory = async (e) => {
@@ -42,19 +39,19 @@ const AdminCategory = () => {
     formData.append("name", adminCatName);
     formData.append("image", adminCatImg);
     try {
-      await axios.post(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/category/add",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: token,
-          },
-        }
-      );
+      await axios.post("http://ecommercebackend-1-fwcd.onrender.com/api/category/add", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: token,
+        },
+      });
       alert("Category is added");
       closeModal();
-      await fetchCategories();
+      // Refetch categories
+      const res = await axios.get("http://ecommercebackend-1-fwcd.onrender.com/api/category", {
+        headers: { Authorization: token },
+      });
+      setCategoryDetails(res.data);
     } catch (error) {
       console.log(error, "error");
     }
@@ -69,9 +66,7 @@ const AdminCategory = () => {
     }
     try {
       await axios.put(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/category/${parseInt(
-          catId
-        )}`,
+        `http://ecommercebackend-1-fwcd.onrender.com/api/category/${parseInt(catId)}`,
         formData,
         {
           headers: {
@@ -80,7 +75,7 @@ const AdminCategory = () => {
         }
       );
       setIsCatEditOpen(false);
-      await fetchCategories(); // ✅ Now accessible
+      fetchCategories();
     } catch (error) {
       console.log("catEditError", error);
     }
@@ -90,15 +85,12 @@ const AdminCategory = () => {
   const handleDeleteCat = async (catDelId) => {
     const catDelIdNum = parseInt(catDelId);
     try {
-      await axios.delete(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/category/${catDelIdNum}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      await fetchCategories(); // ✅ Now accessible
+      await axios.delete(`http://ecommercebackend-1-fwcd.onrender.com/api/category/${catDelIdNum}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      fetchCategories();
     } catch (error) {
       console.log("error delete category", error);
     }
@@ -126,7 +118,7 @@ const AdminCategory = () => {
     if (cat) {
       setCatId(id);
       setCatEditName(cat.name);
-      setCatEditImg(null);
+      setCatEditImg(null); // reset file input
       setIsCatEditOpen(true);
     }
   };
@@ -159,6 +151,52 @@ const AdminCategory = () => {
 
       <h2 className={adminCatCss.glassHeader}>Manage Categories</h2>
 
+      {/* <Outlet />
+    
+        
+            
+
+            <form onSubmit={handleSubCatDetails}>
+              <label>Name</label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+
+              <label>Category</label>
+              <select onChange={(e) => setCategoryMain(e.target.value)}>
+                <option selected disabled>
+                  Select Category
+                </option>
+                {getCategoryDetails.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+
+              <label></label>
+              <input
+                onChange={(e) => {
+                  setImages(e.target.files[0]);
+                }}
+                type="file"
+              />
+
+              
+              <button
+              type="button"
+                className={adminSubCatCss.cancelBtn}
+                onClick={() => {
+                  setIsSetOpen(false);
+                }}
+              >
+                Close
+              </button>
+            </form> */}
+
       {/* Add Category Modal */}
       {isModalOpen && (
         <div className={adminCatCss.modalBackdrop}>
@@ -167,7 +205,7 @@ const AdminCategory = () => {
           >
             <div className="adminCatModalBody">
               <form onSubmit={handleAdminCategory}>
-                <h3>Add Category</h3>
+                <h3>Edit Sub Category</h3>
                 <label>Name</label>
                 <input
                   type="text"
@@ -181,7 +219,7 @@ const AdminCategory = () => {
                 />
 
                 <button type="submit" className={adminCatCss.saveBtn}>
-                  Submit
+                  submit
                 </button>
                 <button
                   className={adminCatCss.cancelBtn}
