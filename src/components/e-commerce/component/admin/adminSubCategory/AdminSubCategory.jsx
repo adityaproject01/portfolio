@@ -34,6 +34,9 @@ const AdminSubCategory = () => {
     console.log("Fetch category error", error);
   }
 }, [token]); // Include dependencies here
+useEffect(() => {
+  fetchSubCategories();
+}, [fetchSubCategories]);
 
   //add subcat
   const handleSubCatDetails = async (e) => {
