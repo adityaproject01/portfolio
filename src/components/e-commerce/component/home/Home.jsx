@@ -32,9 +32,8 @@ const Home = ({ setViewMoreDetails }) => {
 
     axios.get(`${baseUrl}/api/category`).then((res) => {
       setCategory(res.data);
-      console.log({ totalCartCount });
     });
-  }, []);
+  }, [totalCartCount]);
   useEffect(() => {
     const token = localStorage.getItem("token");
 
