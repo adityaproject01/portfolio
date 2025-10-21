@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import axios from "axios";
 import adminSubSubCatCss from "./adminSubSubCategory.module.css";
 
 const AdminSubSubSubCategory = () => {
-  const navigate = useNavigate();
+
   const token = localStorage.getItem("token");
 
   const [categories, setCategories] = useState([]);
