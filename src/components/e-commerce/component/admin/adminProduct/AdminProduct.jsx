@@ -27,21 +27,20 @@ const AdminProduct = () => {
   const [getSubSubCategoryDetails, setGetSubSubCategoryDetails] = useState([]);
   const [getSubSubSubCategoryDetails, setGetSubSubSubCategoryDetails] =
     useState([]);
+  //
+  const fetchProducts = useCallback(() => {
+    axios
+      .get("http://localhost:5000/api/products/allProducts", {
+        headers: { Authorization: token },
+      })
+      .then((res) => setProductDetails(res.data.products))
+      .catch((err) => console.log("Fetch my-products error", err));
+  }, [token]);
 
-const fetchProducts = useCallback(() => {
-  axios
-    .get("http://localhost:5000/api/products/allProducts", {
-      headers: { Authorization: token },
-    })
-    .then((res) => setProductDetails(res.data.products))
-    .catch((err) => console.log("Fetch my-products error", err));
-}, [token]);
-
-useEffect(() => {
-  fetchProducts();
-  fetchCategories();
-}, [fetchProducts]);
-
+  useEffect(() => {
+    fetchProducts();
+    fetchCategories();
+  }, [fetchProducts]);
 
   useEffect(() => {
     if (productCategory) fetchSubCategories(productCategory);
@@ -62,8 +61,6 @@ useEffect(() => {
     localStorage.removeItem("token");
     navigate("/home");
   };
-
-  
 
   const fetchCategories = () => {
     axios
@@ -178,7 +175,6 @@ useEffect(() => {
   };
 
   const closeModal = () => {
-
     setIsEditing(false);
     setCurrentEditId(null);
     setProductName("");
@@ -216,8 +212,7 @@ useEffect(() => {
               <form
                 onSubmit={(e) => {
                   handlEditProduct(e, currentEditId);
-                }}
-              >
+                }}>
                 <div className={prodCss.productField}>
                   <label>Name</label>
                   <input
@@ -245,8 +240,7 @@ useEffect(() => {
                   <label>Category</label>
                   <select
                     value={productCategory}
-                    onChange={(e) => setProductCategory(e.target.value)}
-                  >
+                    onChange={(e) => setProductCategory(e.target.value)}>
                     <option value="">Select Category</option>
                     {getCategoryDetails.map((cat) => (
                       <option key={cat.id} value={cat.id}>
@@ -259,15 +253,13 @@ useEffect(() => {
                   <label>SubCategory</label>
                   <select
                     value={productSubCategory}
-                    onChange={(e) => setProductSubCategory(e.target.value)}
-                  >
+                    onChange={(e) => setProductSubCategory(e.target.value)}>
                     <option value="">Select SubCategory</option>
                     {getSubCategoryDetails.map((sub) => (
                       <option
                         className={prodCss.option}
                         key={sub.subcategory_id}
-                        value={sub.subcategory_id}
-                      >
+                        value={sub.subcategory_id}>
                         {sub.subcategory_name}
                       </option>
                     ))}
@@ -277,8 +269,7 @@ useEffect(() => {
                   <label>SubSubCategory</label>
                   <select
                     value={productSubSubCategory}
-                    onChange={(e) => setProductSubSubCategory(e.target.value)}
-                  >
+                    onChange={(e) => setProductSubSubCategory(e.target.value)}>
                     <option value="">Select SubSubCategory</option>
                     {getSubSubCategoryDetails.map((sub) => (
                       <option key={sub.subsub_id} value={sub.subsub_id}>
@@ -293,8 +284,7 @@ useEffect(() => {
                     value={productSubSubSubCategory}
                     onChange={(e) =>
                       setProductSubSubSubCategory(e.target.value)
-                    }
-                  >
+                    }>
                     <option value="">Select SubSubSubCategory</option>
                     {getSubSubSubCategoryDetails.map((sub) => (
                       <option key={sub.id} value={sub.id}>
@@ -360,14 +350,12 @@ useEffect(() => {
                   onClick={() => {
                     setIsEditing(true);
                     setCurrentEditId(product.id);
-                  }}
-                >
+                  }}>
                   <img src={editImg} alt="edit" />
                 </button>
                 <button
                   className={prodCss.actionButton}
-                  onClick={() => productDelete(product.id)}
-                >
+                  onClick={() => productDelete(product.id)}>
                   <img src={deleteImg} alt="delete" />
                 </button>
               </p>
