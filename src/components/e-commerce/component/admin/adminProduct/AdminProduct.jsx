@@ -30,7 +30,7 @@ const AdminProduct = () => {
   //
   const fetchProducts = useCallback(() => {
     axios
-      .get("http://localhost:5000/api/products/allProducts", {
+      .get("https://ecommercebackend-1-fwcd.onrender.com/ecommerce/api/products/allProducts", {
         headers: { Authorization: token },
       })
       .then((res) => setProductDetails(res.data.products))
@@ -64,14 +64,14 @@ const AdminProduct = () => {
 
   const fetchCategories = () => {
     axios
-      .get("http://localhost:5000/api/category")
+      .get("https://ecommercebackend-1-fwcd.onrender.com/ecommerce/api/category")
       .then((res) => setGetCategoryDetails(res.data))
       .catch((err) => console.log("Fetch category error", err));
   };
 
   const fetchSubCategories = (categoryId) => {
     axios
-      .get(`http://localhost:5000/api/subcategories/category/${categoryId}`)
+      .get(`https://ecommercebackend-1-fwcd.onrender.com/ecommerce/api/subcategories/category/${categoryId}`)
       .then((res) => setGetSubCategoryDetails(res.data))
       .catch((err) => {
         console.error("Failed to fetch subcategories", err);
@@ -82,7 +82,7 @@ const AdminProduct = () => {
   const fetchSubSubCategories = (subcategoryId) => {
     axios
       .get(
-        `http://localhost:5000/api/subsubcategory/subcategory/${subcategoryId}`
+        `https://ecommercebackend-1-fwcd.onrender.com/ecommerce/api/subsubcategory/subcategory/${subcategoryId}`
       )
       .then((res) => setGetSubSubCategoryDetails(res.data))
       .catch((err) => {
@@ -94,7 +94,7 @@ const AdminProduct = () => {
   const fetchSubSubSubCategories = (subSubcategoryId) => {
     axios
       .get(
-        `http://localhost:5000/api/subsubsubcategory/subsubcategory/${subSubcategoryId}`
+        `https://ecommercebackend-1-fwcd.onrender.com/ecommerce/api/subsubsubcategory/subsubcategory/${subSubcategoryId}`
       )
       .then((res) => setGetSubSubSubCategoryDetails(res.data))
       .catch((err) => {
@@ -105,7 +105,7 @@ const AdminProduct = () => {
 
   const productDelete = (productId) => {
     axios
-      .delete(`http://localhost:5000/api/products/${productId}`, {
+      .delete(`https://ecommercebackend-1-fwcd.onrender.com/ecommerce/api/products/${productId}`, {
         headers: { Authorization: token },
       })
       .then(() => fetchProducts())
@@ -129,7 +129,7 @@ const AdminProduct = () => {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/products/${productId}`,
+        `https://ecommercebackend-1-fwcd.onrender.com/ecommerce/api/products/${productId}`,
         formData,
         {
           headers: {
