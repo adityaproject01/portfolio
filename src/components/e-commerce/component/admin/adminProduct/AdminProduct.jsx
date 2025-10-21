@@ -5,6 +5,7 @@ import deleteImg from "../../../images/banner/delete1.png";
 import editImg from "../../../images/banner/edit-button_7124470.png";
 
 import axios from "axios";
+
 const AdminProduct = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -27,7 +28,6 @@ const AdminProduct = () => {
   const [getSubSubCategoryDetails, setGetSubSubCategoryDetails] = useState([]);
   const [getSubSubSubCategoryDetails, setGetSubSubSubCategoryDetails] =
     useState([]);
-
 
   useEffect(() => {
     fetchProducts();
@@ -56,9 +56,12 @@ const AdminProduct = () => {
 
   const fetchProducts = () => {
     axios
-      .get("http://ecommercebackend-1-fwcd.onrender.com/api/products/allProducts", {
-        headers: { Authorization: token },
-      })
+      .get(
+        "http://ecommercebackend-1-fwcd.onrender.com/api/products/allProducts",
+        {
+          headers: { Authorization: token },
+        }
+      )
       .then((res) => setProductDetails(res.data.products))
       .catch((err) => console.log("Fetch my-products error", err));
   };
@@ -72,7 +75,9 @@ const AdminProduct = () => {
 
   const fetchSubCategories = (categoryId) => {
     axios
-      .get(`http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${categoryId}`)
+      .get(
+        `http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${categoryId}`
+      )
       .then((res) => setGetSubCategoryDetails(res.data))
       .catch((err) => {
         console.error("Failed to fetch subcategories", err);
@@ -106,13 +111,22 @@ const AdminProduct = () => {
 
   const productDelete = (productId) => {
     axios
-      .delete(`http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`, {
-        headers: { Authorization: token },
-      })
+      .delete(
+        `http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`,
+        {
+          headers: { Authorization: token },
+        }
+      )
       .then(() => fetchProducts())
       .catch((err) => console.log("DeleteError", err));
   };
 
+  const handleAddProduct = async (e) => {
+    e.preventDefault();
+    if (!productSubSubSubCategory) {
+      alert("Please select a SubSubSubCategory.");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("name", productName);
@@ -123,12 +137,16 @@ const AdminProduct = () => {
     formData.append("image", productImage);
 
     try {
-      await axios.post("http://ecommercebackend-1-fwcd.onrender.com/api/products/add", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: token,
-        },
-      });
+      await axios.post(
+        "http://ecommercebackend-1-fwcd.onrender.com/api/products/add",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token,
+          },
+        }
+      );
       fetchProducts();
       closeModal();
     } catch (error) {
@@ -136,7 +154,7 @@ const AdminProduct = () => {
     }
   };
 
-  const handlEditProduct = async (e, productId) => {
+  const handleEditProduct = async (e, productId) => {
     e.preventDefault();
     if (!productSubSubSubCategory) {
       alert("Please select a SubSubSubCategory.");
@@ -170,7 +188,6 @@ const AdminProduct = () => {
   };
 
   const closeModal = () => {
-
     setIsEditing(false);
     setCurrentEditId(null);
     setProductName("");
@@ -192,7 +209,6 @@ const AdminProduct = () => {
           Home
         </button>
         <div className={prodCss.navTitle}>Welcome, Admin</div>
-
         <button className={prodCss.navBtn} onClick={logoutButton}>
           Logout
         </button>
@@ -207,9 +223,8 @@ const AdminProduct = () => {
             <div className={prodCss.productForm}>
               <form
                 onSubmit={(e) => {
-                  handlEditProduct(e, currentEditId);
-                }}
-              >
+                  handleEditProduct(e, currentEditId);
+                }}>
                 <div className={prodCss.productField}>
                   <label>Name</label>
                   <input
@@ -237,8 +252,7 @@ const AdminProduct = () => {
                   <label>Category</label>
                   <select
                     value={productCategory}
-                    onChange={(e) => setProductCategory(e.target.value)}
-                  >
+                    onChange={(e) => setProductCategory(e.target.value)}>
                     <option value="">Select Category</option>
                     {getCategoryDetails.map((cat) => (
                       <option key={cat.id} value={cat.id}>
@@ -251,15 +265,13 @@ const AdminProduct = () => {
                   <label>SubCategory</label>
                   <select
                     value={productSubCategory}
-                    onChange={(e) => setProductSubCategory(e.target.value)}
-                  >
+                    onChange={(e) => setProductSubCategory(e.target.value)}>
                     <option value="">Select SubCategory</option>
                     {getSubCategoryDetails.map((sub) => (
                       <option
                         className={prodCss.option}
                         key={sub.subcategory_id}
-                        value={sub.subcategory_id}
-                      >
+                        value={sub.subcategory_id}>
                         {sub.subcategory_name}
                       </option>
                     ))}
@@ -269,8 +281,7 @@ const AdminProduct = () => {
                   <label>SubSubCategory</label>
                   <select
                     value={productSubSubCategory}
-                    onChange={(e) => setProductSubSubCategory(e.target.value)}
-                  >
+                    onChange={(e) => setProductSubSubCategory(e.target.value)}>
                     <option value="">Select SubSubCategory</option>
                     {getSubSubCategoryDetails.map((sub) => (
                       <option key={sub.subsub_id} value={sub.subsub_id}>
@@ -285,8 +296,7 @@ const AdminProduct = () => {
                     value={productSubSubSubCategory}
                     onChange={(e) =>
                       setProductSubSubSubCategory(e.target.value)
-                    }
-                  >
+                    }>
                     <option value="">Select SubSubSubCategory</option>
                     {getSubSubSubCategoryDetails.map((sub) => (
                       <option key={sub.id} value={sub.id}>
@@ -311,9 +321,12 @@ const AdminProduct = () => {
                 </div>
                 <div className={prodCss.productField}>
                   <button className={prodCss.btn} type="submit">
-                    {isEditing ? "Update" : "Submit"}
+                    Update
                   </button>
-                  <button className={prodCss.btn} onClick={closeModal}>
+                  <button
+                    className={prodCss.btn}
+                    type="button"
+                    onClick={closeModal}>
                     Close
                   </button>
                 </div>
@@ -322,6 +335,7 @@ const AdminProduct = () => {
           </div>
         </div>
       )}
+
       <div className={prodCss.sellerGlassCard}>
         <div className={prodCss.scrollWrapper}>
           <div className={prodCss.product}>
@@ -335,7 +349,7 @@ const AdminProduct = () => {
           </div>
 
           {productDetails.map((product, index) => (
-            <div className={prodCss.product} key={index}>
+            <div className={prodCss.product} key={product.id}>
               <p className={prodCss.productDetails}>{index + 1}</p>
               <p className={prodCss.productDetails}>{product.name}</p>
               <p className={prodCss.productDetails}>{product.price}</p>
@@ -352,14 +366,23 @@ const AdminProduct = () => {
                   onClick={() => {
                     setIsEditing(true);
                     setCurrentEditId(product.id);
-                  }}
-                >
+
+                    // Fill the form with selected product's data for editing
+                    setProductName(product.name);
+                    setProductPrice(product.price);
+                    setProductQuantity(product.quantity);
+                    setProductCategory(product.category_id || ""); // Adjust according to data
+                    setProductSubCategory(product.subcategory_id || "");
+                    setProductSubSubCategory(product.subsub_id || "");
+                    setProductSubSubSubCategory(product.subsubsub_id || "");
+                    setProductDescription(product.description);
+                    setProductImage(null); // Reset image input for editing
+                  }}>
                   <img src={editImg} alt="edit" />
                 </button>
                 <button
                   className={prodCss.actionButton}
-                  onClick={() => productDelete(product.id)}
-                >
+                  onClick={() => productDelete(product.id)}>
                   <img src={deleteImg} alt="delete" />
                 </button>
               </p>
