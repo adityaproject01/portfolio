@@ -24,29 +24,31 @@ const Register = () => {
       alert("Passwords do not match!");
       return;
     }
-    
+
     const registerDetails = {
       name: registerName,
       email: registerEmail,
       password: registerPassword,
       role: registerRole.toLowerCase(),
     };
+    // https://ecommercebackend-1-fwcd.onrender.com
+    //
     // console.log(registerName,registerEmail,registerPassword,registerRole)
     try {
       const response = await axios.post(
-        "https://ecommercebackend-1-fwcd.onrender.com/api/auth/signup",
+        "https://ecommercebackend-87gs.onrender.com/api/auth/signup",
         registerDetails
       );
-      console.log("dff")
+      console.log("dff");
       console.log("Successfully registered:", response.data);
       handleRegisterClear();
       setTimeout(() => {
         alert("Successfully Registered");
       }, 2000);
       navigate("/ecommerce");
-      console.log("d")
+      console.log("d");
     } catch (error) {
-      console.log("object")
+      console.log("object");
       console.error("Registration error:", error);
     }
   };

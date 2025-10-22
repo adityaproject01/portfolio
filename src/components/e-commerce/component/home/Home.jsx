@@ -26,12 +26,13 @@ const Home = ({ setViewMoreDetails }) => {
   const baseUrl = "https://ecommercebackend-1-fwcd.onrender.com";
 
   useEffect(() => {
-    axios.get(`${baseUrl}/ecommerce/api/products/`).then((res) => {
+    axios.get(`${baseUrl}/api/products/`).then((res) => {
       setProducts(res.data.products);
     });
 
     axios.get(`${baseUrl}/api/category`).then((res) => {
       setCategory(res.data);
+      console.log(res.data,"fffffffff")
     });
   }, [totalCartCount]);
   useEffect(() => {
@@ -39,7 +40,7 @@ const Home = ({ setViewMoreDetails }) => {
 
     if (token) {
       axios
-        .get("https://ecommercebackend-1-fwcd.onrender.com/ecommerce/api/cart", {
+        .get("https://ecommercebackend-1-fwcd.onrender.com/api/cart", {
           headers: { Authorization: token },
         })
         .then((res) => {
