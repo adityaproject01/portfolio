@@ -115,7 +115,7 @@ const Home = ({ setViewMoreDetails }) => {
     );
     if (selectedItem) {
       setViewMoreDetails(selectedItem);
-      navigate("/home/viewmore");
+      navigate("/ecommerce/home/viewmore");
     }
   };
 
