@@ -11,7 +11,7 @@ const Cart = () => {
   const fetchCart = useCallback(async () => {
     try {
       const response = await axios.get(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/cart",
+        "https://ecommercebackend-1-fwcd.onrender.com/api/cart",
         {
           headers: {
             Authorization: token,
@@ -41,7 +41,7 @@ const Cart = () => {
   const handleQuantityChange = async (productId, newQuantity) => {
     try {
       await axios.put(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/cart/update/${productId}`,
+        `https://ecommercebackend-1-fwcd.onrender.com/api/cart/update/${productId}`,
         { quantity: newQuantity },
         {
           headers: {
@@ -58,7 +58,7 @@ const Cart = () => {
   const handleRemove = async (productId) => {
     try {
       await axios.delete(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/cart/remove/${productId}`,
+        `https://ecommercebackend-1-fwcd.onrender.com/api/cart/remove/${productId}`,
         {
           headers: {
             Authorization: token,

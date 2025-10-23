@@ -37,7 +37,7 @@ const PlaceOrder = () => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const response = await axios.get("http://ecommercebackend-1-fwcd.onrender.com/api/address", {
+        const response = await axios.get("https://ecommercebackend-1-fwcd.onrender.com/api/address", {
           headers: { Authorization: token },
         });
         setAddresses(response.data.addresses);
@@ -55,7 +55,7 @@ const PlaceOrder = () => {
   const addAddresses = async () => {
     try {
       const response = await axios.post(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/address/add",
+        "https://ecommercebackend-1-fwcd.onrender.com/api/address/add",
         newAddress,
         { headers: { Authorization: token } }
       );
@@ -83,7 +83,7 @@ const PlaceOrder = () => {
 
     try {
       const response = await axios.post(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/order/add",
+        "https://ecommercebackend-1-fwcd.onrender.com/api/order/add",
         orderPayload,
         { headers: { Authorization: token } }
       );
@@ -106,7 +106,7 @@ const PlaceOrder = () => {
 
   const handleDeleteAddress = async (id) => {
     try {
-      await axios.delete(`http://ecommercebackend-1-fwcd.onrender.com/api/address/${id}`, {
+      await axios.delete(`https://ecommercebackend-1-fwcd.onrender.com/api/address/${id}`, {
         headers: { Authorization: token },
       });
       setAddresses(addresses.filter((addr) => addr.id !== id));
@@ -116,7 +116,7 @@ const PlaceOrder = () => {
   };
   const handleClearCart = async (id) => {
     try {
-      await axios.delete("http://ecommercebackend-1-fwcd.onrender.com/api/cart/clear", {
+      await axios.delete("https://ecommercebackend-1-fwcd.onrender.com/api/cart/clear", {
         headers: { Authorization: token },
       });
       console.log("cleared cart");
@@ -133,12 +133,12 @@ const PlaceOrder = () => {
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://ecommercebackend-1-fwcd.onrender.com/api/address/${editId}`, editForm, {
+      await axios.put(`https://ecommercebackend-1-fwcd.onrender.com/api/address/${editId}`, editForm, {
         headers: { Authorization: token },
       });
       setEditId(null);
       setEditForm({});
-      const res = await axios.get("http://ecommercebackend-1-fwcd.onrender.com/api/address", {
+      const res = await axios.get("https://ecommercebackend-1-fwcd.onrender.com/api/address", {
         headers: { Authorization: token },
       });
       setAddresses(res.data.addresses);

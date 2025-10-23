@@ -15,7 +15,7 @@ const navigate =useNavigate()
     try {
       const orderIdInt = parseInt(orderId);
       const response = await axios.get(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/order-confirmation/${orderIdInt}`,
+        `https://ecommercebackend-1-fwcd.onrender.com/api/order-confirmation/${orderIdInt}`,
         {
           headers: {
             Authorization: token,

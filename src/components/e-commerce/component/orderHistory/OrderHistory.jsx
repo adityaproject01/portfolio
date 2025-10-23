@@ -13,7 +13,7 @@ const navigate=useNavigate()
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          "http://ecommercebackend-1-fwcd.onrender.com/api/order-history",
+          "https://ecommercebackend-1-fwcd.onrender.com/api/order-history",
           {
             headers: {
               Authorization: token,

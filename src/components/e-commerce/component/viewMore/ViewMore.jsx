@@ -20,7 +20,7 @@ const ViewMore = ({ ViewMoreDetails }) => {
 
     try {
       const response = await axios.post(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/cart/add",
+        "https://ecommercebackend-1-fwcd.onrender.com/api/cart/add",
         cartGetItem,
         {
           headers: {

@@ -16,11 +16,10 @@ const AdminCategory = () => {
   const [catId, setCatId] = useState();
   const token = localStorage.getItem("token");
 
-  // Wrap fetchCategories in useCallback to avoid useEffect warning
   const fetchCategories = useCallback(async () => {
     try {
       const response = await axios.get(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/category",
+        "https://ecommercebackend-1-fwcd.onrender.com/api/category",
         {
           headers: { Authorization: token },
         }
@@ -43,7 +42,7 @@ const AdminCategory = () => {
     formData.append("image", adminCatImg);
     try {
       await axios.post(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/category/add",
+        "https://ecommercebackend-1-fwcd.onrender.com/api/category/add",
         formData,
         {
           headers: {
@@ -69,7 +68,7 @@ const AdminCategory = () => {
     }
     try {
       await axios.put(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/category/${parseInt(catId)}`,
+        `https://ecommercebackend-1-fwcd.onrender.com/api/category/${parseInt(catId)}`,
         formData,
         {
           headers: {
@@ -89,7 +88,7 @@ const AdminCategory = () => {
     const catDelIdNum = parseInt(catDelId);
     try {
       await axios.delete(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/category/${catDelIdNum}`,
+        `https://ecommercebackend-1-fwcd.onrender.com/api/category/${catDelIdNum}`,
         {
           headers: {
             Authorization: token,
@@ -201,6 +200,7 @@ const AdminCategory = () => {
       {/* Category Rows */}
       {categoryDetails.map((item, index) => (
         <div className={adminCatCss.glassRow} key={index}>
+     
           <div>{item.id}</div>
           <div>{item.name}</div>
           <div>

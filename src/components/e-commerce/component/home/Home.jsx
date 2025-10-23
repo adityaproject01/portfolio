@@ -28,12 +28,11 @@ const Home = ({ setViewMoreDetails }) => {
   useEffect(() => {
     axios.get(`${baseUrl}/api/products/`).then((res) => {
       setProducts(res.data.products);
+      // {console.log(res.data)}
     });
 
     axios.get(`${baseUrl}/api/category`).then((res) => {
-      setCategory(res.data);
-      console.log(res.data,"fffffffff")
-    });
+      setCategory(res.data) });
   }, [totalCartCount]);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -57,6 +56,7 @@ const Home = ({ setViewMoreDetails }) => {
       const res = await axios.get(
         `${baseUrl}/api/subcategories/category/${id}`
       );
+      {console.log(res.data)}
       setSubCategories(res.data);
       setShowSubcategory(true);
       setShowSubSubcategory(false);
@@ -267,6 +267,7 @@ const Home = ({ setViewMoreDetails }) => {
                       key={index}
                       className={homecss.categoryCard}
                     >
+                    {console.log(item,"ddddddddddddd")}
                       <img
                         src={item.image_url}
                         alt=""
@@ -356,8 +357,9 @@ const Home = ({ setViewMoreDetails }) => {
             <div key={index} className={homecss.subProducts}>
               <div className={homecss.subProductImg}>
                 <div className={homecss.productImageCard}>
+
                   <img
-                    src={item.image_url}
+                     src={`https://ecommercebackend-1-fwcd.onrender.com/${item.image_url}`}
                     alt=""
                     className={homecss.productImage}
                   />

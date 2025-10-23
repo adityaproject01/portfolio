@@ -20,10 +20,10 @@ const AdminSubCategory = () => {
   const fetchSubCategories = useCallback(async () => {
   try {
     const response = await axios.get(
-      "http://ecommercebackend-1-fwcd.onrender.com/api/subcategories"
+      "https://ecommercebackend-1-fwcd.onrender.com/api/subcategories"
     );
     const responseCat = await axios.get(
-      "http://ecommercebackend-1-fwcd.onrender.com/api/category",
+      "https://ecommercebackend-1-fwcd.onrender.com/api/category",
       {
         headers: { Authorization: token },
       }
@@ -48,7 +48,7 @@ useEffect(() => {
 
     try {
       await axios.post(
-        "http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/add",
+        "https://ecommercebackend-1-fwcd.onrender.com/api/subcategories/add",
         formData,
         {
           headers: {
@@ -81,7 +81,7 @@ useEffect(() => {
     const subCatIdNum = parseInt(subCatId);
     try {
       await axios.put(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/${subCatIdNum}`,
+        `https://ecommercebackend-1-fwcd.onrender.com/api/subcategories/${subCatIdNum}`,
         formData,
         {
           headers: {
@@ -116,7 +116,7 @@ useEffect(() => {
     const catDelIdNum = parseInt(subCatDelId);
     try {
       await axios.delete(
-        `http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/${catDelIdNum}`,
+        `https://ecommercebackend-1-fwcd.onrender.com/api/subcategories/${catDelIdNum}`,
         {
           headers: {
             Authorization: token,

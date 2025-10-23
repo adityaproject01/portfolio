@@ -36,23 +36,28 @@ const Seller = () => {
   // ✅ useCallback to avoid React warning
   const fetchProducts = useCallback(() => {
     axios
-      .get("http://ecommercebackend-1-fwcd.onrender.com/api/products/my-products", {
-        headers: { Authorization: token },
-      })
+      .get(
+        "https://ecommercebackend-1-fwcd.onrender.com/api/products/my-products",
+        {
+          headers: { Authorization: token },
+        }
+      )
       .then((res) => setProductDetails(res.data.products))
       .catch((err) => console.log("Fetch my-products error", err));
   }, [token]);
 
   const fetchCategories = () => {
     axios
-      .get("http://ecommercebackend-1-fwcd.onrender.com/api/category")
+      .get("https://ecommercebackend-1-fwcd.onrender.com/api/category")
       .then((res) => setGetCategoryDetails(res.data))
       .catch((err) => console.log("Fetch category error", err));
   };
 
   const fetchSubCategories = (categoryId) => {
     axios
-      .get(`http://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${categoryId}`)
+      .get(
+        `https://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${categoryId}`
+      )
       .then((res) => setGetSubCategoryDetails(res.data))
       .catch((err) => {
         console.error("Failed to fetch subcategories", err);
@@ -62,7 +67,9 @@ const Seller = () => {
 
   const fetchSubSubCategories = (subcategoryId) => {
     axios
-      .get(`http://ecommercebackend-1-fwcd.onrender.com/api/subsubcategory/subcategory/${subcategoryId}`)
+      .get(
+        `https://ecommercebackend-1-fwcd.onrender.com/api/subsubcategory/subcategory/${subcategoryId}`
+      )
       .then((res) => setGetSubSubCategoryDetails(res.data))
       .catch((err) => {
         console.error("Failed to fetch sub-subcategories", err);
@@ -72,7 +79,9 @@ const Seller = () => {
 
   const fetchSubSubSubCategories = (subSubcategoryId) => {
     axios
-      .get(`http://ecommercebackend-1-fwcd.onrender.com/api/subsubsubcategory/subsubcategory/${subSubcategoryId}`)
+      .get(
+        `https://ecommercebackend-1-fwcd.onrender.com/api/subsubsubcategory/subsubcategory/${subSubcategoryId}`
+      )
       .then((res) => setGetSubSubSubCategoryDetails(res.data))
       .catch((err) => {
         console.error("Failed to fetch sub-sub-subcategories", err);
@@ -82,9 +91,12 @@ const Seller = () => {
 
   const productDelete = (productId) => {
     axios
-      .delete(`http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`, {
-        headers: { Authorization: token },
-      })
+      .delete(
+        `https://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`,
+        {
+          headers: { Authorization: token },
+        }
+      )
       .then(() => fetchProducts())
       .catch((err) => console.log("DeleteError", err));
   };
@@ -105,12 +117,16 @@ const Seller = () => {
     formData.append("image", productImage);
 
     try {
-      await axios.post("http://ecommercebackend-1-fwcd.onrender.com/api/products/add", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: token,
-        },
-      });
+      await axios.post(
+        "https://ecommercebackend-1-fwcd.onrender.com/api/products/add",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token,
+          },
+        }
+      );
       fetchProducts();
       closeModal();
     } catch (error) {
@@ -134,12 +150,16 @@ const Seller = () => {
     if (productImage) formData.append("image", productImage);
 
     try {
-      await axios.put(`http://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: token,
-        },
-      });
+      await axios.put(
+        `https://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token,
+          },
+        }
+      );
       fetchProducts();
       closeModal();
     } catch (error) {
