@@ -268,7 +268,7 @@ const Home = ({ setViewMoreDetails }) => {
                       className={homecss.categoryCard}
                     >
                       <img
-                         src={`https://ecommercebackend-1-fwcd.onrender.com/${item.image_url}`}
+                         src={`${item.image_url}`}
                         alt=""
                         className={homecss.categoryImage}
                       />
@@ -301,7 +301,7 @@ const Home = ({ setViewMoreDetails }) => {
                         className={homecss.categoryCard}
                       >
                         <img
-                           src={`https://ecommercebackend-1-fwcd.onrender.com/${item.image_url}`}
+                           src={`${item.image_url}`}
                           alt=""
                           className={homecss.categoryImage}
                         />
@@ -335,7 +335,7 @@ const Home = ({ setViewMoreDetails }) => {
                         className={homecss.categoryCard}
                       >
                         <img
-                          src={`${baseUrl}/${item.image_url}`}
+                          src={`${item.image_url}`}
                           alt={item.name}
                           className={homecss.categoryImage}
                         />
@@ -358,7 +358,7 @@ const Home = ({ setViewMoreDetails }) => {
                 <div className={homecss.productImageCard}>
 
                   <img
-                     src={`https://ecommercebackend-1-fwcd.onrender.com/${item.image_url}`}
+                     src={`${item.image_url}`}
                     alt=""
                     className={homecss.productImage}
                   />
