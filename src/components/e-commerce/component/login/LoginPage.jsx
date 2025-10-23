@@ -12,17 +12,18 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // "https://ecommercebackend-1-fwcd.onrender.com/api/auth/login",
+  // "https://ecommercebackend-87gs.onrender.com/api/auth/login",
   const loginDetails = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-      "https://ecommercebackend-87gs.onrender.com/api/auth/login",
+        "https://ecommercebackend-1-fwcd.onrender.com/api/auth/login",
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );
 
       const { token, user } = response.data;
+
       if (token && user) {
         localStorage.setItem("token", token);
         localStorage.setItem("role", user.role);
@@ -39,6 +40,7 @@ const LoginPage = () => {
     }
   };
 
+  
   return (
     <div className="page-container">
       {/* Background orbs */}
