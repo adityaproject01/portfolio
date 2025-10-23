@@ -11,7 +11,6 @@ const Hero = () => {
             <img
               src={profileimg}
               alt="Aditya Profile"
-              
               className="glow-ring w-full h-full rounded-full object-cover"
             />
           </div>
@@ -23,12 +22,21 @@ const Hero = () => {
           Frontend Engineer • React • DevOps Learner
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="glass px-8 py-4 rounded-full hover-glow font-semibold">
+          <button
+            className="glass px-8 py-4 rounded-full hover-glow font-semibold"
+            onClick={() =>
+              window.open(
+                "https://github.com/aditya31031?tab=repositories",
+                "_blank"
+              )
+            }>
             View My Work
           </button>
-          <button className="border border-purple-400 px-8 py-4 rounded-full hover:bg-purple-400 hover:bg-opacity-20 transition-all">
-            Download CV
-          </button>
+          <a href="/resume/AdityaResume.pdf" download="Aditya_Resume.pdf">
+            <button className="border border-purple-400 px-8 py-4 rounded-full hover:bg-purple-400 hover:bg-opacity-20 transition-all">
+              Download CV
+            </button>
+          </a>
         </div>
       </div>
     </section>
