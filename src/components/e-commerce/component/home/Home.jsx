@@ -268,7 +268,7 @@ const Home = ({ setViewMoreDetails }) => {
                       className={homecss.categoryCard}
                     >
                       <img
-                         src={`${item.image_url}`}
+                         src={`${baseUrl}/${item.image_url}`}
                         alt=""
                         className={homecss.categoryImage}
                       />
@@ -301,7 +301,7 @@ const Home = ({ setViewMoreDetails }) => {
                         className={homecss.categoryCard}
                       >
                         <img
-                           src={`${item.image_url}`}
+                           src={`${baseUrl}/${item.image_url}`}
                           alt=""
                           className={homecss.categoryImage}
                         />
@@ -335,7 +335,7 @@ const Home = ({ setViewMoreDetails }) => {
                         className={homecss.categoryCard}
                       >
                         <img
-                          src={`${item.image_url}`}
+                          src={`${baseUrl}/${item.image_url}`}
                           alt={item.name}
                           className={homecss.categoryImage}
                         />
