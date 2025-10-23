@@ -134,38 +134,48 @@ const AdminProduct = () => {
       .catch((err) => console.log("DeleteError", err));
   };
 
-  const handlEditProduct = async (e, productId) => {
-    e.preventDefault();
-    if (!productSubSubSubCategory) {
-      alert("Please select a SubSubSubCategory.");
-      return;
-    }
+const handlEditProduct = async (e, productId) => {
+  e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("name", productName);
-    formData.append("price", productPrice);
-    formData.append("quantity", productQuantity);
-    formData.append("sub_sub_subcategory_id", productSubSubSubCategory);
-    formData.append("description", productDescription);
-    if (productImage) formData.append("image", productImage);
+  if (!productName || !productPrice || !productQuantity || !productSubSubSubCategory) {
+    alert("Name, Price, Quantity, and Sub-Sub-Subcategory ID are required.");
+    return;
+  }
 
-    try {
-      await axios.put(
-        `https://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: token,
-          },
-        }
-      );
-      fetchProducts();
-      closeModal();
-    } catch (error) {
-      console.log("errorEdit", error);
-    }
-  };
+  const formData = new FormData();
+  formData.append("name", productName);
+  formData.append("price", Number(productPrice));
+  formData.append("quantity", Number(productQuantity));
+  formData.append("subsubsubcategory_id", Number(productSubSubSubCategory)); // ✅ fixed key
+  formData.append("description", productDescription);
+
+  if (productImage instanceof File) {
+    formData.append("image", productImage);
+  }
+
+  console.log("FormData being sent:", Array.from(formData.entries()));
+
+  try {
+    const response = await axios.put(
+      `https://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: token,
+        },
+      }
+    );
+
+    console.log("✅ Product updated successfully:", response.data);
+    fetchProducts();
+    closeModal();
+  } catch (error) {
+    console.error("❌ Update failed:", error.response?.data || error.message);
+    alert(error.response?.data?.message || "Update failed");
+  }
+};
+
 
   const closeModal = () => {
     setIsEditing(false);
