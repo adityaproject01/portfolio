@@ -236,7 +236,7 @@ useEffect(() => {
         <div className={adminSubCatCss.glassRow} key={index}>
           <div>{index + 1}</div>
           <div>{item.subcategory_name}</div>
-          <div>
+          <div className="imgcenter">
             <img
               src={`https://ecommercebackend-1-fwcd.onrender.com/${item.image_url}`}
               alt="loading"

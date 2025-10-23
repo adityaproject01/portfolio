@@ -142,7 +142,7 @@ body {
 }
 
 .logout:hover {
-  background: rgba(255, 107, 107, 0.1);
+  background: (255, 107, 107, 0.1);
   box-shadow: 0 0 16px rgba(255, 107, 107, 0.3);
 }
 
@@ -185,7 +185,7 @@ body {
 
 .glassRow:hover {
   transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 30px (0, 255, 255, 0.3);
 }
 
 .tableHeader {
@@ -278,3 +278,168 @@ body {
   transition: all 0.3s ease;
 }
 
+
+/* Tablet */
+@media (max-width: 900px) {
+  .glassNavbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+    gap: 1rem;
+  }
+.glassRow:hover {
+  box-shadow: 0 0 30px (0, 255, 255, 0.3) !important;
+}
+  .navTitle {
+    position: static;
+    transform: none;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 100%;
+    pointer-events: auto;
+  }
+
+  .glassRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .glassRow > div {
+    width: 100%;
+  }
+
+  .catActions {
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+
+  .rowImage {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    border-radius: 12px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .glassRow:hover {
+  box-shadow: 0 0 30px (0, 255, 255, 0.3) !important;
+}
+  body {
+    font-size: 14px;
+  }
+
+  .glassNavbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .navBtn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .glassHeader {
+    font-size: 1.8rem;
+    padding: 1rem;
+  }
+
+    .glassRow {
+    display: flex !important;
+    flex-wrap: wrap;
+            align-content: center;
+  }
+.imgcenter{
+   display: flex !important;
+    flex-wrap: wrap;
+            align-content: center;
+}
+
+  .modalContainer {
+    max-width: 95%;
+    padding: 1rem;
+  }
+
+  .modalContainer form {
+    gap: 0.8rem;
+  }
+
+  .saveBtn,
+  .cancelBtn {
+    width: 100%;
+  }
+
+  .modalActions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .rowImage {
+    height: auto;
+    width: 90%;
+  }
+    .rowImage:hover{
+    box-shadow: #000 !important;
+  }
+}
+
+@media (max-width: 200px) {
+  .glassRow:hover {
+  box-shadow: 0 0 30px (0, 255, 255, 0.3);
+}
+  body {
+    font-size: 14px;
+  }
+
+  .glassNavbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .navBtn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .glassHeader {
+    font-size: 1.8rem;
+    padding: 1rem;
+  }
+
+  .glassRow {
+    display: flex !important;
+    flex-wrap: wrap;
+            align-content: center;
+  }
+.imgcenter{
+   display: flex !important;
+    flex-wrap: wrap;
+            align-content: center;
+}
+  .modalContainer {
+    max-width: 95%;
+    padding: 1rem;
+  }
+
+  .modalContainer form {
+    gap: 0.8rem;
+  }
+
+  .saveBtn,
+  .cancelBtn {
+    width: 100%;
+  }
+
+  .modalActions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .rowImage {
+    height: auto;
+    width: 90%;
+  }
+  .rowImage:hover{
+    box-shadow: #000 !important;
+  }
+}
