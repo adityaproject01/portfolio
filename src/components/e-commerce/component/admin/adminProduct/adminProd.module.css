@@ -406,3 +406,128 @@
   color: #000;
   border-color: #ffa69e;
 }
+
+
+/* ----------- Responsive Cards for Mobile & Tablet ----------- */
+@media (max-width: 1024px) {
+  .scrollWrapper {
+    overflow-x: visible;
+    width: 100%;
+  }
+
+  .product {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    min-width: auto;
+  }
+
+  .product p,
+  .product div {
+    width: 100%;
+    margin: 4px 0;
+    font-size: 0.9rem;
+  }
+
+  .product img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 10px;
+    margin: 8px 0;
+  }
+
+  .productDetails {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .productDetailsDescription {
+    max-height: none;
+    overflow: visible;
+    font-size: 0.9rem;
+  }
+
+  .actionButton img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .productDetails:nth-child(1),
+  .productDetails:nth-child(2),
+  .productDetails:nth-child(3),
+  .productDetails:nth-child(4),
+  .productDetails:nth-child(5),
+  .productDetails:nth-child(6),
+  .productDetails:nth-child(7) {
+    grid-column: auto;
+  }
+
+  .product:first-child {
+    display: none; /* hide the table header row on mobile */
+  }
+}
+
+@media (max-width: 600px) {
+  .product {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .product p {
+    font-size: 0.85rem;
+  }
+
+  .navBtn {
+    width: auto;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .navTitle {
+    font-size: 1rem;
+  }
+
+  .glassNavbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+
+@media (max-width: 360px) {
+  .product {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .product p {
+    font-size: 0.85rem;
+  }
+
+  .navBtn {
+    height: auto;
+    width: auto;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .navTitle {
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .glassNavbar {
+    display: flex;
+    gap: 10px;
+    height: auto;
+  }
+}

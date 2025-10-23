@@ -196,9 +196,6 @@ const AdminProduct = () => {
     setProductDescription("");
   };
 
-  // ------------------------------
-  // UI
-  // ------------------------------
   return (
     <div className={prodCss.adminContainer}>
       <Outlet />

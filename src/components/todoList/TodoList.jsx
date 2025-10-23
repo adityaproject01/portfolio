@@ -94,7 +94,7 @@ const TodoList = () => {
         </div>
 
         {/* Filter Buttons */}
-        <div className="p-3 bg-pink-50 flex justify-center gap-2 border-b-2 border-pink-100">
+        <div className=" bg-pink-50 flex justify-center gap-2 border-b-2 border-pink-100">
           <button
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-full text-sm font-bold ${filter === 'all' ? 'bg-purple-500 text-white' : 'bg-white text-purple-500'}`}
