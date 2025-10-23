@@ -134,48 +134,52 @@ const AdminProduct = () => {
       .catch((err) => console.log("DeleteError", err));
   };
 
-const handlEditProduct = async (e, productId) => {
-  e.preventDefault();
+  const handlEditProduct = async (e, productId) => {
+    e.preventDefault();
 
-  if (!productName || !productPrice || !productQuantity || !productSubSubSubCategory) {
-    alert("Name, Price, Quantity, and Sub-Sub-Subcategory ID are required.");
-    return;
-  }
+    if (
+      !productName ||
+      !productPrice ||
+      !productQuantity ||
+      !productSubSubSubCategory
+    ) {
+      alert("Name, Price, Quantity, and Sub-Sub-Subcategory ID are required.");
+      return;
+    }
 
-  const formData = new FormData();
-  formData.append("name", productName);
-  formData.append("price", Number(productPrice));
-  formData.append("quantity", Number(productQuantity));
-  formData.append("subsubsubcategory_id", Number(productSubSubSubCategory)); // ✅ fixed key
-  formData.append("description", productDescription);
+    const formData = new FormData();
+    formData.append("name", productName);
+    formData.append("price", Number(productPrice));
+    formData.append("quantity", Number(productQuantity));
+    formData.append("subsubsubcategory_id", Number(productSubSubSubCategory)); // ✅ fixed key
+    formData.append("description", productDescription);
 
-  if (productImage instanceof File) {
-    formData.append("image", productImage);
-  }
+    if (productImage instanceof File) {
+      formData.append("image", productImage);
+    }
 
-  console.log("FormData being sent:", Array.from(formData.entries()));
+    console.log("FormData being sent:", Array.from(formData.entries()));
 
-  try {
-    const response = await axios.put(
-      `https://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: token,
-        },
-      }
-    );
+    try {
+      const response = await axios.put(
+        `https://ecommercebackend-1-fwcd.onrender.com/api/products/${productId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token,
+          },
+        }
+      );
 
-    console.log("✅ Product updated successfully:", response.data);
-    fetchProducts();
-    closeModal();
-  } catch (error) {
-    console.error("❌ Update failed:", error.response?.data || error.message);
-    alert(error.response?.data?.message || "Update failed");
-  }
-};
-
+      console.log("✅ Product updated successfully:", response.data);
+      fetchProducts();
+      closeModal();
+    } catch (error) {
+      console.error("❌ Update failed:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "Update failed");
+    }
+  };
 
   const closeModal = () => {
     setIsEditing(false);
@@ -201,8 +205,7 @@ const handlEditProduct = async (e, productId) => {
       <nav className={prodCss.glassNavbar}>
         <button
           className={prodCss.navBtn}
-          onClick={() => navigate("/ecommerce/admin")}
-        >
+          onClick={() => navigate("/ecommerce/admin")}>
           Home
         </button>
         <div className={prodCss.navTitle}>Welcome, Admin</div>
@@ -250,8 +253,7 @@ const handlEditProduct = async (e, productId) => {
                   <label>Category</label>
                   <select
                     value={productCategory}
-                    onChange={(e) => setProductCategory(e.target.value)}
-                  >
+                    onChange={(e) => setProductCategory(e.target.value)}>
                     <option value="">Select Category</option>
                     {getCategoryDetails.map((cat) => (
                       <option key={cat.id} value={cat.id}>
@@ -265,11 +267,12 @@ const handlEditProduct = async (e, productId) => {
                   <label>SubCategory</label>
                   <select
                     value={productSubCategory}
-                    onChange={(e) => setProductSubCategory(e.target.value)}
-                  >
+                    onChange={(e) => setProductSubCategory(e.target.value)}>
                     <option value="">Select SubCategory</option>
                     {getSubCategoryDetails.map((sub) => (
-                      <option key={sub.subcategory_id} value={sub.subcategory_id}>
+                      <option
+                        key={sub.subcategory_id}
+                        value={sub.subcategory_id}>
                         {sub.subcategory_name}
                       </option>
                     ))}
@@ -280,8 +283,7 @@ const handlEditProduct = async (e, productId) => {
                   <label>SubSubCategory</label>
                   <select
                     value={productSubSubCategory}
-                    onChange={(e) => setProductSubSubCategory(e.target.value)}
-                  >
+                    onChange={(e) => setProductSubSubCategory(e.target.value)}>
                     <option value="">Select SubSubCategory</option>
                     {getSubSubCategoryDetails.map((sub) => (
                       <option key={sub.subsub_id} value={sub.subsub_id}>
@@ -295,8 +297,9 @@ const handlEditProduct = async (e, productId) => {
                   <label>SubSubSubCategory</label>
                   <select
                     value={productSubSubSubCategory}
-                    onChange={(e) => setProductSubSubSubCategory(e.target.value)}
-                  >
+                    onChange={(e) =>
+                      setProductSubSubSubCategory(e.target.value)
+                    }>
                     <option value="">Select SubSubSubCategory</option>
                     {getSubSubSubCategoryDetails.map((sub) => (
                       <option key={sub.id} value={sub.id}>
@@ -346,8 +349,7 @@ const handlEditProduct = async (e, productId) => {
                   <button
                     type="button"
                     className={prodCss.btn}
-                    onClick={closeModal}
-                  >
+                    onClick={closeModal}>
                     Close
                   </button>
                 </div>
@@ -378,7 +380,11 @@ const handlEditProduct = async (e, productId) => {
               <p className={prodCss.productDetails}>{product.quantity}</p>
               <p className={prodCss.productDetails}>
                 <img
-                  src={`https://ecommercebackend-1-fwcd.onrender.com/${product.image_url}`}
+                  src={
+                    product.image_url.startsWith("http")
+                      ? product.image_url
+                      : `https://ecommercebackend-1-fwcd.onrender.com/${product.image_url}`
+                  }
                   alt="product"
                   height="80"
                 />
@@ -406,15 +412,13 @@ const handlEditProduct = async (e, productId) => {
                     setPreviewImage(
                       `https://ecommercebackend-1-fwcd.onrender.com/${product.image_url}`
                     );
-                  }}
-                >
+                  }}>
                   <img src={editImg} alt="edit" />
                 </button>
 
                 <button
                   className={prodCss.actionButton}
-                  onClick={() => productDelete(product.id)}
-                >
+                  onClick={() => productDelete(product.id)}>
                   <img src={deleteImg} alt="delete" />
                 </button>
               </p>
