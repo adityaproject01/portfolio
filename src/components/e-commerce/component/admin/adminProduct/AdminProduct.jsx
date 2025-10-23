@@ -310,29 +310,41 @@ const AdminProduct = () => {
                 </div>
 
                 <div className={prodCss.productField}>
-                  <label>Image</label>
-                  <input
-                    type="file"
-                    onChange={(e) => {
-                      setProductImage(e.target.files[0]);
-                      setPreviewImage(URL.createObjectURL(e.target.files[0]));
-                    }}
-                  />
-                  {/* ✅ Preview current or newly selected image */}
-                  {previewImage ? (
-                    <img
-                      src={previewImage}
-                      alt="preview"
-                      style={{ width: "100px", marginTop: "8px" }}
-                    />
-                  ) : (
-                    <img
-                      src={`https://ecommercebackend-1-fwcd.onrender.com/${productImage}`}
-                      alt=""
-                      style={{ width: "100px", marginTop: "8px" }}
-                    />
-                  )}
-                </div>
+  <label>Image</label>
+  <input
+    type="file"
+    onChange={(e) => {
+      const newFile = e.target.files[0];
+
+      if (newFile) {
+        // 🧹 Clear the old image reference and show the new one
+        setProductImage(newFile);
+        setPreviewImage(URL.createObjectURL(newFile));
+      } else {
+        // If no new image is chosen, retain the old preview
+        setProductImage(productImage);
+      }
+    }}
+  />
+
+  {/* ✅ Preview current or newly selected image */}
+  {previewImage ? (
+    <img
+      src={previewImage}
+      alt="preview"
+      style={{ width: "100px", marginTop: "8px" }}
+    />
+  ) : (
+    productImage && (
+      <img
+        src={`https://ecommercebackend-1-fwcd.onrender.com/${productImage}`}
+        alt="current"
+        style={{ width: "100px", marginTop: "8px" }}
+      />
+    )
+  )}
+</div>
+
 
                 <div className={prodCss.productField}>
                   <label>Description</label>
@@ -386,7 +398,6 @@ const AdminProduct = () => {
                       : `https://ecommercebackend-1-fwcd.onrender.com/${product.image_url}`
                   }
                   alt="product"
-                  height="80"
                 />
               </p>
               <p className={prodCss.productDetailsDescription}>
