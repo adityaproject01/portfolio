@@ -339,7 +339,6 @@ const Home = ({ setViewMoreDetails }) => {
                           alt={item.name}
                           className={homecss.categoryImage}
                         />
-                        {console.log(`${baseUrl}/${item.image_url},"fffffffffff`)}
                         <p className={homecss.categoryDetails}>{item.name}</p>
                       </div>
                     ))
@@ -363,6 +362,7 @@ const Home = ({ setViewMoreDetails }) => {
                     alt=""
                     className={homecss.productImage}
                   />
+      
                 </div>
                 <div className={homecss.productBlur}>
                   <p className={homecss.productDetailsName}>{item.name}</p>

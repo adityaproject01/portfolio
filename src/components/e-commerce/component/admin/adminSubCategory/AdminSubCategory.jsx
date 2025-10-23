@@ -238,7 +238,7 @@ useEffect(() => {
           <div>{item.subcategory_name}</div>
           <div>
             <img
-              src={item.image_url}
+              src={`https://ecommercebackend-1-fwcd.onrender.com/${item.image_url}`}
               alt="loading"
               className={adminSubCatCss.rowImage}
             />

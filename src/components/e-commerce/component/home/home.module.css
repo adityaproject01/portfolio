@@ -1,8 +1,8 @@
 @media (min-width: 1201px) {
-  .paginateMob{
+  .paginateMob {
     display: none;
   }
-  .homeHeadderBodyMob{
+  .homeHeadderBodyMob {
     display: none;
   }
   /* General page styling */
@@ -158,18 +158,18 @@
   }
 
   .categoryCard {
-   display: flex;
-        min-width: 150px;
-        flex-shrink: 0;
-        text-align: center;
-        background: #fff;
-        padding: 10px;
-        border-radius: 10px;
-        transition: transform 0.2s ease-in-out;
-        box-shadow: 0px 0px 2px 2px hotpink;
-        flex-direction: column;
-        align-content: flex-end;
-        align-items: center;
+    display: flex;
+    min-width: 150px;
+    flex-shrink: 0;
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 0px 0px 2px 2px hotpink;
+    flex-direction: column;
+    align-content: flex-end;
+    align-items: center;
   }
   .categoryCard:hover {
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.519);
@@ -336,12 +336,12 @@
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
-  .paginateMob{
+  .paginateMob {
     display: none;
   }
-.homeHeadderBodyMob{
-  display: none;
-}
+  .homeHeadderBodyMob {
+    display: none;
+  }
   /* General page styling */
   .home {
     width: 100dvw;
@@ -495,18 +495,18 @@
   }
 
   .categoryCard {
-   display: flex;
-        min-width: 150px;
-        flex-shrink: 0;
-        text-align: center;
-        background: #fff;
-        padding: 10px;
-        border-radius: 10px;
-        transition: transform 0.2s ease-in-out;
-        box-shadow: 0px 0px 2px 2px hotpink;
-        flex-direction: column;
-        align-content: flex-end;
-        align-items: center;
+    display: flex;
+    min-width: 150px;
+    flex-shrink: 0;
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 0px 0px 2px 2px hotpink;
+    flex-direction: column;
+    align-content: flex-end;
+    align-items: center;
   }
   .categoryCard:hover {
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.519);
@@ -672,12 +672,12 @@
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  .paginateMob{
+  .paginateMob {
     display: none;
   }
-  .homeHeadderBodyMob{
-  display: none;
-}
+  .homeHeadderBodyMob {
+    display: none;
+  }
   /* General page styling */
   .home {
     width: 100dvw;
@@ -832,17 +832,17 @@
 
   .categoryCard {
     display: flex;
-        min-width: 150px;
-        flex-shrink: 0;
-        text-align: center;
-        background: #fff;
-        padding: 10px;
-        border-radius: 10px;
-        transition: transform 0.2s ease-in-out;
-        box-shadow: 0px 0px 2px 2px hotpink;
-        flex-direction: column;
-        align-content: flex-end;
-        align-items: center;
+    min-width: 150px;
+    flex-shrink: 0;
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 0px 0px 2px 2px hotpink;
+    flex-direction: column;
+    align-content: flex-end;
+    align-items: center;
   }
   .categoryCard:hover {
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.519);
@@ -1009,7 +1009,7 @@
 }
 
 @media (max-width: 767px) {
-  .homeHeadderBodyLap{
+  .homeHeadderBodyLap {
     display: none;
   }
   .homeHeaderRightLaptop {
@@ -1261,18 +1261,18 @@
   }
 
   .categoryCard {
-display: flex;
-        min-width: 150px;
-        flex-shrink: 0;
-        text-align: center;
-        background: #fff;
-        padding: 10px;
-        border-radius: 10px;
-        transition: transform 0.2s ease-in-out;
-        box-shadow: 0px 0px 2px 2px hotpink;
-        flex-direction: column;
-        align-content: flex-end;
-        align-items: center;
+    display: flex;
+    min-width: 150px;
+    flex-shrink: 0;
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 0px 0px 2px 2px hotpink;
+    flex-direction: column;
+    align-content: flex-end;
+    align-items: center;
   }
   .categoryCard:hover {
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.519);
