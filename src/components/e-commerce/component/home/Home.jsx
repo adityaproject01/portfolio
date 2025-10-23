@@ -142,7 +142,7 @@ const Home = ({ setViewMoreDetails }) => {
 
   const logoutButton = () => {
     localStorage.removeItem("token");
-    navigate("/home");
+    navigate("/ecommerce");
   };
 
   const paginate = (items) => {

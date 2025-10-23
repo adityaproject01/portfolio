@@ -155,7 +155,7 @@ const AdminSubSubCategory = () => {
 
   const logoutButton = () => {
     localStorage.removeItem("token");
-    navigate("/ecommerce/home");
+    navigate("/ecommerce");
   };
 
   return (

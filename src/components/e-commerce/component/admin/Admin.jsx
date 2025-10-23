@@ -6,7 +6,7 @@ const Admin = () => {
   const navigate = useNavigate();
  const logoutButton = () => {
     localStorage.removeItem("token");
-    navigate("/ecommerce/home");
+    navigate("/ecommerce");
   };
 
   return (

@@ -184,7 +184,7 @@ const Seller = () => {
 
   const logoutButton = () => {
     localStorage.removeItem("token");
-    navigate("/ecommerce/home");
+    navigate("/ecommerce");
   };
 
   // ✅ Corrected useEffect with fetchProducts as dependency

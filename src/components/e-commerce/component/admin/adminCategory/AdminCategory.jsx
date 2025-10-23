@@ -103,7 +103,7 @@ const AdminCategory = () => {
 
   const logoutButton = () => {
     localStorage.removeItem("token");
-    navigate("/ecommerce/home");
+    navigate("/ecommerce");
   };
 
   const handleCloseModal = () => {
