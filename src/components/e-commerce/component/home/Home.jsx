@@ -217,7 +217,7 @@ const Home = ({ setViewMoreDetails }) => {
               />
               <p className={homecss.cartCnt}>{totalCartCount}</p>
             </div>
-            <img alt="" src={profile} width={"50px"} />
+            {/* <img alt="" src={profile} width={"50px"} /> */}
             <button className={homecss.Logout} onClick={logoutButton}>
               Logout
             </button>

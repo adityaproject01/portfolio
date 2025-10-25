@@ -201,7 +201,7 @@
   }
   .cnt {
     width: 140px;
-    height: 40%;
+    height: auto;
     border: none;
     box-shadow: 0px 0px 2px black;
     background: none;
