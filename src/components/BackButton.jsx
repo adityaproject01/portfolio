@@ -56,7 +56,7 @@ const BackButton = () => {
               key={link}
               className="nav-link px-4 py-2 hover:text-blue-300 transition-colors capitalize text-left"
               onClick={() => {
-                navigate("/ecommerce");
+                navigate("/");
                 setIsOpen(false);
               }}
             >

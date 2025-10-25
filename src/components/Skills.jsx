@@ -104,7 +104,7 @@ const Skills = () => {
             <div
               key={idx}
               className="glass rounded-3xl p-8 hover-glow transition-transform duration-300">
-              {/* Card Header */}
+        
               <div className="text-center mb-8">
                 <div className="w-23 h-30 mx-auto mb-4  rounded-2xl flex items-center justify-center">
                   {typeof cat.emoji === "string" ? (
