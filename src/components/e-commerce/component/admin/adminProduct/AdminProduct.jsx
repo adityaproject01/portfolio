@@ -321,13 +321,7 @@ const AdminProduct = () => {
 
                   {/* ✅ Show either preview of new or current image */}
                   <img
-                    src={
-                      previewImage
-                        ? previewImage
-                        : productImage?.startsWith("http")
-                        ? productImage
-                        : `https://ecommercebackend-1-fwcd.onrender.com/${productImage}`
-                    }
+                    src={previewImage || product.image_url}
                     alt="preview"
                     style={{ width: "100px", marginTop: "8px" }}
                   />
@@ -407,10 +401,10 @@ const AdminProduct = () => {
                     setProductSubSubSubCategory(product.subsubsub_id || "");
 
                     setProductImage(null); // ✅ CHANGED: Keep as nul
-                    const imageUrl =  `https://ecommercebackend-1-fwcd.onrender.com/${product.image_url}`;
+                    const imageUrl = `https://ecommercebackend-1-fwcd.onrender.com/${product.image_url}`;
                     setPreviewImage(imageUrl);
                     {
-                      console.log(imageUrl,"d")
+                      console.log(imageUrl, "d");
                     }
                   }}>
                   <img src={editImg} alt="edit" />
