@@ -1,7 +1,9 @@
 import React from "react";
 import viewCss from "./view.module.css";
 import axios from "axios";
-import { useNavigate, } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import EcomNavBar from "../home/navbar/EcomNavBar";
+
 
 const ViewMore = ({ ViewMoreDetails }) => {
   const navigate = useNavigate();
@@ -34,15 +36,11 @@ const ViewMore = ({ ViewMoreDetails }) => {
     } catch (error) {
       console.error("Error adding to cart:", error.response?.data || error.message);
     }
-  }
+  };
 
   return (
     <div className={viewCss.pageWrapper}>
-      
-      <header className={viewCss.header}>
-        <h1 className={viewCss.title}>Product Details</h1>
-        <button className={viewCss.logoutBtn} onClick={logoutButton}>Logout</button>
-      </header>
+      <EcomNavBar onLogout={logoutButton} />
 
       <section className={viewCss.productPanel}>
         <div className={viewCss.imageWrapper}>

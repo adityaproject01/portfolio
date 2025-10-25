@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import cartStyles from "./cart.module.css";
+import EcomNavBar from "../home/navbar/EcomNavBar";
 
 const Cart = () => {
   const token = localStorage.getItem("token");
@@ -37,7 +38,10 @@ const Cart = () => {
   const handleBuyNow = () => {
     navigate("/ecommerce/home/place-order", { state: { cartItems: cartDetails } });
   };
-
+ const logoutButton = () => {
+    localStorage.removeItem("token");
+    navigate("/ecommerce");
+  };
   const handleQuantityChange = async (productId, newQuantity) => {
     try {
       await axios.put(
@@ -79,9 +83,8 @@ const Cart = () => {
   return (
     <div className={cartStyles.cartBody}>
       <div className={cartStyles.cartContainer}>
-        <div className={cartStyles.cartContainerNav}>
-          <h2 className={cartStyles.heading}>Your Shopping Cart</h2>
-        </div>
+              <EcomNavBar onLogout={logoutButton} />
+        
 
         {cartDetails.length === 0 ? (
           <div className={cartStyles.emptyMessage}>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import oderHisCss from "./OrderHistory.module.css";
 import { useNavigate } from "react-router-dom";
+import EcomNavBar from "../home/navbar/EcomNavBar";
 
 const OrderHistory = () => {
   const token = localStorage.getItem("token");
@@ -41,12 +42,18 @@ const navigate=useNavigate()
   if (loading) {
     return <p className={oderHisCss.loading}>Loading your orders...</p>;
   }
-
+    const logoutButton = () => {
+    localStorage.removeItem("token");
+    navigate("/ecommerce");
+  };
   return (
+    <>
+      <EcomNavBar onLogout={logoutButton} />
+    
     <div className={oderHisCss.containerOdermain}>
       <div className={oderHisCss.containerOder}>
         <h2 className={oderHisCss.heading}>
-          🧾 Order History <span className={oderHisCss.role}>({role})</span>
+           Order History <span className={oderHisCss.role}>({role})</span>
         </h2>
 
         {orders.length === 0 ? (
@@ -76,11 +83,12 @@ const navigate=useNavigate()
         )}
         <div className={oderHisCss.buttonContainer}>
           <button onClick={()=>{navigate("/ecommerce/home")}} className={oderHisCss.bottomButton}>
-            🛍️ Continue Shopping
+             Continue Shopping
           </button>
         </div>
       </div>
     </div>
+    </>
   );
 };
 

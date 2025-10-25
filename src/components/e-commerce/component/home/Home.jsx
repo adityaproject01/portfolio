@@ -175,18 +175,18 @@ const Home = ({ setViewMoreDetails }) => {
                 <div className={homecss.menuContent}>
                   <div
                     className={homecss.cartImg}
-                    onClick={() => navigate("/home/cart")}
+                    onClick={() => navigate("/ecommerce/home/cart")}
                   >
                     <img alt="Cart" src={cartIocn} />
                     <p className={homecss.cartCnt}>{totalCartCount}</p>
                   </div>
 
-                  <img
+                  {/* <img
                     alt="Profile"
                     src={profile}
                     width="50px"
                     className={homecss.profilePic}
-                  />
+                  /> */}
 
                   <button className={homecss.Logout} onClick={logoutButton}>
                     Logout
@@ -212,7 +212,7 @@ const Home = ({ setViewMoreDetails }) => {
             <div className={homecss.cartImg}>
               <img
                 alt=""
-                onClick={() => navigate("/home/cart")}
+                onClick={() => navigate("/ecommerce/home/cart")}
                 src={cartIocn}
               />
               <p className={homecss.cartCnt}>{totalCartCount}</p>

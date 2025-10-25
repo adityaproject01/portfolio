@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import orderSucCss from "./orderSucCss.module.css";
+import EcomNavBar from "../home/navbar/EcomNavBar";
 
 const OrderConfirmation = () => {
   const { orderId } = useParams();
@@ -61,8 +62,16 @@ const navigate =useNavigate()
   if (!order) {
     return <div className={orderSucCss.error}>Order not found</div>;
   }
+    const logoutButton = () => {
+    localStorage.removeItem("token");
+    navigate("/ecommerce");
+  };
 
   return (
+    <>
+      <EcomNavBar onLogout={logoutButton} />
+    
+    
     <div className={orderSucCss.containerOrder}>
       <div className={orderSucCss.card}>
         <h2 className={orderSucCss.success}>✅ Order Placed Successfully!</h2>
@@ -92,7 +101,8 @@ const navigate =useNavigate()
           View My Orders
         </button>
       </div>
-    </div>
+      </div>
+      </>
   );
 };
 

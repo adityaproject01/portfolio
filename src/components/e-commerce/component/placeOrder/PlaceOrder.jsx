@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import placeCss from "./PlaceOrder.module.css";
+import EcomNavBar from "../home/navbar/EcomNavBar";
 
 const PlaceOrder = () => {
   const { state } = useLocation();
   const cartItems = state?.cartItems || [];
   const [addresses, setAddresses] = useState([]);
   const [newAddresses, setNewAddresses] = useState([]);
- 
+
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -37,9 +38,12 @@ const PlaceOrder = () => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const response = await axios.get("https://ecommercebackend-1-fwcd.onrender.com/api/address", {
-          headers: { Authorization: token },
-        });
+        const response = await axios.get(
+          "https://ecommercebackend-1-fwcd.onrender.com/api/address",
+          {
+            headers: { Authorization: token },
+          }
+        );
         setAddresses(response.data.addresses);
       } catch (err) {
         console.error("Failed to load addresses", err);
@@ -48,7 +52,10 @@ const PlaceOrder = () => {
 
     fetchAddresses();
   }, [token, newAddresses]);
-
+  const logoutButton = () => {
+    localStorage.removeItem("token");
+    navigate("/ecommerce");
+  };
   const calculateTotal = () =>
     cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -89,7 +96,7 @@ const PlaceOrder = () => {
       );
 
       if (response.data.message === "Order placed successfully") {
-        navigate(`/home/order-confirmation/${response.data.orderId}`);
+        navigate(`/ecommerce/home/order-confirmation/${response.data.orderId}`);
         handleClearCart();
       }
     } catch (error) {
@@ -106,9 +113,12 @@ const PlaceOrder = () => {
 
   const handleDeleteAddress = async (id) => {
     try {
-      await axios.delete(`https://ecommercebackend-1-fwcd.onrender.com/api/address/${id}`, {
-        headers: { Authorization: token },
-      });
+      await axios.delete(
+        `https://ecommercebackend-1-fwcd.onrender.com/api/address/${id}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
       setAddresses(addresses.filter((addr) => addr.id !== id));
     } catch (err) {
       console.error("Delete failed", err);
@@ -116,9 +126,12 @@ const PlaceOrder = () => {
   };
   const handleClearCart = async (id) => {
     try {
-      await axios.delete("https://ecommercebackend-1-fwcd.onrender.com/api/cart/clear", {
-        headers: { Authorization: token },
-      });
+      await axios.delete(
+        "https://ecommercebackend-1-fwcd.onrender.com/api/cart/clear",
+        {
+          headers: { Authorization: token },
+        }
+      );
       console.log("cleared cart");
     } catch (err) {
       console.error("cart Cleard failed", err);
@@ -133,14 +146,21 @@ const PlaceOrder = () => {
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://ecommercebackend-1-fwcd.onrender.com/api/address/${editId}`, editForm, {
-        headers: { Authorization: token },
-      });
+      await axios.put(
+        `https://ecommercebackend-1-fwcd.onrender.com/api/address/${editId}`,
+        editForm,
+        {
+          headers: { Authorization: token },
+        }
+      );
       setEditId(null);
       setEditForm({});
-      const res = await axios.get("https://ecommercebackend-1-fwcd.onrender.com/api/address", {
-        headers: { Authorization: token },
-      });
+      const res = await axios.get(
+        "https://ecommercebackend-1-fwcd.onrender.com/api/address",
+        {
+          headers: { Authorization: token },
+        }
+      );
       setAddresses(res.data.addresses);
     } catch (err) {
       console.error("Update failed", err);
@@ -148,11 +168,15 @@ const PlaceOrder = () => {
   };
 
   return (
+    <>
+       <EcomNavBar onLogout={logoutButton} />
     <div className={placeCss.container}>
       {cartItems.length === 0 ? (
         <p className={placeCss.empty}>No items found in cart.</p>
       ) : (
-        <div className={placeCss.wrapper}>
+          <div className={placeCss.wrapper}>
+                 
+            
           <section className={placeCss.sectionLeft}>
             <div className={placeCss.sectionSubLeft}>
               <h3 className={placeCss.subtitle}>Select Shipping Address</h3>
@@ -160,15 +184,13 @@ const PlaceOrder = () => {
                 className={placeCss.addAddr}
                 onClick={() => {
                   setOpenAddr(!openAddr);
-                }}
-              >
+                }}>
                 <p>Add a New Address:</p>
               </button>
               {openAddr ? (
                 <form
                   className={placeCss.addressForm}
-                  onSubmit={handleNewAddress}
-                >
+                  onSubmit={handleNewAddress}>
                   <input
                     placeholder="Full Name"
                     onChange={(e) => setName(e.target.value)}
@@ -215,8 +237,7 @@ const PlaceOrder = () => {
                     {editId === addr.id ? (
                       <form
                         onSubmit={handleUpdateSubmit}
-                        className={placeCss.addressForm}
-                      >
+                        className={placeCss.addressForm}>
                         <input
                           value={editForm.full_name}
                           onChange={(e) =>
@@ -286,8 +307,7 @@ const PlaceOrder = () => {
                         <button
                           type="button"
                           onClick={() => setEditId(null)}
-                          className={placeCss.button}
-                        >
+                          className={placeCss.button}>
                           Cancel
                         </button>
                       </form>
@@ -310,14 +330,12 @@ const PlaceOrder = () => {
                         <div className={placeCss.addressActions}>
                           <button
                             onClick={() => handleEditAddress(addr)}
-                            className={`${placeCss.button} ${placeCss.buttonEdit}`}
-                          >
+                            className={`${placeCss.button} ${placeCss.buttonEdit}`}>
                             Edit
                           </button>
                           <button
                             onClick={() => handleDeleteAddress(addr.id)}
-                            className={`${placeCss.button} ${placeCss.buttonDelete}`}
-                          >
+                            className={`${placeCss.button} ${placeCss.buttonDelete}`}>
                             Delete
                           </button>
                         </div>
@@ -349,15 +367,15 @@ const PlaceOrder = () => {
               </div>
               <button
                 onClick={handlePlaceOrder}
-                className={placeCss.placeOrderBtn}
-              >
+                className={placeCss.placeOrderBtn}>
                 Place Order
               </button>
             </div>
           </section>
         </div>
       )}
-    </div>
+      </div>
+      </>
   );
 };
 
