@@ -75,6 +75,7 @@ useEffect(() => {
     const formData = new FormData();
     formData.append("name", subCatEditName);
     formData.append("category_id", catId);
+    console.log(subCatEditImg,"123")
     if (subCatEditImg) {
       formData.append("image", subCatEditImg);
     }
@@ -238,7 +239,7 @@ useEffect(() => {
           <div>{item.subcategory_name}</div>
           <div className="imgcenter">
             <img
-              src={`https://ecommercebackend-1-fwcd.onrender.com/${item.image_url}`}
+              src={item.image_url}
               alt="loading"
               className={adminSubCatCss.rowImage}
             />
@@ -294,7 +295,7 @@ useEffect(() => {
               <label>New Image (optional):</label>
               <input
                 type="file"
-                onChange={(e) => setSubCatEditImg(e.target.files[0])}
+                onChange={(e) => setSubCatEditImg(e.target.files[0],console.log(e.target.files[0],"321"))}
               />
               <div className={adminSubCatCss.modalActions}>
                 <button type="submit" className={adminSubCatCss.saveBtn}>
