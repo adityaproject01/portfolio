@@ -263,7 +263,6 @@
   .productImage {
     object-fit: fill;
     border-radius: 12px 12px 0px 0px;
-
     background-size: cover;
     height: 100%;
     width: 100%;
