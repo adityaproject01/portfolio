@@ -403,9 +403,7 @@ const AdminProduct = () => {
                     setProductImage(null); // ✅ CHANGED: Keep as nul
                     const imageUrl = `https://ecommercebackend-1-fwcd.onrender.com/${product.image_url}`;
                     setPreviewImage(imageUrl);
-                    {
-                      console.log(imageUrl, "d");
-                    }
+                  
                   }}>
                   <img src={editImg} alt="edit" />
                 </button>

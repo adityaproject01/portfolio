@@ -234,7 +234,6 @@ const Home = ({ setViewMoreDetails }) => {
                     onClick={() => handleCategoryClick(item.id)}
                     className={homecss.categoryCard}
                     key={index}>
-                    {console.log(item,"ffffffffffffff")}
                     <img
                       src={item.image_url}
                       alt=""
@@ -263,7 +262,7 @@ const Home = ({ setViewMoreDetails }) => {
                       key={index}
                       className={homecss.categoryCard}>
                       <img
-                        src={`${baseUrl}/${item.image_url}`}
+                        src={item.image_url}
                         alt=""
                         className={homecss.categoryImage}
                       />
@@ -326,7 +325,7 @@ const Home = ({ setViewMoreDetails }) => {
                         onClick={() => handleSubSubSubCategoryClick(item.id)}
                         className={homecss.categoryCard}>
                         <img
-                          src={`${baseUrl}/${item.image_url}`}
+                          src={item.image_url}
                           alt={item.name}
                           className={homecss.categoryImage}
                         />
@@ -348,7 +347,7 @@ const Home = ({ setViewMoreDetails }) => {
               <div className={homecss.subProductImg}>
                 <div className={homecss.productImageCard}>
                   <img
-                    src={`${item.image_url}`}
+                    src={item.image_url}
                     alt=""
                     className={homecss.productImage}
                   />
