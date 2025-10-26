@@ -321,7 +321,7 @@ const AdminProduct = () => {
 
                   {/* ✅ Show either preview of new or current image */}
                   <img
-                    src={previewImage || product.image_url}
+                    src={previewImage}
                     alt="preview"
                     style={{ width: "100px", marginTop: "8px" }}
                   />
