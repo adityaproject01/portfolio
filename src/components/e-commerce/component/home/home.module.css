@@ -17,12 +17,14 @@
   }
   .homeBackground {
     overflow-y: scroll;
-
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     gap: 20px;
-    height: 100%;
+    /* height: 100dvw; */
+    height: 100dvw;
+    nt: center;
+    align-items: baseline;
     justify-content: center;
   }
   /* Sticky header */
@@ -209,8 +211,8 @@
   .products {
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
-    height: 60%;
+    width: auto;
+    height: 90%;
     gap: 20px;
     justify-content: center;
   }
@@ -268,12 +270,21 @@
     width: 100%;
   }
   .productDetailsName {
-    font-size: 18px;
-    font-weight: 600;
-    height: 30%;
-    padding: 5px;
-    width: 100%;
-    text-align: justify;
+  font-size: 18px;
+  font-weight: 600;
+  height: 30%;
+  padding: 5px;
+  width: 100%;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;    
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  text-align: justify;      
+  line-height: 1.4em;           
+  max-height: calc(1.4em * 3);
   }
   .productCardPrice {
     width: 100%;
@@ -1122,7 +1133,7 @@
   .homeHeadderBodyMob {
     position: sticky;
     width: 100%;
-    
+
     height: 12%;
     top: 0;
     z-index: 10;
