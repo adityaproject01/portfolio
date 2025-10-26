@@ -39,14 +39,13 @@ const Register = () => {
         "https://ecommercebackend-87gs.onrender.com/api/auth/signup",
         registerDetails
       );
-      console.log("dff");
       console.log("Successfully registered:", response.data);
       handleRegisterClear();
       setTimeout(() => {
         alert("Successfully Registered");
       }, 2000);
       navigate("/ecommerce");
-      console.log("d");
+   
     } catch (error) {
       console.log("object");
       console.error("Registration error:", error);

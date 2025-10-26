@@ -28,11 +28,11 @@ const Home = ({ setViewMoreDetails }) => {
   useEffect(() => {
     axios.get(`${baseUrl}/api/products/`).then((res) => {
       setProducts(res.data.products);
-
     });
 
     axios.get(`${baseUrl}/api/category`).then((res) => {
-      setCategory(res.data) });
+      setCategory(res.data);
+    });
   }, [totalCartCount]);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -167,16 +167,14 @@ const Home = ({ setViewMoreDetails }) => {
                 <button
                   aria-label="Close menu"
                   className={homecss.toggleButton + " " + homecss.menuClose}
-                  onClick={() => setOnModalOpen(false)}
-                >
+                  onClick={() => setOnModalOpen(false)}>
                   ✕
                 </button>
 
                 <div className={homecss.menuContent}>
                   <div
                     className={homecss.cartImg}
-                    onClick={() => navigate("/ecommerce/home/cart")}
-                  >
+                    onClick={() => navigate("/ecommerce/home/cart")}>
                     <img alt="Cart" src={cartIocn} />
                     <p className={homecss.cartCnt}>{totalCartCount}</p>
                   </div>
@@ -197,8 +195,7 @@ const Home = ({ setViewMoreDetails }) => {
               <button
                 aria-label="Open menu"
                 className={homecss.toggleButton}
-                onClick={() => setOnModalOpen(true)}
-              >
+                onClick={() => setOnModalOpen(true)}>
                 ☰
               </button>
             )}
@@ -236,8 +233,8 @@ const Home = ({ setViewMoreDetails }) => {
                   <div
                     onClick={() => handleCategoryClick(item.id)}
                     className={homecss.categoryCard}
-                    key={index}
-                  >
+                    key={index}>
+                    {console.log(item,"ffffffffffffff")}
                     <img
                       src={item.image_url}
                       alt=""
@@ -255,8 +252,7 @@ const Home = ({ setViewMoreDetails }) => {
                 <div className={homecss.categoryContainer}>
                   <button
                     className={homecss.backButton}
-                    onClick={handleBackToCategories}
-                  >
+                    onClick={handleBackToCategories}>
                     ← Back
                   </button>
                   {subCategories.map((item, index) => (
@@ -265,10 +261,9 @@ const Home = ({ setViewMoreDetails }) => {
                         handleSubCategoryClick(item.subcategory_id)
                       }
                       key={index}
-                      className={homecss.categoryCard}
-                    >
+                      className={homecss.categoryCard}>
                       <img
-                         src={`${baseUrl}/${item.image_url}`}
+                        src={`${baseUrl}/${item.image_url}`}
                         alt=""
                         className={homecss.categoryImage}
                       />
@@ -287,8 +282,7 @@ const Home = ({ setViewMoreDetails }) => {
                 <div className={homecss.categoryContainer}>
                   <button
                     className={homecss.backButton}
-                    onClick={handleBackToSubcategories}
-                  >
+                    onClick={handleBackToSubcategories}>
                     ← Back
                   </button>
                   {subSubCategories.length > 0 ? (
@@ -298,10 +292,9 @@ const Home = ({ setViewMoreDetails }) => {
                         onClick={() =>
                           handleSubSubCategoryClick(item.subsub_id)
                         }
-                        className={homecss.categoryCard}
-                      >
+                        className={homecss.categoryCard}>
                         <img
-                           src={`${baseUrl}/${item.image_url}`}
+                          src={item.image_url}
                           alt=""
                           className={homecss.categoryImage}
                         />
@@ -323,8 +316,7 @@ const Home = ({ setViewMoreDetails }) => {
                 <div className={homecss.categoryContainer}>
                   <button
                     className={homecss.backButton}
-                    onClick={handleBackToSubSubcategories}
-                  >
+                    onClick={handleBackToSubSubcategories}>
                     ← Back
                   </button>
                   {subSubSubCategories.length > 0 ? (
@@ -332,8 +324,7 @@ const Home = ({ setViewMoreDetails }) => {
                       <div
                         key={index}
                         onClick={() => handleSubSubSubCategoryClick(item.id)}
-                        className={homecss.categoryCard}
-                      >
+                        className={homecss.categoryCard}>
                         <img
                           src={`${baseUrl}/${item.image_url}`}
                           alt={item.name}
@@ -356,13 +347,11 @@ const Home = ({ setViewMoreDetails }) => {
             <div key={index} className={homecss.subProducts}>
               <div className={homecss.subProductImg}>
                 <div className={homecss.productImageCard}>
-
                   <img
-                     src={`${item.image_url}`}
+                    src={`${item.image_url}`}
                     alt=""
                     className={homecss.productImage}
                   />
-      
                 </div>
                 <div className={homecss.productBlur}>
                   <p className={homecss.productDetailsName}>{item.name}</p>
@@ -372,8 +361,7 @@ const Home = ({ setViewMoreDetails }) => {
                     </b>
                     <button
                       className={homecss.viewMorebtn}
-                      onClick={() => handleUserVm(item.id)}
-                    >
+                      onClick={() => handleUserVm(item.id)}>
                       ViewMore
                     </button>
                   </div>
@@ -389,8 +377,7 @@ const Home = ({ setViewMoreDetails }) => {
                   onClick={() =>
                     setCurrentPage((prev) => Math.max(prev - 1, 1))
                   }
-                  disabled={currentPage === 1}
-                >
+                  disabled={currentPage === 1}>
                   &laquo;
                 </button>
               </li>
@@ -400,8 +387,7 @@ const Home = ({ setViewMoreDetails }) => {
                     className={`${homecss.paginationLink} ${
                       currentPage === i + 1 ? homecss.activePage : ""
                     }`}
-                    onClick={() => setCurrentPage(i + 1)}
-                  >
+                    onClick={() => setCurrentPage(i + 1)}>
                     {i + 1}
                   </button>
                 </li>
@@ -412,8 +398,7 @@ const Home = ({ setViewMoreDetails }) => {
                   onClick={() =>
                     setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                   }
-                  disabled={currentPage === totalPages}
-                >
+                  disabled={currentPage === totalPages}>
                   &raquo;
                 </button>
               </li>
@@ -427,8 +412,7 @@ const Home = ({ setViewMoreDetails }) => {
               <button
                 className={homecss.paginationLink}
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-              >
+                disabled={currentPage === 1}>
                 &laquo;
               </button>
             </li>
@@ -438,8 +422,7 @@ const Home = ({ setViewMoreDetails }) => {
                   className={`${homecss.paginationLink} ${
                     currentPage === i + 1 ? homecss.activePage : ""
                   }`}
-                  onClick={() => setCurrentPage(i + 1)}
-                >
+                  onClick={() => setCurrentPage(i + 1)}>
                   {i + 1}
                 </button>
               </li>
@@ -450,8 +433,7 @@ const Home = ({ setViewMoreDetails }) => {
                 onClick={() =>
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                 }
-                disabled={currentPage === totalPages}
-              >
+                disabled={currentPage === totalPages}>
                 &raquo;
               </button>
             </li>

@@ -28,8 +28,12 @@ const AdminSubSubCategory = () => {
   const fetchSubCategories = useCallback(async () => {
     try {
       const [subSubRes, subCatRes, catRes] = await Promise.all([
-        axios.get("https://ecommercebackend-1-fwcd.onrender.com/api/subsubcategory"),
-        axios.get("https://ecommercebackend-1-fwcd.onrender.com/api/subcategories"),
+        axios.get(
+          "https://ecommercebackend-1-fwcd.onrender.com/api/subsubcategory"
+        ),
+        axios.get(
+          "https://ecommercebackend-1-fwcd.onrender.com/api/subcategories"
+        ),
         axios.get("https://ecommercebackend-1-fwcd.onrender.com/api/category", {
           headers: { Authorization: token },
         }),
@@ -42,20 +46,23 @@ const AdminSubSubCategory = () => {
     }
   }, [token]);
 
-  const handleSeletedSub = useCallback(async (categoryId) => {
-    try {
-      const id = parseInt(categoryId);
-      const res = await axios.get(
-        `https://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${id}`,
-        {
-          headers: { Authorization: token },
-        }
-      );
-      setSubCatSelRes(res.data);
-    } catch (error) {
-      console.log("Subcategory fetch error", error);
-    }
-  }, [token]);
+  const handleSeletedSub = useCallback(
+    async (categoryId) => {
+      try {
+        const id = parseInt(categoryId);
+        const res = await axios.get(
+          `https://ecommercebackend-1-fwcd.onrender.com/api/subcategories/category/${id}`,
+          {
+            headers: { Authorization: token },
+          }
+        );
+        setSubCatSelRes(res.data);
+      } catch (error) {
+        console.log("Subcategory fetch error", error);
+      }
+    },
+    [token]
+  );
 
   useEffect(() => {
     fetchSubCategories();
@@ -136,9 +143,12 @@ const AdminSubSubCategory = () => {
 
   const handleDeleteCat = async (id) => {
     try {
-      await axios.delete(`https://ecommercebackend-1-fwcd.onrender.com/api/subcategories/${id}`, {
-        headers: { Authorization: token },
-      });
+      await axios.delete(
+        `https://ecommercebackend-1-fwcd.onrender.com/api/subcategories/${id}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
       fetchSubCategories();
     } catch (error) {
       console.log("Delete error", error);
@@ -164,22 +174,19 @@ const AdminSubSubCategory = () => {
       <div className={adminSubSubCatCss.glassNavbar}>
         <button
           className={adminSubSubCatCss.navBtn}
-          onClick={() => navigate("/ecommerce/admin")}
-        >
+          onClick={() => navigate("/ecommerce/admin")}>
           Home
         </button>
         <div className={adminSubSubCatCss.navTitle}>Welcome, Admin</div>
         <div style={{ display: "flex", gap: "1rem" }}>
           <button
             className={`${adminSubSubCatCss.navBtn} ${adminSubSubCatCss.addBtn}`}
-            onClick={() => setIsSetOpen(true)}
-          >
+            onClick={() => setIsSetOpen(true)}>
             AddSubSubCategory
           </button>
           <button
             onClick={logoutButton}
-            className={`${adminSubSubCatCss.navBtn} ${adminSubSubCatCss.logout}`}
-          >
+            className={`${adminSubSubCatCss.navBtn} ${adminSubSubCatCss.logout}`}>
             🔓 Logout
           </button>
         </div>
@@ -194,8 +201,7 @@ const AdminSubSubCategory = () => {
       {isSetOpen && (
         <div className={adminSubSubCatCss.modalBackdrop}>
           <div
-            className={`${adminSubSubCatCss.modalContainer} ${adminSubSubCatCss.glassCard}`}
-          >
+            className={`${adminSubSubCatCss.modalContainer} ${adminSubSubCatCss.glassCard}`}>
             <h3>Add Sub Sub Category</h3>
             <form onSubmit={handleSubSubCatDetails}>
               <label>Name</label>
@@ -203,9 +209,9 @@ const AdminSubSubCategory = () => {
 
               <label>Category</label>
               <select
+                className={adminSubSubCatCss.modalContainer}
                 onChange={(e) => setCategoryMain(e.target.value)}
-                defaultValue=""
-              >
+                defaultValue="">
                 <option disabled value="">
                   Select Category
                 </option>
@@ -218,9 +224,9 @@ const AdminSubSubCategory = () => {
 
               <label>SubCategory</label>
               <select
+                className={adminSubSubCatCss.modalContainer}
                 onChange={(e) => setSubCategoryId(e.target.value)}
-                defaultValue=""
-              >
+                defaultValue="">
                 <option disabled value="">
                   Select Sub Category
                 </option>
@@ -243,8 +249,7 @@ const AdminSubSubCategory = () => {
               <button
                 type="button"
                 className={adminSubSubCatCss.cancelBtn}
-                onClick={closeModal}
-              >
+                onClick={closeModal}>
                 Close
               </button>
             </form>
@@ -254,8 +259,7 @@ const AdminSubSubCategory = () => {
 
       {/* Table */}
       <div
-        className={`${adminSubSubCatCss.tableHeader} ${adminSubSubCatCss.glassRow}`}
-      >
+        className={`${adminSubSubCatCss.tableHeader} ${adminSubSubCatCss.glassRow}`}>
         <div>ID</div>
         <div>SubName</div>
         <div>Image</div>
@@ -267,7 +271,7 @@ const AdminSubSubCategory = () => {
           <div>{item.subsub_name}</div>
           <div>
             <img
-              src={`https://ecommercebackend-1-fwcd.onrender.com${item.image_url}`}
+              src={item.image_url}
               alt="subsub"
               className={adminSubSubCatCss.rowImage}
             />
@@ -277,14 +281,12 @@ const AdminSubSubCategory = () => {
               onClick={() =>
                 handleEditClick(item.subcategory_id, item.subsub_id)
               }
-              className={adminSubSubCatCss.editBtn}
-            >
+              className={adminSubSubCatCss.editBtn}>
               Edit
             </button>
             <button
               onClick={() => handleDeleteCat(item.subcategory_id)}
-              className={adminSubSubCatCss.deleteBtn}
-            >
+              className={adminSubSubCatCss.deleteBtn}>
               Delete
             </button>
           </div>
@@ -295,8 +297,7 @@ const AdminSubSubCategory = () => {
       {isSubCatEditOpen && (
         <div className={adminSubSubCatCss.modalBackdrop}>
           <div
-            className={`${adminSubSubCatCss.modalContainer} ${adminSubSubCatCss.glassCard}`}
-          >
+            className={`${adminSubSubCatCss.modalContainer} ${adminSubSubCatCss.glassCard}`}>
             <h3>Edit Sub-SubCategory</h3>
             <form onSubmit={handleEditSubCat}>
               <label>Sub-Sub Category Name:</label>
@@ -317,8 +318,7 @@ const AdminSubSubCategory = () => {
                 <button
                   type="button"
                   className={adminSubSubCatCss.cancelBtn}
-                  onClick={() => setIsSubCatEditOpen(false)}
-                >
+                  onClick={() => setIsSubCatEditOpen(false)}>
                   Cancel
                 </button>
               </div>
