@@ -64,13 +64,7 @@ const skillsData = [
         icon: monimg,
         from: "from-green-500",
         to: "to-green-700",
-      },
-      {
-        name: "PostgreSQL",
-        icon: "🐘",
-        from: "from-blue-600",
-        to: "to-blue-800",
-      },
+      }
     ],
   },
   {
