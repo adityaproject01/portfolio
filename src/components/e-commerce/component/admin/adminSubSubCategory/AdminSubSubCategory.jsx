@@ -209,7 +209,7 @@ const AdminSubSubCategory = () => {
 
               <label>Category</label>
               <select
-                className={adminSubSubCatCss.modalContainer}
+                className={adminSubSubCatCss.modalContainers}
                 onChange={(e) => setCategoryMain(e.target.value)}
                 defaultValue="">
                 <option disabled value="">
@@ -224,7 +224,7 @@ const AdminSubSubCategory = () => {
 
               <label>SubCategory</label>
               <select
-                className={adminSubSubCatCss.modalContainer}
+                className={adminSubSubCatCss.modalContainers}
                 onChange={(e) => setSubCategoryId(e.target.value)}
                 defaultValue="">
                 <option disabled value="">

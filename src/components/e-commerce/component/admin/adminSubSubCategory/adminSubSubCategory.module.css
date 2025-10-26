@@ -63,6 +63,17 @@ body {
     width: 100%;
     box-shadow: 0 0 20px rgba(0, 140, 255, 0.2);
   }
+  .modalContainers{
+   -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background: #0a192fcc;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #008cff33;
+    color: #fff;
+    max-width: 500px;
+    padding: 15px;
+    width: 100%;
+  }
   
   .modalContainer h3 {
     text-align: center;

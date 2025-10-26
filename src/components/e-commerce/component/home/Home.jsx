@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import cartIocn from "../../images/banner/carticon1.png";
 import profile from "../../images/banner/profile.png";
-
+import cmgSon from "../../images/banner/commingsoon.png"
 const Home = ({ setViewMoreDetails }) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [products, setProducts] = useState([]);
@@ -246,34 +246,43 @@ const Home = ({ setViewMoreDetails }) => {
             )}
 
             {/* Subcategories */}
-            {showSubcategory && !showSubSubcategory && (
-              <div className={homecss.subCat}>
-                <div className={homecss.categoryContainer}>
-                  <button
-                    className={homecss.backButton}
-                    onClick={handleBackToCategories}>
-                    ← Back
-                  </button>
-                  {subCategories.map((item, index) => (
-                    <div
-                      onClick={() =>
-                        handleSubCategoryClick(item.subcategory_id)
-                      }
-                      key={index}
-                      className={homecss.categoryCard}>
-                      <img
-                        src={item.image_url}
-                        alt=""
-                        className={homecss.categoryImage}
-                      />
-                      <p className={homecss.categoryDetails}>
-                        {item.subcategory_name}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+        {showSubcategory && !showSubSubcategory && (
+  <div className={homecss.subCat}>
+    <div className={homecss.categoryContainer}>
+      <button
+        className={homecss.backButton}
+        onClick={handleBackToCategories}
+      >
+        ← Back
+      </button>
+
+      {subCategories.length > 0 ? (
+        subCategories.map((item, index) => (
+          <div
+            onClick={() => handleSubCategoryClick(item.subcategory_id)}
+            key={index}
+            className={homecss.categoryCard}
+          >
+            <img
+              src={item.image_url}
+              alt={item.subcategory_name}
+              className={homecss.categoryImage}
+            />
+            <p className={homecss.categoryDetails}>
+              {item.subcategory_name}
+            </p>
+          </div>
+        ))
+      ) : (
+        <div className={homecss.comingSoon}>
+                        {/* <h2>🚧 Coming Soon 🚧</h2> */}
+                        <img src={cmgSon} width={"100px"}/>
+        </div>
+      )}
+    </div>
+  </div>
+)}
+
 
             {/* Sub-subcategories */}
             {showSubSubcategory && !showSubSubSubcategory && (
