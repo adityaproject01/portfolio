@@ -61,7 +61,10 @@ function formatTime(dateStr) {
 
 function computeItemsCount(order) {
   if (!order || !Array.isArray(order.items)) return 0;
-  return order.items.reduce((sum, item) => sum + (item.qty || item.quantity || 1), 0);
+  return order.items.reduce(
+    (sum, item) => sum + (item.qty || item.quantity || 1),
+    0
+  );
 }
 
 const OrderHistory = () => {
@@ -76,7 +79,6 @@ const OrderHistory = () => {
   const [sortValue, setSortValue] = useState("newest");
   const [activeOrderId, setActiveOrderId] = useState(null);
 
-  // Fetch real orders from your backend
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -87,9 +89,10 @@ const OrderHistory = () => {
           }
         );
 
+        console.log(response.data, "order history data");
+
         const fetched = response.data || [];
 
-        // Normalise backend data to match template a bit
         const normalised = fetched.map((o) => ({
           id: String(o.id ?? o.order_id ?? ""),
           status: (o.status || o.order_status || "pending").toLowerCase(),
@@ -97,9 +100,22 @@ const OrderHistory = () => {
           currency: "INR",
           createdAt: o.created_at || o.createdAt || new Date().toISOString(),
           paymentMethod: o.payment_method || null,
+
           addressId: o.address_id || o.addressId || null,
-          address: null, // you'll fill this once API sends address details
-          items: o.items || [], // if your API later includes items
+          address: {
+            name: o.address_full_name || "",
+            line1: o.address_line1 || "",
+            line2: o.address_line2 || "",
+            city: o.address_city || "",
+            state: o.address_state || "",
+            postalCode: o.address_postal_code || "",
+            country: o.address_country || "",
+            phone: o.address_phone || "",
+          },
+
+          previewImage: o.preview_image || null,
+
+          items: o.items || [],
           shippingFee: Number(o.shipping_fee ?? 0),
           trackingId: o.tracking_id || null,
           expectedDelivery: o.expected_delivery || null,
@@ -124,13 +140,12 @@ const OrderHistory = () => {
     }
   }, [token]);
 
-  // Derived: filtered + sorted orders
   const filteredOrders = useMemo(() => {
     let list = [...orders];
 
-    // filter by status
     list = list.filter((order) => {
-      const matchesStatus = statusFilter === "all" || order.status === statusFilter;
+      const matchesStatus =
+        statusFilter === "all" || order.status === statusFilter;
       if (!matchesStatus) return false;
 
       if (!search.trim()) return true;
@@ -146,25 +161,27 @@ const OrderHistory = () => {
       );
     });
 
-    // sort
     list.sort((a, b) => {
       if (sortValue === "high") return b.total - a.total;
       if (sortValue === "low") return a.total - b.total;
       if (sortValue === "oldest")
         return new Date(a.createdAt) - new Date(b.createdAt);
-      // newest
-      return new Date(b.createdAt) - new Date(a.createdAt);
+      return new Date(b.createdAt) - new Date(a.createdAt); // newest
     });
 
     return list;
   }, [orders, search, statusFilter, sortValue]);
 
-  // Active order object
   const activeOrder =
-    filteredOrders.find((o) => o.id === activeOrderId) || filteredOrders[0] || null;
+    filteredOrders.find((o) => o.id === activeOrderId) ||
+    filteredOrders[0] ||
+    null;
 
   useEffect(() => {
-    if (filteredOrders.length && !filteredOrders.some((o) => o.id === activeOrderId)) {
+    if (
+      filteredOrders.length &&
+      !filteredOrders.some((o) => o.id === activeOrderId)
+    ) {
       setActiveOrderId(filteredOrders[0].id);
     }
   }, [filteredOrders, activeOrderId]);
@@ -282,7 +299,6 @@ const OrderHistory = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
-      {/* Custom scrollbar styling */}
       <style>{`
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #f3f4f6; }
@@ -290,13 +306,10 @@ const OrderHistory = () => {
         ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
       `}</style>
 
-      {/* Top nav */}
-     <NavBars/>
+      <NavBars />
 
-      {/* Main */}
       <main className="flex-1">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
-          {/* Page heading */}
           <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-4 mb-6 sm:mb-8">
             <div className="flex-1">
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-slate-900">
@@ -340,7 +353,7 @@ const OrderHistory = () => {
             </div>
           </div>
 
-          {/* Filters & search */}
+          {/* Filters */}
           <section className="mb-4 sm:mb-6">
             <div className="bg-white border border-slate-200 rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between shadow-sm">
               <div className="flex-1 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
@@ -422,7 +435,6 @@ const OrderHistory = () => {
             </div>
           </section>
 
-          {/* Content layout */}
           <div className="grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-4 lg:gap-6 items-start">
             {/* Orders list */}
             <section className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
@@ -461,9 +473,19 @@ const OrderHistory = () => {
                         key={order.id}
                         type="button"
                         onClick={() => setActiveOrderId(order.id)}
-                        className={`w-full text-left px-3 py-3 flex gap-3 ${isActive ? "bg-indigo-50/70" : "bg-white"
-                          } hover:bg-slate-50`}
+                        className={`w-full text-left px-3 py-3 flex gap-3 ${
+                          isActive ? "bg-indigo-50/70" : "bg-white"
+                        } hover:bg-slate-50`}
                       >
+                        {order.previewImage && (
+                          <div className="h-12 w-12 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
+                            <img
+                              src={order.previewImage}
+                              alt="preview"
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                        )}
                         <div className="flex-1">
                           <div className="flex items-center justify-between gap-3 mb-1">
                             <div className="text-xs font-semibold text-slate-900">
@@ -502,13 +524,17 @@ const OrderHistory = () => {
                 )}
               </div>
 
-              {/* Table (sm and up) */}
+              {/* Desktop table */}
               <div className="hidden sm:block max-h-[60vh] overflow-auto">
                 <table className="min-w-full text-sm">
                   <thead className="bg-slate-50 border-b border-slate-100 text-xs uppercase tracking-wide text-slate-500">
                     <tr>
-                      <th className="px-4 py-2 text-left font-medium">Order</th>
-                      <th className="px-4 py-2 text-left font-medium">Date</th>
+                      <th className="px-4 py-2 text-left font-medium">
+                        Order
+                      </th>
+                      <th className="px-4 py-2 text-left font-medium">
+                        Date
+                      </th>
                       <th className="px-4 py-2 text-left font-medium">
                         Status
                       </th>
@@ -541,12 +567,22 @@ const OrderHistory = () => {
                         return (
                           <tr
                             key={order.id}
-                            className={`cursor-pointer hover:bg-slate-50 ${isActive ? "bg-indigo-50/60" : ""
-                              }`}
+                            className={`cursor-pointer hover:bg-slate-50 ${
+                              isActive ? "bg-indigo-50/60" : ""
+                            }`}
                             onClick={() => setActiveOrderId(order.id)}
                           >
                             <td className="px-4 py-2 align-middle">
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-3">
+                                {order.previewImage && (
+                                  <div className="h-10 w-10 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0">
+                                    <img
+                                      src={order.previewImage}
+                                      alt="preview"
+                                      className="h-full w-full object-cover"
+                                    />
+                                  </div>
+                                )}
                                 <div className="flex flex-col">
                                   <span className="text-xs font-semibold text-slate-900">
                                     #{order.id}
@@ -625,8 +661,9 @@ const OrderHistory = () => {
                       </p>
                     </div>
                     <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium border ${activeStatusStyle?.badge || ""
-                        }`}
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium border ${
+                        activeStatusStyle?.badge || ""
+                      }`}
                     >
                       {activeStatusStyle?.text || activeOrder.status}
                     </span>
@@ -676,8 +713,9 @@ const OrderHistory = () => {
                             {activeOrder.address.name}
                             <br />
                             {activeOrder.address.line1}
-                            <br />
-                            {activeOrder.address.line2}
+                            {activeOrder.address.line2
+                              ? `, ${activeOrder.address.line2}`
+                              : ""}
                             <br />
                             {activeOrder.address.city},{" "}
                             {activeOrder.address.state}{" "}
@@ -701,10 +739,10 @@ const OrderHistory = () => {
                           {activeOrder.status === "delivered"
                             ? "Delivered"
                             : activeOrder.status === "shipped"
-                              ? "On the way"
-                              : activeOrder.status === "pending"
-                                ? "Awaiting dispatch"
-                                : "Not applicable"}
+                            ? "On the way"
+                            : activeOrder.status === "pending"
+                            ? "Awaiting dispatch"
+                            : "Not applicable"}
                         </span>
                       </div>
                       <dl className="mt-1 space-y-0.5 text-xs text-slate-700">
@@ -722,9 +760,9 @@ const OrderHistory = () => {
                             {activeOrder.shippingSpeed || "—"} •{" "}
                             {activeOrder.shippingFee
                               ? formatCurrency(
-                                activeOrder.shippingFee,
-                                activeOrder.currency
-                              )
+                                  activeOrder.shippingFee,
+                                  activeOrder.currency
+                                )
                               : "Free"}
                           </dd>
                         </div>
@@ -768,7 +806,7 @@ const OrderHistory = () => {
                               <div className="font-semibold text-slate-900">
                                 {formatCurrency(
                                   (item.price || 0) *
-                                  (item.qty || item.quantity || 1),
+                                    (item.qty || item.quantity || 1),
                                   item.currency || activeOrder.currency
                                 )}
                               </div>
@@ -852,12 +890,9 @@ const OrderHistory = () => {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-slate-200 bg-white/80 backdrop-blur mt-4">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
-          <div>
-            © {new Date().getFullYear()} MyShop. All rights reserved.
-          </div>
+          <div>© {new Date().getFullYear()} MyShop. All rights reserved.</div>
           <div className="flex flex-wrap items-center gap-3">
             <button className="hover:text-slate-700">Privacy</button>
             <button className="hover:text-slate-700">Terms</button>

@@ -5,12 +5,10 @@ import {
   FaExclamationCircle,
   FaPrint,
   FaTruck,
-  
   FaBox,
   FaHome,
   FaShoppingBag,
   FaHistory,
-  
 } from "react-icons/fa";
 import NavBars from "../NavBars";
 
@@ -22,6 +20,9 @@ const OrderConfirmation = () => {
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+
+  // 🔔 50-second redirect timer state
+  const [secondsLeft, setSecondsLeft] = useState(50);
 
   const fetchOrderDetails = useCallback(async () => {
     try {
@@ -60,13 +61,26 @@ const OrderConfirmation = () => {
     fetchOrderDetails();
   }, [fetchOrderDetails]);
 
+  // ⏱️ Timer: 50s redirect to order-history + countdown text
   useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate("/ecommerce/home/order-history", { replace: true });
-    }, 10000000);
+    // start timer only after order is loaded (and no error)
+    if (!order || error) return;
 
-    return () => clearTimeout(timer);
-  }, [navigate]);
+    setSecondsLeft(50); // reset each time order changes
+
+    const countdownId = setInterval(() => {
+      setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    const redirectId = setTimeout(() => {
+      navigate("/ecommerce/home/order-history", { replace: true });
+    }, 50000); // 50 * 1000 ms
+
+    return () => {
+      clearInterval(countdownId);
+      clearTimeout(redirectId);
+    };
+  }, [order, error, navigate]);
 
   // ------------ Derived fields from order ------------
 
@@ -93,13 +107,8 @@ const OrderConfirmation = () => {
     order?.subtotal ?? order?.sub_total ?? (totalAmount ? totalAmount : null);
   const shipping =
     order?.shipping_fee ?? order?.shipping ?? order?.shipping_amount ?? 0;
- 
   const customerEmail =
     order?.email || order?.user_email || order?.customer_email || null;
-
- 
-
-
 
   // ------------ STATES: LOADING / ERROR / NOT FOUND ------------
 
@@ -173,7 +182,7 @@ const OrderConfirmation = () => {
 
   return (
     <div className="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col">
-      {/* Checkmark animation CSS – you can move this to global CSS if you like */}
+      {/* Checkmark animation CSS */}
       <style>{`
         .checkmark-circle {
           width: 80px;
@@ -209,9 +218,8 @@ const OrderConfirmation = () => {
         }
       `}</style>
 
-      {/* headder */}
-    
-  <NavBars />
+      <NavBars />
+
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Success Message */}
@@ -235,6 +243,13 @@ const OrderConfirmation = () => {
               </>
             )}
             .
+          </p>
+
+          {/* 🔔 50 sec redirect message */}
+          <p className="mt-4 text-sm text-gray-600">
+            You will be redirected to your{" "}
+            <span className="font-semibold">Order History</span> page in{" "}
+            <span className="font-bold">{secondsLeft}</span> seconds.
           </p>
         </div>
 
@@ -282,9 +297,7 @@ const OrderConfirmation = () => {
                         items.map((item, idx) => {
                           const itemPrice = item.price || item.unit_price;
                           const itemQty = item.quantity || item.qty || 1;
-                          const imageUrl =
-                            item.product_image ||
-                            "";
+                          const imageUrl = item.product_image || "";
                           const variantText =
                             item.variant ||
                             item.variant_name ||
@@ -352,19 +365,19 @@ const OrderConfirmation = () => {
                       <span>Shipping</span>
                       <span>{shipping ? `₹${shipping}` : "₹238"}</span>
                     </div>
-
                   </div>
 
                   <div className="flex justify-between py-4 text-base font-bold text-gray-900">
                     <span>Order Total</span>
-                    <span>{totalAmount
-                      ? `₹${(Number(totalAmount) || 0) + 238}`
-                      : "—"}</span>
+                    <span>
+                      {totalAmount
+                        ? `₹${(Number(totalAmount) || 0) + 238}`
+                        : "—"}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -425,6 +438,7 @@ const OrderConfirmation = () => {
             </button>
           </div>
         </div>
+
         <div className="bg-gray-50 px-6 py-6 sm:px-10 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-100">
           <p className="text-sm text-gray-500">
             Need help?{" "}
@@ -434,8 +448,6 @@ const OrderConfirmation = () => {
           </p>
         </div>
       </main>
-
-  
     </div>
   );
 };
