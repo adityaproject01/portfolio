@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import NavBar from "../NavBar";
@@ -7,18 +6,20 @@ import NavBar from "../NavBar";
 const ViewMore = () => {
   const navigate = useNavigate();
   const { state: ViewMoreDetails } = useLocation();
+
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [addStatus, setAddStatus] = useState("idle");
-  const token = localStorage.getItem("token");
-  const images = useMemo(() => {
-    const base = ViewMoreDetails.image_url;
-    return [base, base, base];
-  }, [ViewMoreDetails.image_url]);
 
+  const images = useMemo(() => {
+    if (!ViewMoreDetails?.image_url) return [];
+    const base = ViewMoreDetails.image_url;
+    return [base, base, base]; // duplicate for gallery
+  }, [ViewMoreDetails]);
 
   async function handleAddCart(product) {
+    const token = localStorage.getItem("token");
+
     if (!token) {
-      
       navigate("/ecommerce/ecommerce/login");
       return;
     }
@@ -37,25 +38,32 @@ const ViewMore = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: token,
+            Authorization: token, // if backend expects Bearer token, use `Bearer ${token}`
           },
         }
       );
 
       setAddStatus("success");
 
-      // Redirect to cart
+      // Redirect to cart after small delay
       setTimeout(() => {
         navigate("/ecommerce/home/cart");
       }, 600);
-
     } catch (error) {
       console.error("Error adding to cart:", error.response?.data || error.message);
+
+      // If token invalid / expired, clear and send to login
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/ecommerce/login");
+      }
+
       setAddStatus("idle");
     }
   }
 
-  if (!ViewMoreDetails || !ViewMoreDetails.image_url) {
+  // If no product details, show loading
+  if (!ViewMoreDetails) {
     return <div style={{ padding: "20px" }}>Loading product...</div>;
   }
 
@@ -65,42 +73,48 @@ const ViewMore = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-     <NavBar/>
+      <NavBar />
 
       {/* MAIN CONTENT */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start fade-in">
-
           {/* ---------------- PRODUCT IMAGES ---------------- */}
           <div>
             <div className="aspect-square bg-gray-100 rounded-2xl overflow-hidden shadow-lg">
-              <img
-                src={images[activeImageIndex]}
-                alt={ViewMoreDetails.name}
-                className="w-full h-full object-cover"
-              />
+              {images.length > 0 ? (
+                <img
+                  src={images[activeImageIndex]}
+                  alt={ViewMoreDetails.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-500">
+                  No image available
+                </div>
+              )}
             </div>
 
-            <div className="flex space-x-4 mt-4">
-              {images.map((img, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveImageIndex(index)}
-                  className={`w-20 h-20 bg-gray-100 rounded-lg overflow-hidden cursor-pointer border-2 ${
-                    activeImageIndex === index
-                      ? "border-gray-900"
-                      : "border-gray-300 hover:border-gray-400"
-                  }`}
-                >
-                  <img alt="" src={img} className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
+            {images.length > 0 && (
+              <div className="flex space-x-4 mt-4">
+                {images.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveImageIndex(index)}
+                    className={`w-20 h-20 bg-gray-100 rounded-lg overflow-hidden cursor-pointer border-2 ${
+                      activeImageIndex === index
+                        ? "border-gray-900"
+                        : "border-gray-300 hover:border-gray-400"
+                    }`}
+                  >
+                    <img alt="" src={img} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* ---------------- PRODUCT DETAILS ---------------- */}
           <div className="space-y-6">
-            
             <p className="text-sm text-gray-500 uppercase tracking-wide">
               {ViewMoreDetails.category || "Product"}
             </p>
@@ -113,7 +127,12 @@ const ViewMore = () => {
             <div className="flex items-center space-x-2">
               <div className="flex text-yellow-400">
                 {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                  <svg
+                    key={i}
+                    className="w-5 h-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
                     <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
                   </svg>
                 ))}
@@ -147,11 +166,8 @@ const ViewMore = () => {
                     : "bg-gray-900 text-white hover:bg-gray-800"
                 }`}
               >
-
                 {addStatus === "loading" && "Adding..."}
-
                 {addStatus === "idle" && "Add to Cart"}
-
                 {addStatus === "success" && (
                   <>
                     <svg
