@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
-   FaHeart, FaShoppingBag,  FaTruck, FaHeadset, FaShieldAlt, FaUndo, FaArrowRight, FaFacebookF,
+  FaHeart, FaShoppingBag, FaTruck, FaHeadset, FaShieldAlt, FaUndo, FaArrowRight, FaFacebookF,
   FaTwitter,
   FaInstagram,
   FaPinterestP,
@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 import NavBar from "../NavBar";
 
-const Home = ({ setViewMoreDetails }) => {
+const Home = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState([]);
@@ -55,6 +55,53 @@ const Home = ({ setViewMoreDetails }) => {
         });
     }
   }, []);
+  async function handleAddCart(product) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/ecommerce/ecommerce/login");
+      return;
+    }
+
+    const cartGetItem = {
+      product_id: product.id,
+      quantity: 1,
+    };
+
+    try {
+
+
+      await axios.post(
+        "https://ecommercebackend-1-fwcd.onrender.com/api/cart/add",
+        cartGetItem,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token, // if backend expects Bearer token, use `Bearer ${token}`
+          },
+        }
+      );
+
+
+
+      // Redirect to cart after small delay
+      setTimeout(() => {
+        navigate("/ecommerce/home/cart");
+      }, 600);
+    } catch (error) {
+      console.error("Error adding to cart:", error.response?.data || error.message);
+
+      // If token invalid / expired, clear and send to login
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/ecommerce/login");
+      }
+
+    }
+  }
+  const handleViewAll = () => {
+    navigate("/ecommerce/home/allproducts");
+  };
   const handleCategoryClick = async (id) => {
     try {
       const res = await axios.get(
@@ -114,12 +161,14 @@ const Home = ({ setViewMoreDetails }) => {
   };
 
   const handleUserVm = (itemId) => {
+
     const selectedItem = [...products, ...filteredProducts].find(
       (product) => product.id === itemId
     );
     if (selectedItem) {
+      handleAddCart(selectedItem)
       navigate("/ecommerce/home/viewmore", { state: selectedItem });
-
+      console.log(selectedItem, "selectedItem")
     }
   };
 
@@ -494,7 +543,7 @@ const Home = ({ setViewMoreDetails }) => {
               </p>
             </div>
 
-            <button className="inline-flex items-center self-start md:self-auto text-blue-600 text-sm font-medium hover:text-blue-700 transition">
+            <button onClick={handleViewAll} className="inline-flex items-center self-start md:self-auto text-blue-600 text-sm font-medium hover:text-blue-700 transition">
               View All <FaArrowRight className="ml-2 text-xs" />
             </button>
           </div>
@@ -556,13 +605,14 @@ const Home = ({ setViewMoreDetails }) => {
                         </p>
                       )}
                     </div>
-
                     <button
+                      onClick={() => handleUserVm(item.id)}
                       type="button"
                       className="inline-flex items-center rounded-full border border-gray-300 px-3 py-1.5 text-[11px] font-semibold text-gray-800 hover:bg-gray-100 transition"
                     >
                       <FaShoppingBag className="mr-1 text-[10px]" />
                       Add to Cart
+
                     </button>
                   </div>
                 </div>
@@ -582,7 +632,7 @@ const Home = ({ setViewMoreDetails }) => {
               <ul className="flex flex-wrap gap-2">
                 <li>
                   <button
-                    className="px-3 py-1.5 text-xs border border-gray-300 rounded-full hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="px-3 py-1.5 text-black text-xs border border-gray-300 rounded-full hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
                     onClick={() =>
                       setCurrentPage((prev) => Math.max(prev - 1, 1))
                     }
@@ -608,7 +658,7 @@ const Home = ({ setViewMoreDetails }) => {
 
                 <li>
                   <button
-                    className="px-3 py-1.5 text-xs border border-gray-300 rounded-full hover:bg-blue-gray-500 disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="px-3 py-1.5 text-black text-xs border border-gray-300 rounded-full hover:bg-blue-gray-500 disabled:opacity-40 disabled:cursor-not-allowed"
                     onClick={() =>
                       setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                     }

@@ -36,6 +36,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import "./App.css";
+import AllProducts from "./components/e-commerce/component/home/AllProducts";
 
 function AppContent() {
   const [loading, setLoading] = useState(true);
@@ -133,7 +134,9 @@ function AppContent() {
               />
             }
           />
-         
+          <Route path="/ecommerce/home/allproducts" element={<AllProducts />} />
+
+
           <Route
             path="/ecommerce/home/viewmore"
 

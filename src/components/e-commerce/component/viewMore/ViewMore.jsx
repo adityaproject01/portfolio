@@ -153,7 +153,7 @@ const ViewMore = () => {
                 {formattedPrice}
               </span>
             </div>
-
+{console.log(ViewMoreDetails,"ViewMoreDetails")}
             {/* ---------------- ADD TO CART BUTTON ---------------- */}
             <div className="flex space-x-4 pt-4">
               <button

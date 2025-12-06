@@ -18,6 +18,7 @@ import OrderHistory from "./component/orderHistory/OrderHistory";
 import AdminSubSubSubCategory from "./component/admin/adminSubSubSubCategory/AdminSubSubSubCategory";
 import AdminProduct from "./component/admin/adminProduct/AdminProduct";
 import BackButton from "../BackButton";
+import AllProducts from "./component/home/AllProducts";
 
 function Ecom() {
   const navigate = useNavigate();
@@ -63,6 +64,8 @@ function Ecom() {
 
 
         />
+        <Route path="/ecommerce/home/allproducts" element={<AllProducts />} />
+
         {/* {console.log(ViewMoreDetails)} */}
         <Route
           path="/ecommerce/home/viewmore"
