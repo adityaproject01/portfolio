@@ -307,25 +307,41 @@ const AdminProduct = () => {
                 </div>
 
                 <div className={prodCss.productField}>
-                  <label>Image</label>
-                  <input
-                    type="file"
-                    onChange={(e) => {
-                      const file = e.target.files[0];
-                      if (file) {
-                        setProductImage(file);
-                        setPreviewImage(URL.createObjectURL(file));
-                      }
-                    }}
-                  />
+  <label>Image</label>
+  <input
+    type="file"
+    onChange={(e) => {
+      const newFile = e.target.files[0];
 
-                  {/* ✅ Show either preview of new or current image */}
-                  <img
-                    src={previewImage}
-                    alt="preview"
-                    style={{ width: "100px", marginTop: "8px" }}
-                  />
-                </div>
+      if (newFile) {
+        // 🧹 Clear the old image reference and show the new one
+        setProductImage(newFile);
+        setPreviewImage(URL.createObjectURL(newFile));
+      } else {
+        // If no new image is chosen, retain the old preview
+        setProductImage(productImage);
+      }
+    }}
+  />
+
+  {/* ✅ Preview current or newly selected image */}
+  {previewImage ? (
+    <img
+      src={previewImage}
+      alt="preview"
+      style={{ width: "100px", marginTop: "8px" }}
+    />
+  ) : (
+    productImage && (
+      <img
+        src={`https://ecommercebackend-1-fwcd.onrender.com/${productImage}`}
+        alt="current"
+        style={{ width: "100px", marginTop: "8px" }}
+      />
+    )
+  )}
+</div>
+
 
                 <div className={prodCss.productField}>
                   <label>Description</label>
@@ -391,6 +407,7 @@ const AdminProduct = () => {
                     setIsEditing(true);
                     setCurrentEditId(product.id);
 
+                    // ✅ Prefill the edit modal fields
                     setProductName(product.name);
                     setProductPrice(product.price);
                     setProductQuantity(product.quantity);
@@ -399,11 +416,10 @@ const AdminProduct = () => {
                     setProductSubCategory(product.subcategory_id || "");
                     setProductSubSubCategory(product.subsub_id || "");
                     setProductSubSubSubCategory(product.subsubsub_id || "");
-
-                    setProductImage(null); // ✅ CHANGED: Keep as nul
-                    const imageUrl = `https://ecommercebackend-1-fwcd.onrender.com/${product.image_url}`;
-                    setPreviewImage(imageUrl);
-                  
+                    setProductImage(product.image_url || null);
+                    setPreviewImage(
+                      `https://ecommercebackend-1-fwcd.onrender.com/${product.image_url}`
+                    );
                   }}>
                   <img src={editImg} alt="edit" />
                 </button>

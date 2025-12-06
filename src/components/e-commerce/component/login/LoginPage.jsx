@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import axios from "axios";
-import {  Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -40,7 +40,7 @@ const LoginPage = () => {
     }
   };
 
-  
+
   return (
     <div className="page-container">
       {/* Background orbs */}
@@ -52,7 +52,7 @@ const LoginPage = () => {
         <div className="visual-side">
           <div
             className="visual-image"
-             style={{
+            style={{
               backgroundImage: "url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2864&auto=format&fit=crop')"
             }}
           ></div>
@@ -133,7 +133,15 @@ const LoginPage = () => {
                 className="signup-link"
                 onClick={() => navigate("/ecommerce/register")}
               >
-                Sign Up
+                Sign Up /
+              </button>
+              <p></p>
+               <button
+                type="button"
+                className="signup-link"
+                onClick={() => navigate("/ecommerce")}
+              >
+                Continue Shop
               </button>
             </div>
           </form>

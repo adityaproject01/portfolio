@@ -60,7 +60,7 @@ function AppContent() {
     return () => clearInterval(timer);
   }, []);
 
-  const [ViewMoreDetails, setViewMoreDetails] = useState([]);
+  const [ViewMoreDetails, setViewMoreDetails] = useState(null);
   const colors = ["#FFD700", "#FF4500", "#FFFFFF", "#1E90FF"];
   const generateSparkles = (count) => {
     const sparkles = [];
@@ -133,14 +133,14 @@ function AppContent() {
               />
             }
           />
+         
           <Route
             path="/ecommerce/home/viewmore"
-            element={
-              <ProtectedRoute
-                element={<ViewMore ViewMoreDetails={ViewMoreDetails} />}
-                allowedRoles={["customer"]}
-              />
-            }
+
+            element={<ViewMore ViewMoreDetails={ViewMoreDetails} />}
+
+
+
           />
           <Route
             path="/ecommerce/home/place-order"

@@ -1,5 +1,4 @@
 @media (min-width: 1201px) {
-  
   .paginateMob {
     display: none;
   }
@@ -18,14 +17,12 @@
   }
   .homeBackground {
     overflow-y: scroll;
+
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     gap: 20px;
-    /* height: 100dvw; */
-    height: 100dvw;
-    nt: center;
-    align-items: baseline;
+    height: 100%;
     justify-content: center;
   }
   /* Sticky header */
@@ -212,8 +209,8 @@
   .products {
     display: flex;
     flex-wrap: wrap;
-    width: auto;
-    height: 90%;
+    width: 100%;
+    height: 60%;
     gap: 20px;
     justify-content: center;
   }
@@ -266,26 +263,18 @@
   .productImage {
     object-fit: fill;
     border-radius: 12px 12px 0px 0px;
+
     background-size: cover;
     height: 100%;
     width: 100%;
   }
   .productDetailsName {
-  font-size: 18px;
-  font-weight: 600;
-  height: 30%;
-  padding: 5px;
-  width: 100%;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 3;    
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  text-align: justify;      
-  line-height: 1.4em;           
-  max-height: calc(1.4em * 3);
+    font-size: 18px;
+    font-weight: 600;
+    height: 30%;
+    padding: 5px;
+    width: 100%;
+    text-align: justify;
   }
   .productCardPrice {
     width: 100%;
@@ -1062,15 +1051,14 @@
 
   .homeHeaderRightMobileopen {
     position: absolute;
-    top: -37px;
+    top: 0;
     right: 0;
-    margin: 0px;
-    width: auto;
-    padding: 20px;
-    height: 100dvh;
-    background: white;
+    width: 80%;
+    height: 100vh;
+    background: #faf3dd;
     display: flex;
     flex-direction: column;
+    padding: 20px;
     z-index: 1000;
     box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
     animation: slideIn 0.3s ease forwards;
@@ -1086,6 +1074,7 @@
   }
 
   .menuClose {
+    align-self: flex-end;
     font-size: 24px;
     color: #ef476f;
     margin-bottom: 20px;
@@ -1134,7 +1123,6 @@
   .homeHeadderBodyMob {
     position: sticky;
     width: 100%;
-
     height: 12%;
     top: 0;
     z-index: 10;

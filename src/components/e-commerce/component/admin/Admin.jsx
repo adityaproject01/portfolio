@@ -40,20 +40,6 @@ const Admin = () => {
             </div>
             <div
               className={adminCss.glassCard}
-              onClick={() => navigate("/ecommerce/admin/adminsubsubcategory")}
-            >
-              SubSubcategories
-            </div>
-            <div
-              className={adminCss.glassCard}
-              onClick={() => navigate("/ecommerce/admin/adminsubsubsubcategory")}
-            >
-              SubSubSubcategories
-            </div>
-           
-            
-            <div
-              className={adminCss.glassCard}
               onClick={() => navigate("/ecommerce/admin/adminproduct")}
             >
               Products
@@ -63,18 +49,6 @@ const Admin = () => {
               onClick={() => navigate("/ecommerce/admin/adminusers")}
             >
               Users
-            </div>
-            <div
-              className={adminCss.glassCard}>
-              
-            </div>
-            <div
-              className={adminCss.glassCard}>
-              
-            </div>
-             <div
-              className={adminCss.glassCard}>
-              
             </div>
           </div>
         </div>
