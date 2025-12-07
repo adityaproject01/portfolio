@@ -217,15 +217,20 @@ const NavBar = () => {
                     {/* Icons */}
                     <div className="flex items-center space-x-4">
                         {/* Cart */}
-                        <button
-                            onClick={() => navigate("ecommerce/ecommerce/home/cart")}
-                            className="text-gray-600 hover:text-blue-600 transition relative"
-                        >
-                            <FaShoppingBag className="text-xl" />
-                            <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                                {totalCartCount}
-                            </span>
-                        </button>
+                        {tokens ? (
+                            <>
+                                <button
+                                    onClick={() => navigate("/ecommerce/ecommerce/home/cart")}
+                                    className="text-gray-600 hover:text-blue-600 transition relative"
+                                >
+                                    <FaShoppingBag className="text-xl" />
+                                    <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                                        {totalCartCount}
+                                    </span>
+                                </button>
+
+                            </>
+                        ) : (<></>)}
 
                         {/* User dropdown */}
                         <div className="relative">
