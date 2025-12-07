@@ -266,7 +266,7 @@ const NavBar = () => {
                                         <ul className="py-2 text-sm text-gray-700">
                                             <li
                                                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                                                onClick={() => navigate("/ecommerce/login")}
+                                                onClick={() => navigate("/ecommerce/ecommerce/login")}
                                             >
                                                 Login
                                             </li>
