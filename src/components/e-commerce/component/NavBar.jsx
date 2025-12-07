@@ -218,7 +218,7 @@ const NavBar = () => {
                     <div className="flex items-center space-x-4">
                         {/* Cart */}
                         <button
-                            onClick={() => navigate("/ecommerce/ecommerce/home/cart")}
+                            onClick={() => navigate("ecommerce/ecommerce/home/cart")}
                             className="text-gray-600 hover:text-blue-600 transition relative"
                         >
                             <FaShoppingBag className="text-xl" />
